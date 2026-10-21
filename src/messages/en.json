@@ -1394,5 +1394,264 @@
         "note": "Write why it isn't suitable"
       }
     }
+  },
+  "beneficiary": {
+    "nav": {
+      "home": "Available food",
+      "requests": "My requests",
+      "report": "Report surplus",
+      "shield": "My shield & points",
+      "notices": "Notices"
+    },
+    "tabs": {
+      "home": "Home",
+      "requests": "My requests",
+      "report": "Report",
+      "shield": "My shield"
+    },
+    "unitName": {
+      "box": "box",
+      "bag": "bag",
+      "boxPlural": "boxes",
+      "bagPlural": "bags"
+    },
+    "home": {
+      "title": "Available food",
+      "subtitle": "Listings published by demo charities after review. Only a general area is shown — no exact address or personal data.",
+      "tipTitle": "Tip of the day",
+      "tipText": "Cook in small batches and serve gradually — leftovers stay fit to store.",
+      "tipCta": "Read the tip",
+      "emptyTitle": "No food available in your area right now",
+      "emptyBody": "Listings appear here once charities publish and review them. You can report surplus you have.",
+      "emptyCta": "Report surplus",
+      "filterLabel": "Filter listings",
+      "all": "All ({count})",
+      "from": "From: {charity} · documented {event}",
+      "remaining": "{left} of {total} left · {kg} kg/{unit}",
+      "soldOut": "Sold out (0 of {total})",
+      "area": "General area: {area}",
+      "pickup": "Pickup: {date} · {range}",
+      "ended": "Availability ended",
+      "details": "View details & request",
+      "detailsLabel": "View details of listing {listing} and request",
+      "notAvailable": "Not available"
+    },
+    "detail": {
+      "back": "Available food",
+      "notFound": "This listing isn't available",
+      "source": "Source",
+      "sourceValue": "{total} = {units} × {kg} kg — documented handover from {event}",
+      "availableNow": "Available now",
+      "availableValue": "{left} ({kg}) — {taken} already requested",
+      "area": "Area",
+      "areaValue": "{area} (general) — pickup point shared after acceptance",
+      "pickup": "Pickup window",
+      "instructions": "Charity instructions",
+      "instructionsValue": "Bring a bag. Max {limit} per request (demo rule).",
+      "qtyLabel": "Requested quantity ({unit})",
+      "qtyHint": "{units} = {kg} · within the {limit} limit",
+      "quickPick": "Quick quantity pick",
+      "errors": {
+        "required": "Enter the quantity you need",
+        "whole": "Enter a whole number of 1 or more",
+        "over": "You can't request {n} — {left} available, and the per-request limit is {limit}."
+      },
+      "note": "Your request goes to the charity for review. No points on sending — only after confirmed pickup. The app doesn't guarantee food safety; follow the charity's instructions.",
+      "send": "Send request",
+      "alreadyRequested": "You already have an open request {request} on this listing ({units}). Track it in My requests.",
+      "goRequests": "Go to My requests",
+      "closed": "This listing is no longer open for requests."
+    },
+    "requests": {
+      "title": "My requests",
+      "subtitle": "Status updates here and on the charity's board together. Your data isn't shown to donors or other beneficiaries.",
+      "filterLabel": "Filter requests",
+      "all": "All ({count})",
+      "active": "Active ({count})",
+      "closed": "Closed ({count})",
+      "noneInFilter": "No requests in this filter.",
+      "emptyTitle": "You haven't sent any requests yet",
+      "emptyBody": "Pick a listing from available food and request a quantity within the limit.",
+      "browse": "Browse available food",
+      "lines": {
+        "pending": "Sent {at} · no points for sending",
+        "accepted": "Accepted by {charity} · pickup {pickup}",
+        "pickupPoint": "Pickup point: charity office — {area} (shown to you only after acceptance)",
+        "completed": "Confirmed pickup {at} · +{points} points counted once",
+        "partial": "Received {received} of {units} · the charity reviews the difference · 0 points",
+        "notReceived": "You reported it wasn't received · coordinator notified · 0 points, nothing distributed",
+        "rejected": "Reason: {reason} · 0 points",
+        "cancelled": "Request cancelled · 0 points"
+      },
+      "confirm": "Confirm pickup",
+      "confirmLabel": "Confirm pickup of request {request}",
+      "problem": "Report a problem",
+      "problemLabel": "Report a problem with request {request}"
+    },
+    "confirm": {
+      "notAvailable": "This request can't be confirmed",
+      "notAvailableBody": "You can confirm your own request only after the charity accepts it, and only once.",
+      "back": "My requests",
+      "title": "Confirm pickup",
+      "subtitle": "Confirm the pickup or report a problem. The charity sees you only by pseudonym.",
+      "kindLegend": "What happened at pickup?",
+      "full": {
+        "title": "I received the full request",
+        "description": "{units} ({kg}) — {points} points added once"
+      },
+      "partial": {
+        "title": "Partial pickup",
+        "description": "Enter how many units you received; the charity reviews the difference and no points are added"
+      },
+      "notReceived": {
+        "title": "Didn't arrive / not received",
+        "description": "The coordinator is notified; no points and no distributed quantity"
+      },
+      "receivedLabel": "How many did you actually receive? (of {units})",
+      "ratingLegend": "Optional rating",
+      "ratings": {
+        "excellent": "Excellent",
+        "good": "Good",
+        "needs_improvement": "Needs improvement"
+      },
+      "note": "Note (optional)",
+      "notePlaceholder": "e.g. pickup was well organized",
+      "errors": {
+        "kind": "Choose what happened at pickup",
+        "received": "Enter a number from 1 to {max}"
+      },
+      "submit": "Confirm pickup",
+      "submitProblem": "Send to the coordinator",
+      "doneTitle": "Confirmation recorded for {request}",
+      "doneBody": {
+        "full": "Full pickup — points counted once. The status shows in My requests and for the charity.",
+        "partial": "Partial pickup — the charity reviews the difference; no points are added.",
+        "not_received": "The coordinator was told it wasn't received; no points and nothing counted as distributed."
+      }
+    },
+    "report": {
+      "title": "Report surplus you have",
+      "subtitle": "Your report goes to a charity for review. It's never published as available food automatically, and sending earns no points.",
+      "myReports": "Track my reports",
+      "notSent": "Report not sent — complete the required fields.",
+      "choose": "Choose",
+      "foodType": "Food type",
+      "foodKinds": {
+        "cooked": "Cooked meals",
+        "rice": "Rice & main dishes",
+        "pastries": "Pastries & baked goods",
+        "bread": "Bread",
+        "desserts": "Desserts",
+        "other": "Other"
+      },
+      "foodOther": "Describe the food type",
+      "quantity": "Estimated quantity",
+      "quantityHint": "Your estimate — the charity confirms it after review",
+      "unit": "Unit",
+      "readyDay": "Ready day",
+      "today": "Today · {date}",
+      "tomorrow": "Tomorrow · {date}",
+      "readyTime": "Ready time",
+      "area": "Pickup area",
+      "areaHint": "Your exact location is shared only with the responsible charity after acceptance",
+      "areaOption": "{area} (general area)",
+      "notes": "Notes (optional)",
+      "notesPlaceholder": "e.g. kept in the fridge since 15:00",
+      "photo": "Add a photo (optional)",
+      "photoChosen": "Photo chosen: {name}",
+      "photoHint": "Photos aren't uploaded or stored in the demo — only the fact that you attached one is recorded.",
+      "photoRemove": "Remove photo",
+      "safety": "A report doesn't mean the food is safe. The charity reviews the details and may assign an inspection; no quantity is recorded as rescued before pickup is documented.",
+      "submit": "Send report for review",
+      "errors": {
+        "foodType": "Choose the food type",
+        "foodOther": "Describe the food type (at least 2 characters)",
+        "estimatedQuantity": "Enter an estimated quantity above zero",
+        "unit": "Choose a unit",
+        "readyAt": "Choose the ready time",
+        "area": "Choose the pickup area",
+        "notes": "Notes can be 300 characters at most"
+      }
+    },
+    "reports": {
+      "back": "Report surplus",
+      "title": "Track my reports",
+      "subtitle": "Each report's status updates as the charity reviews it. No report is ever published as available food automatically.",
+      "emptyTitle": "You haven't sent any reports yet",
+      "emptyBody": "If you have surplus food that's still good, report it for a charity to review.",
+      "newReport": "Report surplus",
+      "estimate": "{qty} {unit} (estimate)",
+      "actual": "{qty} (actual after inspection)",
+      "lines": {
+        "pending": "Sent {at} · awaiting review by {charity}",
+        "answered": "You added the requested information — awaiting review",
+        "notPublished": "Not published as available food · 0 points until documented",
+        "needsInfo": "The charity asked: {question}",
+        "accepted": "Accepted; inspection assigned to {rep} — {at}",
+        "resultIn": "The representative recorded the inspection result — awaiting the charity's documentation",
+        "notCounted": "The quantity isn't counted as rescued until pickup is documented",
+        "rescued": "Rescue documented {at} · +{points} points counted once",
+        "rejected": "Reason: {reason} · 0 points"
+      },
+      "addInfo": "Add information",
+      "answerLabel": "Your answer to the charity's question",
+      "answerRequired": "Write your answer before sending",
+      "sendAnswer": "Send information",
+      "cancel": "Cancel"
+    },
+    "shield": {
+      "title": "My shield & points",
+      "subtitle": "Demo points derived only from verified events — adjustable, not a final policy, and no cash rewards.",
+      "levels": {
+        "bronze": "Bronze shield · Level 1",
+        "silver": "Silver shield · Level 2",
+        "gold": "Gold shield · Level 3"
+      },
+      "points": "points",
+      "progressLabel": "Progress to the next level",
+      "toSilver": "{n} to Silver ({at}) · Gold at {gold}",
+      "toGold": "{n} to Gold ({at})",
+      "maxLevel": "You've reached the top level in the demo",
+      "badgesTitle": "Badges",
+      "badges": {
+        "firstPickup": "First confirmed pickup",
+        "rescuer": "Surplus rescuer",
+        "pickups": "{target} confirmed pickups ({n}/{target})"
+      },
+      "badgeOn": "earned",
+      "badgeOff": "not earned yet",
+      "rulesTitle": "How points work (demo, adjustable)",
+      "rules": {
+        "request": "+{n} when an accepted request is confirmed as picked up",
+        "report": "+{n} when a surplus report is accepted and its rescue documented",
+        "zero": "0 for sending a request or report, or reading a tip",
+        "once": "Each event counts once · points aren't tied to quantity alone"
+      },
+      "historyTitle": "Points history",
+      "history": {
+        "request": "Confirmed pickup of {food} ({kg})",
+        "report": "{food} report accepted, {kg} rescue documented",
+        "verified": "{at} · verified",
+        "reportSent": "Sent {food} report",
+        "noPointsYet": "No points on sending · in progress",
+        "rejected": "Report rejected · no points"
+      },
+      "balanceSum": "Balance = {sum}",
+      "balanceZero": "No points yet",
+      "historyEmpty": "No activity yet — points start after your first confirmed pickup."
+    },
+    "tip": {
+      "back": "Home",
+      "pageTitle": "Tip of the day",
+      "eyebrow": "Reducing waste at home",
+      "title": "Cook in small batches and serve gradually",
+      "body": "When food is served in batches, whatever isn't served stays clean and covered and can be stored or donated following the responsible charity's instructions. Split rice and main dishes into smaller pots.",
+      "pledgeText": "Optional weekly pledge: \"I'll try batch serving at one meal this week\"",
+      "pledgedText": "Pledge recorded: \"I'll try batch serving at one meal this week\"",
+      "honesty": "Reading the tip or pledging earns no points and isn't evidence of behavior change. This is illustrative awareness content for the demo.",
+      "pledge": "I'll try it this week",
+      "pledged": "Pledge recorded",
+      "done": "Read it — back to home"
+    }
   }
 }
