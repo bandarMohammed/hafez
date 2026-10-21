@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createSeed } from "@/data/seed";
-import { can } from "@/domain/permissions";
+import { can, eventRelations } from "@/domain/permissions";
 import { ROLE_CONFIG } from "@/domain/roles";
 import type { DemoUser, HallEvent, Role } from "@/domain/types";
 
@@ -60,11 +60,23 @@ describe("can(): hall manager scope", () => {
 });
 
 describe("can(): other roles", () => {
-  it("charity does not see events that are only registered", () => {
+  it("charity sees published opportunities, then only events it coordinates", () => {
     const charity = userOf("charity_coordinator");
-    expect(can(charity, "event.view", { kind: "event", event: event("E-107") })).toBe(false);
-    expect(can(charity, "event.view", { kind: "event", event: event("E-104") })).toBe(true);
+    const rel = (id: string) => eventRelations(data, event(id), charity);
+    expect(can(charity, "event.view", { kind: "event", event: event("E-107"), rel: rel("E-107") })).toBe(false); // registered
+    expect(can(charity, "event.view", { kind: "event", event: event("E-106"), rel: rel("E-106") })).toBe(true); // available
+    expect(can(charity, "event.view", { kind: "event", event: event("E-104"), rel: rel("E-104") })).toBe(true); // own interest
+    // Without its own coordination record the charity cannot see an event already taken in the workflow.
+    expect(can(charity, "event.view", { kind: "event", event: event("E-104") })).toBe(false);
     expect(can(charity, "event.create")).toBe(false);
+  });
+
+  it("field representative sees only events assigned to them", () => {
+    const rep = userOf("field_representative");
+    const view = (id: string) =>
+      can(rep, "event.view", { kind: "event", event: event(id), rel: eventRelations(data, event(id), rep) });
+    expect(view("E-105")).toBe(true);
+    expect(view("E-106")).toBe(false);
   });
 
   it("beneficiary never lists or sees events", () => {

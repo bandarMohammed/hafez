@@ -176,7 +176,12 @@ describe("store.createEvent", () => {
     expect(id).toBe("E-109");
     const stored = JSON.parse(storage.getItem("hafez.demo.data.v1")!);
     expect(stored.events.some((e: { id: string }) => e.id === "E-109")).toBe(true);
-    expect(useDemoStore.getState().flash).toEqual({ kind: "eventCreated", eventId: "E-109", status: "registered" });
+    expect(useDemoStore.getState().flash).toEqual({
+      kind: "eventCreated",
+      eventId: "E-109",
+      status: "registered",
+      on: "/hall",
+    });
     // "Save & make available" goes on to C3: no confirmation yet; the next event gets the next id.
     expect(useDemoStore.getState().createEvent(valid(), "forecast")).toBe("E-110");
     expect(useDemoStore.getState().flash).toBeNull();

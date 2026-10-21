@@ -7,6 +7,7 @@ import { applyForecastDecision } from "@/domain/forecast";
 import type { ForecastAssumptions, ForecastDecision } from "@/domain/forecast";
 import { can } from "@/domain/permissions";
 import type { DemoDataset, DemoUser, EventStatus } from "@/domain/types";
+import type { CommandContext, CommandResult, FlashMessage } from "@/domain/workflow/core";
 import type { DemoRepository } from "./repository";
 import { createBrowserRepository } from "./repository";
 
@@ -16,9 +17,14 @@ import { createBrowserRepository } from "./repository";
  */
 export type DataStatus = "idle" | "ready" | "error";
 
-export type Flash =
+export type Flash = (
   | { kind: "eventCreated"; eventId: string; status: EventStatus }
-  | { kind: "eventPublished"; eventId: string; plannedKg: number; expectedSurplusKg: number };
+  | { kind: "eventPublished"; eventId: string; plannedKg: number; expectedSurplusKg: number }
+  | ({ kind: "message" } & FlashMessage)
+) & {
+  /** Locale-free path where the confirmation is shown (the page the action navigates to). Omitted = current page. */
+  on?: string;
+};
 
 interface DemoState {
   status: DataStatus;
@@ -35,6 +41,11 @@ interface DemoState {
   createEvent: (input: ValidNewEvent, mode: SaveMode) => string | null;
   /** C3: applies the hall decision and publishes the event. Returns false if not allowed. */
   decideForecast: (eventId: string, decision: ForecastDecision, assumptions: ForecastAssumptions) => boolean;
+  /**
+   * Runs a workflow command (src/domain/workflow) as the current account. On success the new data is saved
+   * through the repository and the command message becomes a one-time confirmation; on failure nothing changes.
+   */
+  dispatch: <T>(command: (ctx: CommandContext) => CommandResult<T>, options?: { flashOn?: string }) => CommandResult<T>;
   /** One-time confirmation shown on the next screen (not persisted). */
   flash: Flash | null;
   clearFlash: () => void;
@@ -85,7 +96,8 @@ export const useDemoStore = create<DemoState>((set, get) => ({
     repo().save(next);
     set({
       data: next,
-      flash: mode === "registered" ? { kind: "eventCreated", eventId: event.id, status: event.status } : null,
+      flash:
+        mode === "registered" ? { kind: "eventCreated", eventId: event.id, status: event.status, on: "/hall" } : null,
     });
     return event.id;
   },
@@ -104,9 +116,25 @@ export const useDemoStore = create<DemoState>((set, get) => ({
         eventId,
         plannedKg: result.event.plannedQuantityKg ?? 0,
         expectedSurplusKg: result.event.expectedSurplusKg ?? 0,
+        on: "/hall",
       },
     });
     return true;
+  },
+
+  dispatch: (command, options) => {
+    const { data, currentUserId } = get();
+    const user = data?.users.find((u) => u.id === currentUserId);
+    if (!data || !user) return { ok: false, error: "not_allowed" };
+    const result = command({ data, user, now: new Date() });
+    if (result.ok) {
+      repo().save(result.data);
+      set({
+        data: result.data,
+        flash: result.flash ? { kind: "message", ...result.flash, on: options?.flashOn ?? currentPath() } : get().flash,
+      });
+    }
+    return result;
   },
 
   clearFlash: () => set({ flash: null }),
@@ -117,4 +145,10 @@ export function useCurrentUser(): DemoUser | null {
   return useDemoStore((s) =>
     s.data && s.currentUserId ? (s.data.users.find((u) => u.id === s.currentUserId) ?? null) : null,
   );
+}
+
+/** Current locale-free path ("/ar/charity/tasks" → "/charity/tasks"); used as the default flash target. */
+function currentPath(): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  return window.location.pathname.replace(/^\/(ar|en)(?=\/|$)/, "") || "/";
 }

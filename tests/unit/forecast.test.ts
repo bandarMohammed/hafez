@@ -153,7 +153,7 @@ describe("store.decideForecast", () => {
     useDemoStore.getState().selectUser("demo-hall-01");
 
     expect(useDemoStore.getState().decideForecast("E-109", "use_recommended", DEFAULT_ASSUMPTIONS)).toBe(true);
-    expect(useDemoStore.getState().flash).toEqual({
+    expect(useDemoStore.getState().flash).toMatchObject({
       kind: "eventPublished",
       eventId: "E-109",
       plannedKg: 180,

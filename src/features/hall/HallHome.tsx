@@ -12,7 +12,6 @@ import { MetricCard } from "@/components/ui/MetricCard";
 import { StateMessage } from "@/components/ui/StateMessage";
 import { HallEventsCards, HallEventsTable } from "./HallEventsList";
 import { HallActivityPanel, HallRulesPanel } from "./HallPanels";
-import { SavedEventBanner } from "./SavedEventBanner";
 
 /** Figma C1 — hall manager home (frames 19:974 AR / 19:1219 EN). Rendered inside WorkspaceGate, so user + data exist. */
 export function HallHome() {
@@ -48,8 +47,6 @@ export function HallHome() {
           </ButtonLink>
         ) : null}
       </header>
-
-      <SavedEventBanner />
 
       <section aria-label={t("metrics.total")} className="grid gap-4 md:grid-cols-3">
         <MetricCard

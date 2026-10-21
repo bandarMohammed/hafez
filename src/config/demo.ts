@@ -9,7 +9,7 @@ import type { EventStatus } from "@/domain/types";
  */
 export const DEMO_CONFIG = {
   /** Bump when the seed shape changes so old browser data is discarded instead of crashing. */
-  dataVersion: 1,
+  dataVersion: 2,
   storageKeys: {
     data: "hafez.demo.data.v1",
     session: "hafez.demo.session.v1",
@@ -53,6 +53,30 @@ export const DEMO_CONFIG = {
     /** Bounds for "Adjust assumptions" on C3. */
     kgPerGuestRange: { min: 0.1, max: 2 },
     marginPercentRange: { min: 0, max: 50 },
+  },
+
+  /**
+   * Beneficiary flow (Figma D6/H1/H2/H5) — ⚠️ provisional demo rules, listed as open decisions in the
+   * design delivery ("الحد الأقصى 3 عبوات للطلب"، "قيم النقاط ومستويات الدرع 50 / 150").
+   */
+  beneficiary: {
+    /** Default max units per request when publishing a listing. */
+    perRequestLimit: 3,
+    /** Default size of one unit (kg) when publishing a listing. */
+    unitKg: 2,
+    /** A listing shows "few left" when this many units or fewer remain. */
+    lowStockUnits: 2,
+  },
+  /** Coordinating charity that receives beneficiary surplus reports in the demo city (Figma D7: Al Ataa). */
+  reportsCharityId: "charity-ataa",
+  points: {
+    requestConfirmed: 10,
+    reportRescued: 25,
+    /** Shield levels by balance: bronze below silver. */
+    silverAt: 50,
+    goldAt: 150,
+    /** "5 confirmed pickups" badge target. */
+    pickupsBadgeTarget: 5,
   },
 
   /** Statuses considered finished for ordering lists (active events are shown first). */

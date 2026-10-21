@@ -9,7 +9,7 @@ Font files are copied from the project's `brand/` folder and self-hosted with `n
 
 ## Icons
 
-- A subset of **Lucide** icon outlines (dashboard, plus, list-checks, chevrons, info, lock, menu, close, check, alert, reset), inlined in `src/components/ui/Icon.tsx`.
+- A subset of **Lucide** icon outlines (dashboard, plus, list-checks, chevrons, info, lock, menu, close, check, alert, reset, heart, utensils, package, bell, user, shield, house, circle-plus, clipboard-list, lightbulb, camera, award), inlined in `src/components/ui/Icon.tsx`.
   Lucide is licensed under the **ISC License** — Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2022.
 - Brand icons (events, halls, charities, pickup, food surplus, weight, time, location) come from the project's own `brand/assets/icons`.
 

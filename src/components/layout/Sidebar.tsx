@@ -10,6 +10,11 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
 
+/** Current item: exact path, or a path matched by the item’s activePattern (e.g. C3 under "New event"). */
+export function isNavActive(item: NavItem, pathname: string): boolean {
+  return pathname === item.href || (item.activePattern ? new RegExp(item.activePattern).test(pathname) : false);
+}
+
 /**
  * Figma "Sidebar" on the Forest surface with "Nav Item" (Default/Active). Only items allowed for the current
  * role are rendered (they come from ROLE_CONFIG). Unbuilt screens get a gold dot + legend (and screen-reader text).
@@ -38,8 +43,7 @@ export function Sidebar({
       <nav aria-label={t("common.mainNav")} className="mt-6 flex-1">
         <ul className="flex flex-col gap-1">
           {items.map((item) => {
-            const active =
-              pathname === item.href || (item.activePattern ? new RegExp(item.activePattern).test(pathname) : false);
+            const active = isNavActive(item, pathname);
             return (
               <li key={item.key}>
                 <Link
@@ -82,7 +86,7 @@ export function Sidebar({
         <div className="mt-6 flex items-center gap-3 rounded-md bg-inverse-raised p-3">
           <Avatar initials={user.initials[locale]} />
           <div className="min-w-0">
-            <p className="text-small-strong">{t(`roles.${user.role}.name`)}</p>
+            <p className="text-small-strong">{user.displayName?.[locale] ?? t(`roles.${user.role}.name`)}</p>
             {org ? <p className="truncate text-caption text-accent-on-inverse">{org.name[locale]}</p> : null}
           </div>
         </div>
