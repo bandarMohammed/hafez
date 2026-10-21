@@ -122,20 +122,19 @@ describe("C2 saving", () => {
     expect(nextEventId(data)).toBe("E-109");
   });
 
-  it("builds a valid record + activity entry; status follows the save button", () => {
-    const { event, activity } = buildNewEvent(data, valid(), hallUser, "available", NOW);
+  it("builds a valid record + activity entry; new events always start as registered", () => {
+    const { event, activity } = buildNewEvent(data, valid(), hallUser, NOW);
     expect(event).toMatchObject({
       id: "E-109",
       hallId: "hall-nakheel",
-      status: "available",
+      status: "registered",
       expectedGuests: 300,
       plannedQuantityKg: 210,
       expectedSurplusKg: null, // the estimate comes from C3, never guessed
       foodTypes: ["hot_meals", "desserts"],
       createdBy: "demo-hall-01",
     });
-    expect(activity).toMatchObject({ action: "event.created", entityId: "E-109", before: null, after: "available" });
-    expect(buildNewEvent(data, valid(), hallUser, "registered", NOW).event.status).toBe("registered");
+    expect(activity).toMatchObject({ action: "event.created", entityId: "E-109", before: null, after: "registered" });
 
     const next = { ...data, events: [...data.events, event], activity: [...data.activity, activity] };
     expect(datasetSchema.safeParse(next).success).toBe(true);
@@ -144,7 +143,7 @@ describe("C2 saving", () => {
   });
 
   it("orders activity by real time even when offsets differ (Z vs +03:00)", () => {
-    const { event, activity } = buildNewEvent(data, valid(), hallUser, "available", new Date("2026-10-21T19:00:00Z"));
+    const { event, activity } = buildNewEvent(data, valid(), hallUser, new Date("2026-10-21T19:00:00Z"));
     // 19:00Z = 22:00 Riyadh → newer than the seed's 21:40+03:00 entry.
     const next = { ...data, events: [...data.events, event], activity: [...data.activity, activity] };
     expect(selectHallActivity(next, "hall-nakheel", 1)[0]?.entityId).toBe("E-109");
@@ -152,7 +151,7 @@ describe("C2 saving", () => {
 
   it("refuses non-hall accounts", () => {
     const charity = data.users.find((u) => u.role === "charity_coordinator")!;
-    expect(() => buildNewEvent(data, valid(), { ...charity, organizationId: null }, "available", NOW)).toThrow();
+    expect(() => buildNewEvent(data, valid(), { ...charity, organizationId: null }, NOW)).toThrow();
   });
 });
 
@@ -171,20 +170,21 @@ describe("store.createEvent", () => {
     return storage;
   };
 
-  it("persists the event, logs it and sets a one-time confirmation", () => {
+  it("persists the event, logs it and sets a one-time confirmation (Save as registered)", () => {
     const storage = setup("demo-hall-01");
     const id = useDemoStore.getState().createEvent(valid(), "registered");
     expect(id).toBe("E-109");
     const stored = JSON.parse(storage.getItem("hafez.demo.data.v1")!);
     expect(stored.events.some((e: { id: string }) => e.id === "E-109")).toBe(true);
     expect(useDemoStore.getState().flash).toEqual({ kind: "eventCreated", eventId: "E-109", status: "registered" });
-    // A second event gets the next id.
-    expect(useDemoStore.getState().createEvent(valid(), "available")).toBe("E-110");
+    // "Save & make available" goes on to C3: no confirmation yet; the next event gets the next id.
+    expect(useDemoStore.getState().createEvent(valid(), "forecast")).toBe("E-110");
+    expect(useDemoStore.getState().flash).toBeNull();
   });
 
   it("does nothing for an account without event.create", () => {
     setup("demo-judge");
-    expect(useDemoStore.getState().createEvent(valid(), "available")).toBeNull();
+    expect(useDemoStore.getState().createEvent(valid(), "forecast")).toBeNull();
     expect(useDemoStore.getState().data?.events).toHaveLength(8);
   });
 });

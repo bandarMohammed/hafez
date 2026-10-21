@@ -1,18 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import type { Locale } from "@/i18n/routing";
+import { formatNumber } from "@/lib/format";
 import { useDemoStore } from "@/data/store";
 import { Icon } from "@/components/ui/Icon";
 
 /**
- * One-time confirmation after C2 saves (not in Figma — feedback is required so the save is visible).
+ * One-time confirmation after C2 "Save as registered" or a C3 decision (not in Figma — feedback is required so the save is visible).
  * The store's flash is copied into local state on mount and then cleared, so it shows exactly once
  * (also under React StrictMode's double effects) and never reappears when returning to C1 later.
  */
 export function SavedEventBanner() {
   const t = useTranslations("newEvent.saved");
   const tStatus = useTranslations("status");
+  const tForecast = useTranslations("forecast");
+  const locale = useLocale() as Locale;
   const clearFlash = useDemoStore((s) => s.clearFlash);
   const [notice, setNotice] = useState(() => useDemoStore.getState().flash);
   const ref = useRef<HTMLDivElement>(null);
@@ -24,7 +28,18 @@ export function SavedEventBanner() {
     if (notice) ref.current?.focus();
   }, [notice]);
 
-  if (!notice || notice.kind !== "eventCreated") return null;
+  if (!notice) return null;
+
+  const [title, body] =
+    notice.kind === "eventPublished"
+      ? [
+          t("publishedTitle", { event: notice.eventId }),
+          tForecast("published", {
+            planned: formatNumber(notice.plannedKg, locale),
+            surplus: formatNumber(notice.expectedSurplusKg, locale),
+          }),
+        ]
+      : [t("title", { event: notice.eventId, status: tStatus(notice.status) }), t("registered")];
 
   return (
     <div
@@ -35,8 +50,8 @@ export function SavedEventBanner() {
     >
       <Icon name="check" size={24} className="shrink-0" />
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <p className="text-body-strong">{t("title", { event: notice.eventId, status: tStatus(notice.status) })}</p>
-        <p className="text-small">{t(notice.status === "available" ? "available" : "registered")}</p>
+        <p className="text-body-strong">{title}</p>
+        <p className="text-small">{body}</p>
       </div>
       <button
         type="button"

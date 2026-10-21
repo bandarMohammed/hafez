@@ -63,14 +63,25 @@ test.describe("C2 — register a new event", () => {
     await expect(summary).toContainText("أكمل حقلًا مطلوبًا: نوع الطعام المتوقع.");
   });
 
-  test("English: Save & make available creates E-109 and returns to C1 with confirmation", async ({ page }) => {
+  test("English: Save & make available → E-109 (registered) → C3 → publish → C1 with confirmation", async ({
+    page,
+  }) => {
     await openNewEvent(page, "en");
     await fillScenario(page, { foodTypes: ["Hot meals", "Desserts"] });
     await expect(page.locator("#ne-foodTypes")).toContainText("Hot meals, Desserts");
     await page.getByRole("button", { name: "Save & make available" }).click();
 
+    // Figma prototype: C2 → C3. The event exists but is not published until the hall decides.
+    await expect(page).toHaveURL(/\/en\/hall\/events\/E-109\/forecast$/);
+    const status = await page.evaluate(
+      (k) => JSON.parse(localStorage.getItem(k)!).events.find((e: { id: string }) => e.id === "E-109").status,
+      KEYS.data,
+    );
+    expect(status).toBe("registered");
+    await page.getByRole("button", { name: "Use 180 kg & make available" }).click();
+
     await expect(page).toHaveURL(/\/en\/hall$/);
-    const banner = page.getByRole("status").filter({ hasText: "Event E-109 saved as “Available”" });
+    const banner = page.getByRole("status").filter({ hasText: "Event E-109 is now available" });
     await expect(banner).toBeVisible();
     await expect(banner).toBeFocused();
 
@@ -84,7 +95,7 @@ test.describe("C2 — register a new event", () => {
     // Persisted; the confirmation is one-time only.
     await page.reload();
     await expect(main.getByText("E-109").filter({ visible: true }).first()).toBeVisible();
-    await expect(page.getByText("Event E-109 saved")).toHaveCount(0);
+    await expect(page.getByText("Event E-109 is now available")).toHaveCount(0);
 
     // The new event's links work (client-checked id), e.g. Edit → under development.
     await page.getByRole("link", { name: "Edit Wedding (demo scenario) · E-109" }).click();

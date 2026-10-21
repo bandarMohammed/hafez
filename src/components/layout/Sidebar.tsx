@@ -38,7 +38,8 @@ export function Sidebar({
       <nav aria-label={t("common.mainNav")} className="mt-6 flex-1">
         <ul className="flex flex-col gap-1">
           {items.map((item) => {
-            const active = pathname === item.href;
+            const active =
+              pathname === item.href || (item.activePattern ? new RegExp(item.activePattern).test(pathname) : false);
             return (
               <li key={item.key}>
                 <Link

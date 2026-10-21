@@ -96,7 +96,7 @@ export function NewEventForm() {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
-    const mode: SaveMode = submitter?.value === "registered" ? "registered" : "available";
+    const mode: SaveMode = submitter?.value === "registered" ? "registered" : "forecast";
     setAttempted(true);
     if (!result.ok) {
       setSummaryOpen(true);
@@ -105,7 +105,9 @@ export function NewEventForm() {
       return;
     }
     const id = createEvent(result.data, mode);
-    if (id) router.push("/hall");
+    if (!id) return;
+    // Figma prototype: "Save & make available" → C3 forecast; "Save as registered" → C1.
+    router.push(mode === "forecast" ? `/hall/events/${id}/forecast` : "/hall");
   };
 
   const fieldList = new Intl.ListFormat(locale, { type: "conjunction" }).format(
@@ -304,7 +306,7 @@ export function NewEventForm() {
 
             {/* DOM order = primary first (mobile top, default for Enter); row-reverse gives Figma's visual order. */}
             <div className="flex flex-col gap-3 sm:flex-row-reverse sm:flex-wrap sm:justify-start">
-              <Button type="submit" name="mode" value="available">
+              <Button type="submit" name="mode" value="forecast">
                 {t("actions.available")}
               </Button>
               <Button type="submit" name="mode" value="registered" variant="secondary">

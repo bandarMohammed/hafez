@@ -9,6 +9,8 @@ export interface NavItem {
   icon: IconName;
   /** false → the route renders the "under development" state (screen designed in Figma, not built yet). */
   implemented: boolean;
+  /** Extra paths (regex source, locale-free) on which this item is shown as current — e.g. C3 under "New event". */
+  activePattern?: string;
 }
 
 export interface RoleConfig {
@@ -38,7 +40,13 @@ export const ROLE_CONFIG: readonly RoleConfig[] = [
     nav: [
       { key: "home", href: "/hall", icon: "dashboard", implemented: true },
       { key: "myEvents", href: "/hall/events", icon: "events", implemented: false },
-      { key: "newEvent", href: "/hall/events/new", icon: "plus", implemented: true },
+      {
+        key: "newEvent",
+        href: "/hall/events/new",
+        icon: "plus",
+        implemented: true,
+        activePattern: "^/hall/events/[^/]+/forecast$",
+      },
       { key: "handovers", href: "/hall/handovers", icon: "pickup", implemented: false },
       { key: "activity", href: "/hall/activity", icon: "listChecks", implemented: false },
       { key: "profile", href: "/hall/profile", icon: "halls", implemented: false },

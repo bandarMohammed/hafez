@@ -54,6 +54,19 @@ export interface DemoUser {
 export const FOOD_TYPES = ["hot_meals", "rice_dishes", "salads", "desserts", "bakery", "fruit"] as const;
 export type FoodType = (typeof FOOD_TYPES)[number];
 
+/** C3 decision stored with the event: the assumptions used and what the hall chose. */
+export interface EventForecast {
+  kgPerGuest: number;
+  /** 0.2 = 20% */
+  safetyMargin: number;
+  consumptionKg: number;
+  recommendedKg: number;
+  /** Planned quantity entered in C2, before the decision. */
+  plannedKgBefore: number;
+  decision: "use_recommended" | "keep_planned";
+  decidedAt: string;
+}
+
 export interface HallEvent {
   id: string;
   hallId: string;
@@ -80,6 +93,8 @@ export interface HallEvent {
   /** Illustrative demo value — not called by the system. */
   contactPhone?: string;
   notes?: string | null;
+  /** Set when the hall decides on the C3 forecast (before the event is made available). */
+  forecast?: EventForecast;
 }
 
 export type QuantityUnit = "kg" | "meal_portions" | "boxes";

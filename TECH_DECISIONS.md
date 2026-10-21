@@ -1,6 +1,6 @@
 # Hafez — Technical decisions, assumptions and limits
 
-Last updated: 2026-10-21 · Scope: implemented flow **A2 → C1 → C2** (hall manager).
+Last updated: 2026-10-21 · Scope: implemented flow **A2 → C1 → C2 → C3** (hall manager).
 
 ## 1. Stack (exact versions, pinned)
 
@@ -69,11 +69,29 @@ If a future machine loads SWC fine, switching back to `createNextIntlPlugin("./s
 - In `next dev` those unknown hall paths still render the 404 page but with status 200; production (`next build && next start`) returns 404, which is what the E2E suite verifies.
 - Event view/edit (`/hall/events/[eventId]` and `/edit`) are **checked on the client**, because events created in C2 exist only in the browser. An unknown id shows the localized not-found state with HTTP 200 (the server cannot see local demo data).
 
+### C3 — surplus forecast & recommendation (Figma `49:5891` AR, `49:6078` EN)
+
+- A transparent rule, **not an AI model** (`src/domain/forecast.ts`, unit-tested):
+  1. consumption = guests × 0.5 kg
+  2. recommended = consumption × 1.2, rounded **up** to a whole kg and never above the planned quantity
+  3. reduction = planned − recommended
+  4. surplus = recommended − consumption, also shown as full 2 kg boxes; baseline (no recommendation) = planned − consumption
+
+  Figma scenario: 300 guests, 210 kg → 150 / 180 / 30 / 30 kg = 15 boxes; baseline 60 kg.
+
+- Floating-point noise is removed before rounding (150 × 1.2 must give 180, not 181).
+- **Use recommended** → status `available`, planned = recommended, estimate = surplus after recommendation. **Keep planned** → `available`, planned unchanged, estimate = baseline. Both store the assumptions and decision on the event (`forecast`) and log `event.updated` (registered → available). C1 then shows e.g. "30 kg (estimate)" — still an estimate, never a received quantity.
+- **Adjust assumptions** (a button in Figma without a target frame) opens an inline panel for kg/guest (0.1–2) and safety margin (0–50%) for this event only. Numbers update live; invalid values disable the decision buttons; "Restore defaults" resets. Defaults and bounds live in `DEMO_CONFIG.forecast`.
+- C3 is available only for the hall's own `registered` events created in C2 (they carry a planned quantity). Otherwise an explicit state explains why: already decided, not allowed (e.g. the read-only judge), no planned quantity (older seed events), or not found.
+- When planned ≤ recommended there is no reduction: the "Keep" button is hidden and a note says so.
+- Pure-number calculation lines use `dir="auto"` so "210 − 180" reads left-to-right exactly as in Figma, while Arabic lines stay RTL.
+- The sidebar keeps "New event" as the current item on C3, as in Figma (`activePattern` in `ROLE_CONFIG`).
+
 ### C2 — register a new event (Figma `19:1462` AR error state, `19:1689` EN valid)
 
 - Rules are pure functions in `src/domain/newEvent.ts` (validation, next id, timestamps, record + activity entry) and are unit-tested; the store only persists the result through the repository and checks `can(user, "event.create")`.
-- **Save & make available** → status `available`; **Save as registered** → `registered`; both write an `event.created` activity entry and return to C1 with a one-time confirmation (not in Figma — added so the save is visible; announced with `role="status"`).
-- ⚠️ In Figma, "Save & make available" leads to **C3 (surplus forecast)**, which is not built yet. Until it is, the button makes the event available directly and the estimate stays "Not estimated" (`expectedSurplusKg: null` — never guessed). When C3 is built, insert it between save and C1.
+- New events always start as `registered` (`event.created`). **Save & make available** continues to **C3** (Figma prototype); the event is published only when the hall decides there. **Save as registered** returns to C1 with a one-time confirmation (not in Figma — added so the save is visible; `role="status"`).
+- Leaving C3 without deciding keeps the event `registered`, so charities never see an event the hall didn't confirm.
 - Ids continue the sequence (`E-109`, `E-110` …), matching the Figma scenario.
 - Event date and times are **dropdowns** (as in Figma): dates from today (Asia/Riyadh) up to 90 days ahead, times every 30 minutes. This keeps Latin digits and the Gregorian calendar regardless of the browser locale (native date pickers follow the OS locale).
 - End time and food-ready time are stored separately (`endsAt`, `foodReadyAt`). A ready time earlier than the end time is read as **after midnight** (e.g. ends 23:00, ready 00:30 → next day) — provisional rule, stated in the field hint.
@@ -87,36 +105,39 @@ If a future machine loads SWC fine, switching back to `createNextIntlPlugin("./s
 
 ## 5. Provisional values (not final — central in `src/config/demo.ts`)
 
-| Value                                                                                                             | Current                                                   | Status                                                      |
-| ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------- |
-| Hall can edit an event while status is                                                                            | `registered`, `available`, `awaiting_charity`             | provisional (blueprint open question Q6)                    |
-| "Finished" statuses (sorting)                                                                                     | `collected`, `no_surplus`, `not_collectable`, `closed`    | provisional                                                 |
-| Time zone                                                                                                         | `Asia/Riyadh`                                             | assumption                                                  |
-| C2 limits: date window, time slots, title 3–80, guests 1–5000, planned 1–5000 kg, notes ≤ 300, phone `05XXXXXXXX` | `DEMO_CONFIG.newEvent`                                    | provisional (demo choices)                                  |
-| Food types list (hot meals, rice dishes, salads & starters, desserts, baked goods, fruit)                         | `FOOD_TYPES` in `src/domain/types.ts`                     | provisional                                                 |
-| Points, request limits, forecast assumptions (Q18–Q21)                                                            | **not used yet** — no screen in this iteration needs them | to be added to the same config when their screens are built |
+| Value                                                                                                             | Current                                                   | Status                                                            |
+| ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------- |
+| Hall can edit an event while status is                                                                            | `registered`, `available`, `awaiting_charity`             | provisional (blueprint open question Q6)                          |
+| "Finished" statuses (sorting)                                                                                     | `collected`, `no_surplus`, `not_collectable`, `closed`    | provisional                                                       |
+| Time zone                                                                                                         | `Asia/Riyadh`                                             | assumption                                                        |
+| C2 limits: date window, time slots, title 3–80, guests 1–5000, planned 1–5000 kg, notes ≤ 300, phone `05XXXXXXXX` | `DEMO_CONFIG.newEvent`                                    | provisional (demo choices)                                        |
+| Food types list (hot meals, rice dishes, salads & starters, desserts, baked goods, fruit)                         | `FOOD_TYPES` in `src/domain/types.ts`                     | provisional                                                       |
+| C3 forecast: 0.5 kg/guest, 20% safety margin, 2 kg per box; adjustable 0.1–2 kg and 0–50%                         | `DEMO_CONFIG.forecast`                                    | illustrative (Figma scenario) — must be calibrated with real data |
+| Points, request limits (Q18–Q21)                                                                                  | **not used yet** — no screen in this iteration needs them | to be added to the same config when their screens are built       |
 
 Seed records (halls, charities, events E-101…E-108, activity) are fictional demo data matching the Figma screens.
 
 ## 6. Verified results (2026-10-21, Windows 11, Node 24.16)
 
-| Check                                 | Result                                                                                                                                                                      |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run typecheck`                   | ✅ 0 errors                                                                                                                                                                 |
-| `npm run lint`                        | ✅ 0 problems                                                                                                                                                               |
-| `npm run format:check`                | ✅ clean                                                                                                                                                                    |
-| `npm test` (Vitest)                   | ✅ 48 / 48 passed (5 files)                                                                                                                                                 |
-| `npm run build`                       | ✅ success                                                                                                                                                                  |
-| `npm run test:e2e` (Playwright, Edge) | ✅ 43 passed, 1 skipped by design (drawer test runs on mobile only) — every test also asserts zero console errors                                                           |
-| Manual visual review vs Figma         | A2, C1, C2 (AR error state + EN valid state, food-type picker, C1 after save) at 1440 and 390 — compared against frames `19:974`, `19:1219`, `15:650`, `19:1462`, `19:1689` |
+| Check                                 | Result                                                                                                                                                                                                                                                                        |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run typecheck`                   | ✅ 0 errors                                                                                                                                                                                                                                                                   |
+| `npm run lint`                        | ✅ 0 problems                                                                                                                                                                                                                                                                 |
+| `npm run format:check`                | ✅ clean                                                                                                                                                                                                                                                                      |
+| `npm test` (Vitest)                   | ✅ 59 / 59 passed (6 files)                                                                                                                                                                                                                                                   |
+| `npm run build`                       | ✅ success                                                                                                                                                                                                                                                                    |
+| `npm run test:e2e` (Playwright, Edge) | ✅ 57 passed, 1 skipped by design (drawer test runs on mobile only) — every test also asserts zero console errors                                                                                                                                                             |
+| Manual visual review vs Figma         | A2, C1, C2 (AR error + EN valid, food-type picker), C3 (AR, EN with adjusted assumptions, mobile) and C1 after each decision, at 1440 and 390 — frames `19:974`, `19:1219`, `15:650`, `19:1462`, `19:1689`, `49:5891`, `49:6078`. Mobile C3 cards measured: no text overflow. |
 
 E2E coverage: A2 → C1 (AR & EN, card click and Continue), derived metrics 3/1/0, own-hall events only, Edit vs View by `can()`, session survives reload, language switch keeps the screen, unbuilt role page, storage keys, no session, access denied (both directions), corrupted data + reset, empty hall, under-development screen + back, 404 (AR/EN), skip link, keyboard card selection, account switcher (Esc returns focus, switching role), mobile drawer side + Esc, no horizontal scroll on A2/C1/C2.
-C2: Figma error state (summary focused, exact AR text, field errors, nothing stored, live update), Save & make available → E-109 + confirmation + metrics 4 + persisted + one-time banner + working Edit link, Save as registered (stored fields, activity entry), Cancel saves nothing, food-type picker by keyboard, unknown event id → not-found.
+C2: Figma error state (summary focused, exact AR text, field errors, nothing stored, live update), Save & make available → E-109 registered → C3 → publish → confirmation + metrics 4 + persisted + one-time banner + working Edit link, Save as registered (stored fields, activity entry), Cancel saves nothing, food-type picker by keyboard, unknown event id → not-found.
+C3: Figma numbers and calculation texts (AR), current nav item, Keep 210 kg (60 kg estimate stored), Adjust assumptions (live recalculation, invalid value blocks the decision, assumptions stored), Restore defaults, no second decision, seed event without planned quantity, another hall's event → not found, leaving C3 keeps the event registered.
 
 ## 7. Known limitations
 
-- Only A2, C1 and C2 are functional; other screens/roles show an explicit "under development" page.
-- C3 (surplus forecast) is skipped after C2 until it is built (see §4 C2).
+- Only A2, C1, C2 and C3 are functional; other screens/roles show an explicit "under development" page.
+- An event left on C3 without a decision can only be published by reopening its forecast URL (`/hall/events/E-xxx/forecast`) — event edit isn't built yet.
+- The forecast values (0.5 kg/guest, 20%, 2 kg boxes) are illustrative, not calibrated.
 - Cancel on C2 discards typed values without asking (no "unsaved changes" prompt in Figma).
 - No backend, no real auth, no persistence beyond the current browser.
 - The account switcher is a demo convenience, not authentication.
@@ -125,7 +146,7 @@ C2: Figma error state (summary focused, exact AR text, field errors, nothing sto
 
 ## 8. Next steps for the other roles
 
-1. **Hall:** C3 forecast between C2 and C1 (rules in config: kg/guest, safety margin — Figma `49:5891`/`49:6078`), then event detail/edit gated by `can("event.edit")` reusing `validateNewEvent`, writing `ActivityLogEntry` on every change.
+1. **Hall:** event detail/edit gated by `can("event.edit")` reusing `validateNewEvent` (with a way back to C3 for registered events), then handovers and hall activity — writing `ActivityLogEntry` on every change.
 2. **Charity (D1…):** opportunities list = events where `can(charity, "event.view")`; "express interest" transitions `available → awaiting_charity` and logs `coordination.interest`.
 3. **Field representative (E1…):** assigned tasks → arrival → inspection result → handover; quantities stay separate from estimates.
 4. **Admin (B1) / Judges (F1):** read-everything views reusing the same selectors; judges strictly read-only.

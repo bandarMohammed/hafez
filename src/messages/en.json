@@ -265,10 +265,71 @@
     },
     "saved": {
       "title": "Event {event} saved as “{status}”",
-      "available": "It now appears to charities as a coordination opportunity.",
       "registered": "Charities won't see it until it's made available.",
-      "dismiss": "Dismiss message"
+      "dismiss": "Dismiss message",
+      "publishedTitle": "Event {event} is now available"
     },
     "notAllowed": "This account can't create events."
+  },
+  "forecast": {
+    "crumbs": "Hafez / New event / Forecast",
+    "title": "Surplus forecast & recommendation — {event}",
+    "subtitle": "A simple, transparent rule-based estimate — not a trained AI model. Values are illustrative for the demo scenario.",
+    "cards": {
+      "guests": "Expected guests (from form)",
+      "planned": "Planned quantity",
+      "recommended": "Recommended quantity",
+      "surplus": "Expected surplus after recommendation ≈ {boxes, plural, =0 {no full boxes} one {# box} other {# boxes}} × {boxKg} kg",
+      "hallInput": "Hall input",
+      "ruleResult": "Result of the rule below",
+      "estimate": "Estimate — not a confirmed surplus"
+    },
+    "how": {
+      "title": "How the recommendation is calculated",
+      "step1": "1) Expected consumption",
+      "step1Calc": "{guests, plural, one {# guest} other {# guests}} × {kgPerGuest} kg per guest (illustrative assumption)",
+      "step2": "2) Recommended quantity",
+      "step2Calc": "{consumption} kg × {factor} ({margin}% safety margin)",
+      "step2Capped": "{consumption} kg × {factor} ({margin}% safety margin) — capped at the planned {planned} kg",
+      "step3": "3) Suggested reduction",
+      "step3Calc": "{planned} − {recommended}",
+      "step4": "4) Expected surplus after recommendation",
+      "step4Calc": "{recommended} − {consumption} = {surplus} kg = {boxes, plural, =0 {no full boxes} one {# full box} other {# full boxes}} × {boxKg} kg",
+      "baseline": "For comparison: without the recommendation",
+      "baselineCalc": "{planned} − {consumption} = {baseline} kg expected (the hypothetical baseline used in the report)"
+    },
+    "limits": {
+      "title": "Limits of this estimate",
+      "assumptions": "{kgPerGuest} kg/guest and the {margin}% margin are illustrative, adjustable values that must be calibrated with real data.",
+      "attendance": "Attendance doesn't prove a surplus — the inspection records the actual result.",
+      "optional": "The recommendation is optional; the hall decides the quantity."
+    },
+    "noReduction": "The planned quantity doesn't exceed the recommendation — no reduction suggested.",
+    "actions": {
+      "use": "Use {kg} kg & make available",
+      "keep": "Keep {kg} kg",
+      "adjust": "Adjust assumptions",
+      "hideAdjust": "Hide assumptions"
+    },
+    "assumptions": {
+      "title": "Assumptions used in this calculation",
+      "kgPerGuest": "Consumption per guest (kg)",
+      "margin": "Safety margin (%)",
+      "reset": "Restore defaults",
+      "note": "Affects this event only and is saved with it when you decide.",
+      "kgPerGuestError": "Enter a value between {min} and {max}",
+      "marginError": "Enter a percentage between {min} and {max}",
+      "invalid": "Fix the assumptions first — nothing was saved."
+    },
+    "unavailable": {
+      "alreadyDecided": "The forecast for this event was already decided",
+      "alreadyDecidedBody": "The event is now “{status}”. The forecast is only calculated before publishing.",
+      "notAllowed": "The forecast isn't available for this event",
+      "notAllowedBody": "This account can't edit this event.",
+      "noPlannedQuantity": "The forecast isn't available for this event",
+      "noPlannedQuantityBody": "No planned quantity was recorded — it's entered in the “New event” form.",
+      "back": "Back to home"
+    },
+    "published": "{planned} kg approved · expected surplus ≈ {surplus} kg (estimate). It now appears to charities as a coordination opportunity."
   }
 }

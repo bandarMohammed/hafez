@@ -3,6 +3,8 @@
 import { create } from "zustand";
 import { buildNewEvent } from "@/domain/newEvent";
 import type { SaveMode, ValidNewEvent } from "@/domain/newEvent";
+import { applyForecastDecision } from "@/domain/forecast";
+import type { ForecastAssumptions, ForecastDecision } from "@/domain/forecast";
 import { can } from "@/domain/permissions";
 import type { DemoDataset, DemoUser, EventStatus } from "@/domain/types";
 import type { DemoRepository } from "./repository";
@@ -14,6 +16,10 @@ import { createBrowserRepository } from "./repository";
  */
 export type DataStatus = "idle" | "ready" | "error";
 
+export type Flash =
+  | { kind: "eventCreated"; eventId: string; status: EventStatus }
+  | { kind: "eventPublished"; eventId: string; plannedKg: number; expectedSurplusKg: number };
+
 interface DemoState {
   status: DataStatus;
   data: DemoDataset | null;
@@ -22,10 +28,15 @@ interface DemoState {
   selectUser: (userId: string) => void;
   /** Recovery from corrupted local data: restores the seed. */
   resetDemoData: () => void;
-  /** C2: saves a new event + its activity entry for the current hall account. Returns the new id, or null if not allowed. */
+  /**
+   * C2: saves a new event (status "registered") + its activity entry for the current hall account.
+   * Returns the new id, or null if not allowed. "registered" mode also sets the C1 confirmation.
+   */
   createEvent: (input: ValidNewEvent, mode: SaveMode) => string | null;
+  /** C3: applies the hall decision and publishes the event. Returns false if not allowed. */
+  decideForecast: (eventId: string, decision: ForecastDecision, assumptions: ForecastAssumptions) => boolean;
   /** One-time confirmation shown on the next screen (not persisted). */
-  flash: { kind: "eventCreated"; eventId: string; status: EventStatus } | null;
+  flash: Flash | null;
   clearFlash: () => void;
 }
 
@@ -69,11 +80,33 @@ export const useDemoStore = create<DemoState>((set, get) => ({
     const { data, currentUserId } = get();
     const user = data?.users.find((u) => u.id === currentUserId);
     if (!data || !user || !can(user, "event.create")) return null;
-    const { event, activity } = buildNewEvent(data, input, user, mode, new Date());
+    const { event, activity } = buildNewEvent(data, input, user, new Date());
     const next: DemoDataset = { ...data, events: [...data.events, event], activity: [...data.activity, activity] };
     repo().save(next);
-    set({ data: next, flash: { kind: "eventCreated", eventId: event.id, status: event.status } });
+    set({
+      data: next,
+      flash: mode === "registered" ? { kind: "eventCreated", eventId: event.id, status: event.status } : null,
+    });
     return event.id;
+  },
+
+  decideForecast: (eventId, decision, assumptions) => {
+    const { data, currentUserId } = get();
+    const user = data?.users.find((u) => u.id === currentUserId);
+    if (!data || !user) return false;
+    const result = applyForecastDecision(data, eventId, user, decision, assumptions, new Date());
+    if (!result) return false;
+    repo().save(result.data);
+    set({
+      data: result.data,
+      flash: {
+        kind: "eventPublished",
+        eventId,
+        plannedKg: result.event.plannedQuantityKg ?? 0,
+        expectedSurplusKg: result.event.expectedSurplusKg ?? 0,
+      },
+    });
+    return true;
   },
 
   clearFlash: () => set({ flash: null }),

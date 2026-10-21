@@ -44,6 +44,17 @@ export const datasetSchema = z.object({
       contactName: z.string().optional(),
       contactPhone: z.string().optional(),
       notes: z.string().nullable().optional(),
+      forecast: z
+        .object({
+          kgPerGuest: z.number().positive(),
+          safetyMargin: z.number().nonnegative(),
+          consumptionKg: z.number().nonnegative(),
+          recommendedKg: z.number().nonnegative(),
+          plannedKgBefore: z.number().positive(),
+          decision: z.enum(["use_recommended", "keep_planned"]),
+          decidedAt: iso,
+        })
+        .optional(),
     }),
   ),
   handovers: z.array(

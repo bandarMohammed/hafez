@@ -43,8 +43,12 @@ export type NewEventError =
 
 export type NewEventErrors = Partial<Record<NewEventField, NewEventError>>;
 
-/** Submit buttons in Figma C2: "Save & make available" vs "Save as registered". */
-export type SaveMode = "available" | "registered";
+/**
+ * Submit buttons in Figma C2. Both save the event as "registered":
+ * - "forecast"   = "Save & make available" → continues to C3, where the hall decides and the event is published;
+ * - "registered" = "Save as registered"    → stays registered (not shown to charities).
+ */
+export type SaveMode = "forecast" | "registered";
 
 export interface ValidNewEvent {
   title: string;
@@ -187,18 +191,17 @@ export function eventTimestamps(v: Pick<ValidNewEvent, "date" | "endTime" | "rea
   };
 }
 
-/** Builds the stored record and its activity entry. Status follows the chosen save button. */
+/** Builds the stored record and its activity entry. New events always start as "registered" (blueprint). */
 export function buildNewEvent(
   data: DemoDataset,
   input: ValidNewEvent,
   user: DemoUser,
-  mode: SaveMode,
   now: Date,
 ): { event: HallEvent; activity: ActivityLogEntry } {
   if (!user.organizationId) throw new Error("Only a hall account can register a hall event");
   const id = nextEventId(data);
   const createdAt = now.toISOString();
-  const status = mode === "available" ? "available" : "registered";
+  const status = "registered";
   const event: HallEvent = {
     id,
     hallId: user.organizationId,

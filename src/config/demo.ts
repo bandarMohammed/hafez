@@ -39,6 +39,22 @@ export const DEMO_CONFIG = {
     utcOffset: "+03:00",
   },
 
+  /**
+   * C3 surplus forecast — a transparent rule, NOT an AI model (Figma 49:5891 / 49:6078).
+   * ⚠️ Illustrative values from the demo scenario; must be calibrated with real data (blueprint open questions).
+   */
+  forecast: {
+    /** Expected consumption per guest (kg). */
+    kgPerGuest: 0.5,
+    /** Safety margin added on top of expected consumption (0.2 = 20%). */
+    safetyMargin: 0.2,
+    /** Size of one full surplus box (kg) — used to express the surplus as boxes. */
+    boxKg: 2,
+    /** Bounds for "Adjust assumptions" on C3. */
+    kgPerGuestRange: { min: 0.1, max: 2 },
+    marginPercentRange: { min: 0, max: 50 },
+  },
+
   /** Statuses considered finished for ordering lists (active events are shown first). */
   finishedStatuses: ["collected", "no_surplus", "not_collectable", "closed"] satisfies EventStatus[] as EventStatus[],
 } as const;
