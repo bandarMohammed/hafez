@@ -11,9 +11,36 @@ function keys(tree: Tree, prefix = ""): string[] {
   );
 }
 
+/** Top-level `{…}` groups of an ICU string (handles nesting). */
+function groups(text: string): string[] {
+  const out: string[] = [];
+  let depth = 0;
+  let start = -1;
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === "{") {
+      if (depth === 0) start = i + 1;
+      depth++;
+    } else if (text[i] === "}") {
+      depth--;
+      if (depth === 0) out.push(text.slice(start, i));
+    }
+  }
+  return out;
+}
+
+/** ICU argument names: "{name}" and "{name, plural, …}", including arguments nested inside plural branches. */
 function placeholders(text: string): string[] {
-  // ICU arguments only: "{name}" or "{name, plural, …}" — not words inside plural branches.
-  return [...text.matchAll(/\{(\w+)\s*[,}]/g)].map((m) => m[1]!).sort();
+  const names: string[] = [];
+  for (const g of groups(text)) {
+    const simple = /^\s*(\w+)\s*$/.exec(g);
+    const complex = /^\s*(\w+)\s*,\s*(plural|select|selectordinal)\s*,([\s\S]*)$/.exec(g);
+    if (simple) names.push(simple[1]!);
+    else if (complex) {
+      names.push(complex[1]!);
+      for (const branch of groups(complex[3]!)) names.push(...placeholders(branch));
+    }
+  }
+  return [...new Set(names)].sort();
 }
 
 function lookup(tree: Tree, path: string): string {
@@ -22,25 +49,25 @@ function lookup(tree: Tree, path: string): string {
 
 describe("message catalogs", () => {
   it("Arabic and English have exactly the same keys", () => {
-    expect(keys(ar as Tree).sort()).toEqual(keys(en as Tree).sort());
+    expect(keys(ar as unknown as Tree).sort()).toEqual(keys(en as unknown as Tree).sort());
   });
 
   it("no key contains a dot (next-intl uses dots for nesting)", () => {
     const leafNames = (t: Tree): string[] =>
       Object.entries(t).flatMap(([k, v]) => [k, ...(typeof v === "string" ? [] : leafNames(v))]);
-    expect(leafNames(ar as Tree).filter((k) => k.includes("."))).toEqual([]);
+    expect(leafNames(ar as unknown as Tree).filter((k) => k.includes("."))).toEqual([]);
   });
 
   it("placeholders match between languages", () => {
-    for (const k of keys(ar as Tree)) {
-      expect(placeholders(lookup(en as Tree, k)), k).toEqual(placeholders(lookup(ar as Tree, k)));
+    for (const k of keys(ar as unknown as Tree)) {
+      expect(placeholders(lookup(en as unknown as Tree, k)), k).toEqual(placeholders(lookup(ar as unknown as Tree, k)));
     }
   });
 
   it("no empty strings", () => {
-    for (const k of keys(ar as Tree)) {
-      expect(lookup(ar as Tree, k).trim(), `ar ${k}`).not.toBe("");
-      expect(lookup(en as Tree, k).trim(), `en ${k}`).not.toBe("");
+    for (const k of keys(ar as unknown as Tree)) {
+      expect(lookup(ar as unknown as Tree, k).trim(), `ar ${k}`).not.toBe("");
+      expect(lookup(en as unknown as Tree, k).trim(), `en ${k}`).not.toBe("");
     }
   });
 });

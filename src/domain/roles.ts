@@ -73,7 +73,9 @@ export const ROLE_CONFIG: readonly RoleConfig[] = [
       item("handovers", "/hall/handovers", "pickup"),
       item("activity", "/hall/activity", "listChecks"),
       item("profile", "/hall/profile", "halls"),
+      item("notices", "/hall/notices", "bell"),
     ],
+    noticesHref: "/hall/notices",
   },
   {
     role: "charity_coordinator",

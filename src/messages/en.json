@@ -17,7 +17,9 @@
     "kg": "{value} kg",
     "dateTime": "{date} · {time}",
     "arrow": "→",
-    "navUnbuiltLegend": "Marked screens are under development in this build"
+    "navUnbuiltLegend": "Marked screens are under development in this build",
+    "dismiss": "Dismiss message",
+    "pseudonym": "Beneficiary · pseudonym {code}"
   },
   "language": {
     "label": "Language",
@@ -103,8 +105,42 @@
       "assignment_created": "Rep assigned",
       "inspection_arrived": "Rep arrived",
       "inspection_recorded": "Inspection: {status}",
-      "handover_confirmed": "Receipt confirmed"
-    }
+      "handover_confirmed": "Receipt confirmed",
+      "coordination_declined": "{actor} declined",
+      "handover_recorded": "Provisional handover",
+      "handover_hall_confirmed": "Hall confirmed",
+      "handover_disputed": "Quantity difference",
+      "field_cannot_attend": "Rep can't attend",
+      "listing_published": "Published",
+      "request_created": "Sent",
+      "request_accepted": "Accepted",
+      "request_rejected": "Rejected",
+      "request_confirmed": "Pickup confirmed",
+      "report_created": "Sent",
+      "report_info_requested": "Info requested",
+      "report_info_added": "Info added",
+      "report_accepted": "Accepted",
+      "report_rejected": "Rejected",
+      "report_result_recorded": "Inspection result",
+      "report_rescued": "Rescue documented"
+    },
+    "coordination_declined": "{actor} declined {event}",
+    "handover_recorded": "The rep recorded a provisional handover for {event}",
+    "handover_hall_confirmed": "{actor} confirmed the hall side of {event}",
+    "handover_disputed": "{actor} reported a quantity difference on {event}",
+    "field_cannot_attend": "The rep reported they can't attend {event}",
+    "listing_published": "{actor} published listing {event}",
+    "request_created": "{actor} sent request {event}",
+    "request_accepted": "{actor} accepted request {event}",
+    "request_rejected": "{actor} rejected request {event}",
+    "request_confirmed": "{actor} confirmed pickup of {event}",
+    "report_created": "{actor} sent report {event}",
+    "report_info_requested": "{actor} asked for information on {event}",
+    "report_info_added": "{actor} added information to {event}",
+    "report_accepted": "{actor} accepted {event} and assigned an inspection",
+    "report_rejected": "{actor} rejected {event}",
+    "report_result_recorded": "The rep recorded the inspection result of {event}",
+    "report_rescued": "{actor} documented the rescue of {event}"
   },
   "hall": {
     "nav": {
@@ -113,7 +149,8 @@
       "newEvent": "New event",
       "handovers": "Handovers",
       "activity": "Hall activity",
-      "profile": "Hall profile"
+      "profile": "Hall profile",
+      "notices": "Notices"
     },
     "crumbs": "Hafez / Home",
     "welcome": "Welcome, {hall}",
@@ -331,5 +368,457 @@
       "back": "Back to home"
     },
     "published": "{planned} kg approved · expected surplus ≈ {surplus} kg (estimate). It now appears to charities as a coordination opportunity."
+  },
+  "requestStatus": {
+    "pending": "Under review",
+    "needs_info": "Needs info",
+    "accepted": "Accepted",
+    "ready": "Ready for pickup",
+    "completed": "Completed",
+    "coordinated": "Coordinated & collected",
+    "partial": "Partial pickup",
+    "not_received": "Not received",
+    "rejected": "Rejected",
+    "cancelled": "Cancelled",
+    "available": "Available",
+    "low": "Few left",
+    "sold_out": "Sold out",
+    "ended": "Availability ended",
+    "active": "Published",
+    "archived": "Archived"
+  },
+  "stepper": {
+    "title": "Event path",
+    "registered": "Registered",
+    "available": "Available",
+    "interest": "Interest",
+    "assigned": "Assigned",
+    "arrived": "Arrival",
+    "inspected": "Inspection",
+    "handover": "Handover",
+    "closed": "Closed",
+    "done": "done",
+    "notApplicable": "not applicable",
+    "endedAfterInspection": "The path ended after the inspection as “{status}” — no handover or received weight is recorded.",
+    "end_no_surplus": "No surplus",
+    "end_not_collectable": "Not collectable"
+  },
+  "eventDetail": {
+    "detailsTitle": "Event details",
+    "hall": "Hall & location",
+    "eventDate": "Event date",
+    "endsAt": "Event end time",
+    "readyAt": "Food ready",
+    "guests": "Expected guests",
+    "guestsHint": "Guest count doesn't prove a surplus.",
+    "foodTypes": "Food type",
+    "planned": "Planned quantity",
+    "estimate": "Surplus estimate",
+    "estimateHint": "Estimate only — the actual quantity is recorded after inspection.",
+    "notEstimated": "Not estimated yet",
+    "contact": "Contact",
+    "notes": "Notes",
+    "coordinationTitle": "Coordination",
+    "noCoordination": "No charity has expressed interest yet.",
+    "charity": "Charity",
+    "interestAt": "Interest expressed",
+    "representative": "Field representative",
+    "notAssigned": "No representative assigned yet",
+    "plannedArrival": "Planned arrival",
+    "plannedArrivalHint": "Independent of event time and ready time",
+    "inspectionTitle": "Inspection",
+    "noInspection": "The representative hasn't arrived yet.",
+    "arrivedAt": "Arrived",
+    "outcome": "Outcome",
+    "inProgress": "Inspection in progress",
+    "estimatedNow": "Estimated at inspection",
+    "estimatedNowHint": "The rep's estimate — not a received weight.",
+    "foodCondition": "Food condition",
+    "packaging": "Packaging condition",
+    "reason": "Reason",
+    "checklist": "Safety checklist (illustrative)",
+    "checklistCount": "{done} of {total} items",
+    "handoverTitle": "Handover",
+    "noHandover": "No handover recorded yet.",
+    "noHandoverNoSurplus": "No surplus — no received weight is recorded.",
+    "noHandoverNotCollectable": "Not collectable — no handover was completed.",
+    "actual": "Actual quantity",
+    "actualHint": "Weighed at handover — separate from estimates.",
+    "handedOverAt": "Handed over",
+    "handedBy": "Handed by",
+    "receiving": "Receiving organisation",
+    "charityConfirm": "Charity confirmation",
+    "hallConfirm": "Hall confirmation",
+    "confirmedAt": "Done · {at}",
+    "pendingRequired": "Required — waiting for the charity",
+    "pendingOptional": "Optional — not confirmed",
+    "dispute": "Reported difference"
+  },
+  "hallDetail": {
+    "crumbs": "Hafez / My hall's events / {event}",
+    "backToList": "Back to my hall's events",
+    "editableHint": "You can edit this event until a representative is assigned.",
+    "lockedHint": "Details are locked for tracking only — the status updates as the charity and rep progress.",
+    "continueForecast": "Continue to surplus forecast",
+    "edit": "Edit event",
+    "confirmHint": "The hall-side confirmation is optional; “Collected” completes with the charity's confirmation.",
+    "confirmHall": "Confirm hall side",
+    "activityTitle": "Event log"
+  },
+  "editEvent": {
+    "crumbs": "Hafez / My hall's events / {event} / Edit",
+    "title": "Edit event {event}",
+    "subtitle": "Editing is possible until a representative is assigned. The status doesn't change and the edit is logged.",
+    "save": "Save changes",
+    "lockedTitle": "{event} can't be edited now",
+    "lockedBody": "A representative was assigned or the event moved forward, so its details are for tracking only.",
+    "backToDetail": "Back to event details",
+    "after": {
+      "title": "What happens after saving?",
+      "step1": "1. The new details are saved without changing the status, and the edit is logged.",
+      "step2": "2. If a charity has expressed interest and the ready time changed, it gets an in-app notice."
+    }
+  },
+  "hallScreens": {
+    "events": {
+      "crumbs": "Hafez / My hall's events",
+      "title": "My hall's events",
+      "filterLabel": "Filter events",
+      "all": "All ({count})",
+      "active": "Active ({count})",
+      "finished": "Finished ({count})",
+      "empty": "No events in this filter."
+    },
+    "handovers": {
+      "crumbs": "Hafez / Handovers",
+      "title": "My hall's handovers",
+      "subtitle": "The rep records the handover and the charity confirms it. You can confirm the hall side only.",
+      "emptyTitle": "No handovers for your hall yet",
+      "emptyBody": "They appear here once a field representative records a handover from one of your events.",
+      "actual": "Actual quantity: {qty}",
+      "charityConfirmed": "Charity confirmed",
+      "charityPending": "Waiting for the charity",
+      "hallConfirmed": "Hall confirmed",
+      "hallPending": "Hall not confirmed",
+      "confirm": "Confirm hall side"
+    },
+    "activity": {
+      "crumbs": "Hafez / Hall activity",
+      "title": "Hall activity",
+      "subtitle": "Every action on your hall's events: who did it, when, and the status before and after.",
+      "listTitle": "Activity"
+    },
+    "profile": {
+      "infoTitle": "Hall details",
+      "name": "Hall name",
+      "city": "City",
+      "district": "District"
+    }
+  },
+  "profile": {
+    "subtitle": "Only your own details are shown. There's no password in demo mode.",
+    "permissions": "Your permissions in this role",
+    "allowed": "Allowed",
+    "notAllowed": "Not allowed",
+    "settings": "Settings",
+    "language": "Interface language & direction",
+    "noPassword": "Switching accounts only illustrates permissions — it's not a real sign-in.",
+    "switchAccount": "Switch demo account",
+    "pseudonym": "Beneficiary · pseudonym {code}",
+    "hall": {
+      "title": "Hall profile",
+      "can": [
+        "Create your hall's events and edit them until a rep is assigned",
+        "Track coordination, inspection and handover",
+        "Confirm the hall side of a handover"
+      ],
+      "cannot": ["See other halls' events", "Confirm receipt on behalf of the charity"]
+    },
+    "field": {
+      "title": "My profile & settings",
+      "can": ["See tasks assigned to you", "Check in, inspect and record provisional handovers"],
+      "cannot": ["See all events or assign tasks to yourself", "Change platform settings"]
+    },
+    "charity": {
+      "title": "Charity profile",
+      "can": [
+        "Review opportunities and express interest or decline",
+        "Assign a rep from your team and confirm charity receipt",
+        "Publish listings from documented handovers and review requests and reports"
+      ],
+      "cannot": ["Edit the original event details", "See beneficiaries' personal data"]
+    },
+    "beneficiary": {
+      "title": "My profile",
+      "can": [
+        "Browse published food and request within the limit",
+        "Report surplus you have and track your reports",
+        "See your points and their history"
+      ],
+      "cannot": ["See other beneficiaries' data", "Award yourself points or edit others' requests"]
+    }
+  },
+  "field": {
+    "units": {
+      "kg": "kg",
+      "meal_portions": "meals",
+      "boxes": "boxes"
+    },
+    "outcomes": {
+      "surplus_available": {
+        "title": "Surplus available to collect",
+        "description": "Actual quantity and unit will be required"
+      },
+      "no_surplus": {
+        "title": "No collectable surplus",
+        "description": "Task closes, visit kept — no weight"
+      },
+      "not_safe_to_collect": {
+        "title": "Not suitable to collect",
+        "description": "Storage/condition not acceptable — reason required"
+      }
+    },
+    "foodConditions": {
+      "good": "Good — covered and tidy",
+      "acceptable": "Acceptable",
+      "poor": "Poor"
+    },
+    "packaging": {
+      "sealed_clean": "Sealed and clean",
+      "covered": "Covered",
+      "open_or_damaged": "Open or damaged"
+    },
+    "reasons": {
+      "finished_during_event": "Food finished during the event",
+      "taken_by_hall": "Kept by the hall or guests",
+      "storage_temperature": "Unsuitable storage temperature",
+      "time_exceeded": "Too long since the food was ready",
+      "contamination": "Visible signs of contamination",
+      "packaging": "Containers open or damaged",
+      "other": "Other reason"
+    }
+  },
+  "notices": {
+    "title": "Notices",
+    "subtitle": "In-app notices only — no SMS or WhatsApp in the MVP.",
+    "filterLabel": "Filter notices",
+    "all": "All ({count})",
+    "unread": "Unread ({count})",
+    "markAll": "Mark all as read",
+    "empty": "No notices",
+    "unreadTag": "unread",
+    "bellLabel": "{count, plural, =0 {Notices} one {Notices — # unread} other {Notices — # unread}}",
+    "outcome": {
+      "rescued": "Rescued",
+      "not_suitable": "Not suitable"
+    },
+    "kinds": {
+      "task_assigned": {
+        "title": "New task assigned to you",
+        "body": "{event} · planned arrival {time}"
+      },
+      "ready_time_updated": {
+        "title": "Ready time updated",
+        "body": "{event} · {from} → {to} (by the hall)"
+      },
+      "handover_recorded": {
+        "title": "Provisional handover recorded for {event}",
+        "body": "{qty} kg · waiting for the charity to confirm"
+      },
+      "handover_confirmed": {
+        "title": "{event} receipt confirmed",
+        "body": "{qty} kg · “Collected” complete"
+      },
+      "handover_disputed": {
+        "title": "Quantity difference on {event}",
+        "body": "The charity reported a difference — review and correct the record"
+      },
+      "coordination_interest": {
+        "title": "{charity} expressed interest in {event}",
+        "body": "The status is now “Awaiting charity”"
+      },
+      "coordination_declined": {
+        "title": "{charity} declined {event}",
+        "body": "The event stays available to another charity"
+      },
+      "rep_cannot_attend": {
+        "title": "Rep can't attend {event}",
+        "body": "{rep} reported they can't attend — re-coordinate"
+      },
+      "inspection_result": {
+        "title": "Inspection result for {event}",
+        "body": "The status is now “{status}”"
+      },
+      "request_received": {
+        "title": "New request {request}",
+        "body": "On listing {listing} · waiting for review"
+      },
+      "request_accepted": {
+        "title": "Your request {request} was accepted",
+        "body": "Ready for pickup — check the pickup time and place"
+      },
+      "request_rejected": {
+        "title": "Your request {request} was rejected",
+        "body": "See the reason in “My requests” · 0 points"
+      },
+      "request_confirmed": {
+        "title": "Pickup update for request {request}",
+        "body": "The status is now “{status}”"
+      },
+      "report_received": {
+        "title": "New surplus report {report}",
+        "body": "Waiting for review — never published automatically"
+      },
+      "report_info_requested": {
+        "title": "The charity asked about {report}",
+        "body": "Add the information from “Track my reports”"
+      },
+      "report_info_added": {
+        "title": "Information added to {report}",
+        "body": "The report is back under review"
+      },
+      "report_accepted": {
+        "title": "Your report {report} was accepted",
+        "body": "An inspection was assigned — the quantity isn't counted before documentation"
+      },
+      "report_rejected": {
+        "title": "Your report {report} was rejected",
+        "body": "See the reason in “Track my reports”"
+      },
+      "report_inspection_assigned": {
+        "title": "Inspection of report {report} assigned to you",
+        "body": "Scheduled {time}"
+      },
+      "report_result": {
+        "title": "Inspection result for {report}",
+        "body": "{outcome} — document the rescue or close the report"
+      },
+      "report_rescued": {
+        "title": "Rescue of {report} documented",
+        "body": "{qty} kg · points counted once"
+      },
+      "listing_published": {
+        "title": "New listing",
+        "body": "{listing}"
+      }
+    }
+  },
+  "flash": {
+    "eventUpdated": {
+      "title": "Changes to {event} saved",
+      "body": "The status didn't change and the edit was logged."
+    },
+    "hallConfirmed": {
+      "title": "Hall side of {event} confirmed",
+      "body": "“Collected” completes with the charity's confirmation."
+    },
+    "interest": {
+      "title": "Your charity's interest in {event} was recorded",
+      "body": "The status is now “Awaiting charity”. Assign a rep to move it to “Assigned”."
+    },
+    "declined": {
+      "title": "Opportunity {event} declined",
+      "body": "The event isn't deleted and stays available to another charity."
+    },
+    "assigned": {
+      "title": "A rep was assigned to {event}",
+      "body": "The task appears on the chosen rep's board only."
+    },
+    "handoverConfirmed": {
+      "title": "{event} receipt confirmed",
+      "body": "{qty} kg · “Collected” complete."
+    },
+    "handoverDisputed": {
+      "title": "The rep was told about the quantity difference on {event}",
+      "body": "The status doesn't change until the record is corrected."
+    },
+    "listingPublished": {
+      "title": "Listing {listing} published",
+      "body": "Beneficiaries see a general area only."
+    },
+    "requestAccepted": {
+      "title": "Request {request} accepted",
+      "body": "The quantity was deducted from what remains and the decision appears in the beneficiary's “My requests”."
+    },
+    "requestRejected": {
+      "title": "Request {request} rejected",
+      "body": "The decision appears in the beneficiary's “My requests”."
+    },
+    "reportAccepted": {
+      "title": "Report {report} accepted and inspection assigned",
+      "body": "The quantity isn't counted as rescued before documentation."
+    },
+    "reportInfoRequested": {
+      "title": "Information requested on {report}",
+      "body": "The reporter sees it in “Track my reports”."
+    },
+    "reportRejected": {
+      "title": "Report {report} rejected",
+      "body": "The reason was sent to the reporter."
+    },
+    "reportRescued": {
+      "title": "Rescue of {report} documented",
+      "body": "{qty} kg count in impact, and points were awarded once."
+    },
+    "checkedIn": {
+      "title": "Check-in at {event} recorded",
+      "body": "Complete the inspection now."
+    },
+    "cannotAttend": {
+      "title": "The charity coordinator was notified",
+      "body": "The status of {event} didn't change — the coordinator decides the next step."
+    },
+    "inspectionDraft": {
+      "title": "Inspection saved as a draft",
+      "body": "The status of {event} didn't change."
+    },
+    "inspection_inspected": {
+      "title": "Inspection saved — {event}",
+      "body": "Record the handover with the actual quantity."
+    },
+    "inspection_no_surplus": {
+      "title": "Visit recorded: no surplus",
+      "body": "Task {event} closed with the visit kept. No received weight was recorded."
+    },
+    "inspection_not_collectable": {
+      "title": "Result recorded: not suitable to collect",
+      "body": "Task {event} closed with the reason kept. No handover is completed."
+    },
+    "handoverRecorded": {
+      "title": "Provisional handover recorded for {event}",
+      "body": "“Collected” completes after the charity coordinator confirms."
+    },
+    "reportResult": {
+      "title": "Inspection result for {report} recorded",
+      "body": "The charity documents the rescue before impact and points are counted."
+    },
+    "requestSent": {
+      "title": "Request {request} sent",
+      "body": "The charity reviews it now. No points for sending."
+    },
+    "confirm_full": {
+      "title": "Pickup of {request} confirmed",
+      "body": "+{points} points counted once."
+    },
+    "confirm_partial": {
+      "title": "Partial pickup of {request} recorded",
+      "body": "The charity reviews the difference. Partial pickups earn no points in the demo."
+    },
+    "confirm_not_received": {
+      "title": "The charity was told {request} didn't arrive",
+      "body": "No points and no distributed quantity are counted."
+    },
+    "reportSent": {
+      "title": "Report {report} sent for review",
+      "body": "It isn't published as available food automatically, and there are no points for sending."
+    },
+    "reportInfoAdded": {
+      "title": "Information added to {report}",
+      "body": "The report is back under review."
+    },
+    "pledged": {
+      "title": "Your weekly pledge was saved",
+      "body": "A pledge earns no points and isn't proof of changed behaviour."
+    }
   }
 }

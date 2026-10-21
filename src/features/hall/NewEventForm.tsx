@@ -9,6 +9,7 @@ import {
   NEW_EVENT_FIELDS,
   emptyNewEventValues,
   eventDateOptions,
+  valuesFromEvent,
   timeSlots,
   validateNewEvent,
 } from "@/domain/newEvent";
@@ -16,6 +17,8 @@ import type { NewEventError, NewEventErrors, NewEventField, NewEventValues, Save
 import { can } from "@/domain/permissions";
 import { useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import type { HallEvent } from "@/domain/types";
+import { updateEvent } from "@/domain/workflow/hall";
 import { formatDate } from "@/lib/format";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -27,27 +30,53 @@ import { FoodTypePicker } from "./FoodTypePicker";
 const cfg = DEMO_CONFIG.newEvent;
 const fieldId = (f: NewEventField | "location") => `ne-${f}`;
 
-/** Figma C2 — register a new event (frames 19:1462 AR error state / 19:1689 EN valid state). */
-export function NewEventForm() {
+/**
+ * Figma C2 — register a new event (frames 19:1462 AR error state / 19:1689 EN valid state).
+ * With `editEvent` the same form edits an event before pickup (blueprint §2, Q6) — same fields and rules.
+ */
+export function NewEventForm({ editEvent }: { editEvent?: HallEvent } = {}) {
   const t = useTranslations("newEvent");
+  const tEdit = useTranslations("editEvent");
   const locale = useLocale() as Locale;
   const router = useRouter();
   const user = useCurrentUser();
   const data = useDemoStore((s) => s.data);
   const createEvent = useDemoStore((s) => s.createEvent);
+  const dispatch = useDemoStore((s) => s.dispatch);
 
-  const [values, setValues] = useState<NewEventValues>(() => emptyNewEventValues(t("defaultContact")));
+  const [values, setValues] = useState<NewEventValues>(() =>
+    editEvent
+      ? { ...valuesFromEvent(editEvent, locale), contactName: editEvent.contactName || t("defaultContact") }
+      : emptyNewEventValues(t("defaultContact")),
+  );
   const [attempted, setAttempted] = useState(false);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
   // Options are computed once per visit: "today" in Asia/Riyadh … +N days.
   const [now] = useState(() => new Date());
-  const dateOptions = useMemo(() => eventDateOptions(now), [now]);
+  // Editing keeps the stored event date selectable even when it is outside the booking window.
+  const initialDate = editEvent ? valuesFromEvent(editEvent, "en").date : null;
+  const dateOptions = useMemo(() => {
+    const opts = eventDateOptions(now);
+    return initialDate && !opts.includes(initialDate) ? [initialDate, ...opts] : opts;
+  }, [now, initialDate]);
   const slots = useMemo(() => timeSlots(), []);
 
   const hall = data?.organizations.find((o) => o.id === user?.organizationId);
   if (!user || !hall) return null;
-  if (!can(user, "event.create")) {
+  if (editEvent && !can(user, "event.edit", { kind: "event", event: editEvent })) {
+    return (
+      <StateMessage
+        asPage
+        icon="lock"
+        tone="info"
+        title={tEdit("lockedTitle", { event: editEvent.id })}
+        body={tEdit("lockedBody")}
+        actions={<ButtonLink href={`/hall/events/${editEvent.id}`}>{tEdit("backToDetail")}</ButtonLink>}
+      />
+    );
+  }
+  if (!editEvent && !can(user, "event.create")) {
     return <StateMessage asPage icon="lock" tone="danger" title={t("notAllowed")} />;
   }
 
@@ -104,6 +133,11 @@ export function NewEventForm() {
       requestAnimationFrame(() => summaryRef.current?.focus());
       return;
     }
+    if (editEvent) {
+      const r = dispatch((c) => updateEvent(c, editEvent.id, result.data), { flashOn: `/hall/events/${editEvent.id}` });
+      if (r.ok) router.push(`/hall/events/${editEvent.id}`);
+      return;
+    }
     const id = createEvent(result.data, mode);
     if (!id) return;
     // Figma prototype: "Save & make available" → C3 forecast; "Save as registered" → C1.
@@ -119,9 +153,9 @@ export function NewEventForm() {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <p className="text-caption text-muted">{t("crumbs")}</p>
-        <h1 className="text-h2 text-heading">{t("title")}</h1>
-        <p className="text-small text-muted">{t("subtitle")}</p>
+        <p className="text-caption text-muted">{editEvent ? tEdit("crumbs", { event: editEvent.id }) : t("crumbs")}</p>
+        <h1 className="text-h2 text-heading">{editEvent ? tEdit("title", { event: editEvent.id }) : t("title")}</h1>
+        <p className="text-small text-muted">{editEvent ? tEdit("subtitle") : t("subtitle")}</p>
       </header>
 
       {summaryOpen && invalidFields.length > 0 ? (
@@ -306,27 +340,49 @@ export function NewEventForm() {
 
             {/* DOM order = primary first (mobile top, default for Enter); row-reverse gives Figma's visual order. */}
             <div className="flex flex-col gap-3 sm:flex-row-reverse sm:flex-wrap sm:justify-start">
-              <Button type="submit" name="mode" value="forecast">
-                {t("actions.available")}
-              </Button>
-              <Button type="submit" name="mode" value="registered" variant="secondary">
-                {t("actions.registered")}
-              </Button>
-              <ButtonLink href="/hall" variant="ghost">
-                {t("actions.cancel")}
-              </ButtonLink>
+              {editEvent ? (
+                <>
+                  <Button type="submit" name="mode" value="save">
+                    {tEdit("save")}
+                  </Button>
+                  <ButtonLink href={`/hall/events/${editEvent.id}`} variant="ghost">
+                    {t("actions.cancel")}
+                  </ButtonLink>
+                </>
+              ) : (
+                <>
+                  <Button type="submit" name="mode" value="forecast">
+                    {t("actions.available")}
+                  </Button>
+                  <Button type="submit" name="mode" value="registered" variant="secondary">
+                    {t("actions.registered")}
+                  </Button>
+                  <ButtonLink href="/hall" variant="ghost">
+                    {t("actions.cancel")}
+                  </ButtonLink>
+                </>
+              )}
             </div>
           </form>
         </Card>
 
         <aside aria-labelledby="ne-after" className="rounded-lg border border-line bg-surface p-6">
           <h2 id="ne-after" className="mb-4 text-h4 text-heading">
-            {t("after.title")}
+            {editEvent ? tEdit("after.title") : t("after.title")}
           </h2>
           <ol className="flex flex-col gap-4 text-small text-ink">
-            <li>{t("after.step1")}</li>
-            <li>{t("after.step2")}</li>
-            <li>{t("after.step3")}</li>
+            {editEvent ? (
+              <>
+                <li>{tEdit("after.step1")}</li>
+                <li>{tEdit("after.step2")}</li>
+              </>
+            ) : (
+              <>
+                <li>{t("after.step1")}</li>
+                <li>{t("after.step2")}</li>
+                <li>{t("after.step3")}</li>
+              </>
+            )}
           </ol>
           <p className="mt-5 flex items-start gap-2 rounded-md bg-selected px-4 py-3 text-caption text-heading">
             <Icon name="info" size={16} className="mt-px shrink-0" />

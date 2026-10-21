@@ -247,3 +247,33 @@ export function emptyNewEventValues(contactName: string): NewEventValues {
     notes: "",
   };
 }
+
+/** Riyadh "HH:MM" of an ISO instant ("" when missing). */
+function riyadhTime(iso: string | undefined): string {
+  if (!iso) return "";
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: DEMO_CONFIG.timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date(iso));
+}
+
+/**
+ * Form values for editing an existing event. Older seed events were registered before C2 existed, so
+ * fields they never had stay empty and must be completed before saving (same validation as C2).
+ */
+export function valuesFromEvent(e: HallEvent, locale: "ar" | "en"): NewEventValues {
+  return {
+    title: e.title[locale],
+    date: riyadhDate(new Date(e.eventDate)),
+    endTime: riyadhTime(e.endsAt),
+    readyTime: riyadhTime(e.foodReadyAt),
+    guests: String(e.expectedGuests),
+    foodTypes: e.foodTypes ?? [],
+    plannedKg: e.plannedQuantityKg ? String(e.plannedQuantityKg) : "",
+    contactName: e.contactName ?? "",
+    contactPhone: e.contactPhone ?? "",
+    notes: e.notes ?? "",
+  };
+}

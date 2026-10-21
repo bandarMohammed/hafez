@@ -17,7 +17,9 @@
     "kg": "{value} كجم",
     "dateTime": "{date} · {time}",
     "arrow": "←",
-    "navUnbuiltLegend": "الشاشات المعلّمة قيد التطوير في هذا الإصدار"
+    "navUnbuiltLegend": "الشاشات المعلّمة قيد التطوير في هذا الإصدار",
+    "dismiss": "إغلاق الرسالة",
+    "pseudonym": "مستفيد · رمز مستعار {code}"
   },
   "language": {
     "label": "اللغة",
@@ -103,8 +105,42 @@
       "assignment_created": "أُسند ممثل",
       "inspection_arrived": "وصل الممثل",
       "inspection_recorded": "المعاينة: {status}",
-      "handover_confirmed": "تأكد الاستلام"
-    }
+      "handover_confirmed": "تأكد الاستلام",
+      "coordination_declined": "اعتذرت {actor}",
+      "handover_recorded": "تسليم مبدئي",
+      "handover_hall_confirmed": "أكّدت القاعة",
+      "handover_disputed": "اختلاف في الكمية",
+      "field_cannot_attend": "تعذّر حضور الممثل",
+      "listing_published": "نُشر",
+      "request_created": "أُرسل",
+      "request_accepted": "قُبل",
+      "request_rejected": "رُفض",
+      "request_confirmed": "أُكّد الاستلام",
+      "report_created": "أُرسل",
+      "report_info_requested": "طُلبت معلومات",
+      "report_info_added": "أُضيفت معلومات",
+      "report_accepted": "قُبل",
+      "report_rejected": "رُفض",
+      "report_result_recorded": "نتيجة المعاينة",
+      "report_rescued": "وُثّق الإنقاذ"
+    },
+    "coordination_declined": "{actor} اعتذرت عن {event}",
+    "handover_recorded": "سجّل الممثل تسليمًا مبدئيًا لـ {event}",
+    "handover_hall_confirmed": "{actor} أكّدت طرف القاعة في تسليم {event}",
+    "handover_disputed": "{actor} أبلغت عن اختلاف في كمية {event}",
+    "field_cannot_attend": "أبلغ الممثل أنه لا يستطيع حضور {event}",
+    "listing_published": "{actor} نشرت الإعلان {event}",
+    "request_created": "{actor} أرسل الطلب {event}",
+    "request_accepted": "{actor} قبلت الطلب {event}",
+    "request_rejected": "{actor} رفضت الطلب {event}",
+    "request_confirmed": "{actor} أكّد استلام {event}",
+    "report_created": "{actor} أرسل البلاغ {event}",
+    "report_info_requested": "{actor} طلبت معلومات عن {event}",
+    "report_info_added": "{actor} أضاف معلومات إلى {event}",
+    "report_accepted": "{actor} قبلت {event} وأسندت معاينة",
+    "report_rejected": "{actor} رفضت {event}",
+    "report_result_recorded": "سجّل الممثل نتيجة معاينة {event}",
+    "report_rescued": "{actor} وثّقت إنقاذ {event}"
   },
   "hall": {
     "nav": {
@@ -113,7 +149,8 @@
       "newEvent": "مناسبة جديدة",
       "handovers": "التسليمات",
       "activity": "سجل القاعة",
-      "profile": "ملف القاعة"
+      "profile": "ملف القاعة",
+      "notices": "التنبيهات"
     },
     "crumbs": "حفيظ / الرئيسية",
     "welcome": "أهلًا، {hall}",
@@ -331,5 +368,457 @@
       "back": "العودة إلى الرئيسية"
     },
     "published": "اعتُمدت {planned} كجم · فائض متوقع ≈ {surplus} كجم (تقدير). تظهر الآن للجمعيات كفرصة للتنسيق."
+  },
+  "requestStatus": {
+    "pending": "قيد المراجعة",
+    "needs_info": "يحتاج معلومات",
+    "accepted": "مقبول",
+    "ready": "جاهز للاستلام",
+    "completed": "مكتمل",
+    "coordinated": "تم التنسيق والاستلام",
+    "partial": "استلام جزئي",
+    "not_received": "لم يصل",
+    "rejected": "مرفوض",
+    "cancelled": "ملغي",
+    "available": "متاح",
+    "low": "متبقٍ قليل",
+    "sold_out": "نفدت الكمية",
+    "ended": "انتهت الإتاحة",
+    "active": "منشور",
+    "archived": "مؤرشف"
+  },
+  "stepper": {
+    "title": "مسار المناسبة",
+    "registered": "التسجيل",
+    "available": "الإتاحة",
+    "interest": "الاهتمام",
+    "assigned": "الإسناد",
+    "arrived": "الوصول",
+    "inspected": "المعاينة",
+    "handover": "التسليم",
+    "closed": "الإغلاق",
+    "done": "مكتمل",
+    "notApplicable": "لا ينطبق",
+    "endedAfterInspection": "انتهى المسار بعد المعاينة بنتيجة «{status}» — لا يُسجَّل تسليم ولا وزن مستلم.",
+    "end_no_surplus": "لا يوجد فائض",
+    "end_not_collectable": "غير مناسب للاستلام"
+  },
+  "eventDetail": {
+    "detailsTitle": "بيانات المناسبة",
+    "hall": "القاعة والموقع",
+    "eventDate": "تاريخ المناسبة",
+    "endsAt": "وقت انتهاء المناسبة",
+    "readyAt": "جاهزية الطعام",
+    "guests": "الضيوف المتوقعون",
+    "guestsHint": "عدد الضيوف لا يثبت وجود فائض.",
+    "foodTypes": "نوع الطعام",
+    "planned": "الكمية المخططة",
+    "estimate": "تقدير الفائض",
+    "estimateHint": "تقدير فقط — الكمية الفعلية تُسجَّل بعد المعاينة.",
+    "notEstimated": "لم يُقدَّر بعد",
+    "contact": "التواصل",
+    "notes": "ملاحظات",
+    "coordinationTitle": "التنسيق",
+    "noCoordination": "لم تُبدِ أي جمعية اهتمامًا بعد.",
+    "charity": "الجمعية",
+    "interestAt": "أبدت الاهتمام",
+    "representative": "الممثل الميداني",
+    "notAssigned": "لم يُسند ممثل بعد",
+    "plannedArrival": "الوصول المتوقع",
+    "plannedArrivalHint": "مستقل عن وقت المناسبة ووقت الجاهزية",
+    "inspectionTitle": "المعاينة",
+    "noInspection": "لم يصل الممثل بعد.",
+    "arrivedAt": "وقت الوصول",
+    "outcome": "النتيجة",
+    "inProgress": "قيد المعاينة",
+    "estimatedNow": "الكمية المقدرة عند المعاينة",
+    "estimatedNowHint": "تقدير الممثل — ليس وزنًا مستلمًا.",
+    "foodCondition": "حالة الطعام",
+    "packaging": "حالة العبوات",
+    "reason": "السبب",
+    "checklist": "قائمة السلامة (توضيحية)",
+    "checklistCount": "{done} من {total} بنود",
+    "handoverTitle": "التسليم",
+    "noHandover": "لم يُسجَّل تسليم بعد.",
+    "noHandoverNoSurplus": "لا يوجد فائض — لا يُسجَّل أي وزن مستلم.",
+    "noHandoverNotCollectable": "غير مناسب للاستلام — لم يكتمل أي تسليم.",
+    "actual": "الكمية الفعلية",
+    "actualHint": "موزونة عند التسليم — منفصلة عن التقدير.",
+    "handedOverAt": "وقت التسليم",
+    "handedBy": "سلّمه",
+    "receiving": "الجهة المستلمة",
+    "charityConfirm": "تأكيد الجمعية",
+    "hallConfirm": "تأكيد القاعة",
+    "confirmedAt": "تم · {at}",
+    "pendingRequired": "مطلوب — بانتظار الجمعية",
+    "pendingOptional": "اختياري — لم يُؤكَّد",
+    "dispute": "اختلاف مُبلَّغ عنه"
+  },
+  "hallDetail": {
+    "crumbs": "حفيظ / مناسبات قاعتي / {event}",
+    "backToList": "العودة إلى مناسبات قاعتي",
+    "editableHint": "يمكنك تعديل المناسبة حتى يتم إسناد ممثل.",
+    "lockedHint": "التفاصيل مقفلة للمتابعة فقط — تتحدث الحالة مع تقدّم الجمعية والممثل.",
+    "continueForecast": "متابعة إلى توقع الفائض",
+    "edit": "تعديل المناسبة",
+    "confirmHint": "تأكيد طرف القاعة اختياري؛ «تم الاستلام» يكتمل بتأكيد الجمعية.",
+    "confirmHall": "تأكيد طرف القاعة",
+    "activityTitle": "سجل المناسبة"
+  },
+  "editEvent": {
+    "crumbs": "حفيظ / مناسبات قاعتي / {event} / تعديل",
+    "title": "تعديل المناسبة {event}",
+    "subtitle": "التعديل متاح حتى إسناد ممثل. لا تتغير الحالة، ويُضاف التعديل إلى سجل النشاط.",
+    "save": "حفظ التعديلات",
+    "lockedTitle": "لا يمكن تعديل {event} الآن",
+    "lockedBody": "أُسند ممثل أو تقدّمت المناسبة في مسارها، فأصبحت التفاصيل للمتابعة فقط.",
+    "backToDetail": "العودة إلى تفاصيل المناسبة",
+    "after": {
+      "title": "ماذا يحدث بعد الحفظ؟",
+      "step1": "1. تُحفظ البيانات الجديدة دون تغيير الحالة ويُضاف سجل نشاط.",
+      "step2": "2. إذا أبدت جمعية الاهتمام وتغيّر وقت الجاهزية، يصلها تنبيه داخلي."
+    }
+  },
+  "hallScreens": {
+    "events": {
+      "crumbs": "حفيظ / مناسبات قاعتي",
+      "title": "مناسبات قاعتي",
+      "filterLabel": "تصفية المناسبات",
+      "all": "الكل ({count})",
+      "active": "نشطة ({count})",
+      "finished": "منتهية ({count})",
+      "empty": "لا توجد مناسبات في هذا التصنيف."
+    },
+    "handovers": {
+      "crumbs": "حفيظ / التسليمات",
+      "title": "تسليمات قاعتي",
+      "subtitle": "يسجّل الممثل التسليم وتؤكده الجمعية. يمكنك تأكيد طرف القاعة فقط.",
+      "emptyTitle": "لا توجد تسليمات لقاعتك بعد",
+      "emptyBody": "تظهر هنا بعد أن يسجّل الممثل الميداني تسليمًا من إحدى مناسباتك.",
+      "actual": "الكمية الفعلية: {qty}",
+      "charityConfirmed": "أكّدت الجمعية",
+      "charityPending": "بانتظار تأكيد الجمعية",
+      "hallConfirmed": "أكّدت القاعة",
+      "hallPending": "لم تؤكد القاعة",
+      "confirm": "تأكيد طرف القاعة"
+    },
+    "activity": {
+      "crumbs": "حفيظ / سجل القاعة",
+      "title": "سجل القاعة",
+      "subtitle": "كل إجراء على مناسبات قاعتك: من قام به، ومتى، والحالة قبل وبعد.",
+      "listTitle": "النشاط"
+    },
+    "profile": {
+      "infoTitle": "بيانات القاعة",
+      "name": "اسم القاعة",
+      "city": "المدينة",
+      "district": "الحي"
+    }
+  },
+  "profile": {
+    "subtitle": "تظهر بياناتك الخاصة فقط. لا توجد كلمة مرور في وضع العرض.",
+    "permissions": "صلاحياتك في هذا الدور",
+    "allowed": "مسموح",
+    "notAllowed": "غير مسموح",
+    "settings": "الإعدادات",
+    "language": "لغة الواجهة واتجاهها",
+    "noPassword": "التبديل بين الحسابات يشرح الصلاحيات فقط — ليس تسجيل دخول حقيقيًا.",
+    "switchAccount": "تبديل الحساب التجريبي",
+    "pseudonym": "مستفيد · رمز مستعار {code}",
+    "hall": {
+      "title": "ملف القاعة",
+      "can": [
+        "إنشاء مناسبات قاعتك وتعديلها قبل إسناد ممثل",
+        "متابعة حالة التنسيق والمعاينة والتسليم",
+        "تأكيد طرف القاعة في التسليم"
+      ],
+      "cannot": ["رؤية مناسبات القاعات الأخرى", "تأكيد الاستلام نيابة عن الجمعية"]
+    },
+    "field": {
+      "title": "ملفي والإعدادات",
+      "can": ["رؤية المهام المسندة إليك", "تسجيل الوصول والمعاينة والتسليم المبدئي"],
+      "cannot": ["رؤية كل المناسبات أو إسناد مهام لنفسك", "تغيير إعدادات المنصة"]
+    },
+    "charity": {
+      "title": "ملف الجمعية",
+      "can": [
+        "مراجعة الفرص وإبداء الاهتمام أو الرفض",
+        "إسناد ممثل من فريقك وتأكيد استلام الجمعية",
+        "نشر إعلانات من تسليمات موثقة ومراجعة الطلبات والبلاغات"
+      ],
+      "cannot": ["تعديل تفاصيل المناسبة الأصلية", "رؤية بيانات شخصية للمستفيدين"]
+    },
+    "beneficiary": {
+      "title": "ملفي",
+      "can": [
+        "استعراض الطعام المنشور وطلب كمية ضمن الحد",
+        "الإبلاغ عن فائض لديك ومتابعة بلاغاتك",
+        "مشاهدة نقاطك وسجلها"
+      ],
+      "cannot": ["رؤية بيانات المستفيدين الآخرين", "منح نفسك نقاطًا أو تعديل طلبات غيرك"]
+    }
+  },
+  "field": {
+    "units": {
+      "kg": "كجم",
+      "meal_portions": "وجبة",
+      "boxes": "عبوة"
+    },
+    "outcomes": {
+      "surplus_available": {
+        "title": "يوجد فائض قابل للاستلام",
+        "description": "سيُطلب إدخال الكمية الفعلية ووحدتها"
+      },
+      "no_surplus": {
+        "title": "لا يوجد فائض قابل للاستلام",
+        "description": "تُغلق المهمة مع حفظ الزيارة — دون وزن"
+      },
+      "not_safe_to_collect": {
+        "title": "غير مناسب للاستلام",
+        "description": "الحفظ أو الحالة لا تسمح — السبب مطلوب"
+      }
+    },
+    "foodConditions": {
+      "good": "جيدة — مغطى ومرتب",
+      "acceptable": "مقبولة",
+      "poor": "سيئة"
+    },
+    "packaging": {
+      "sealed_clean": "مغلقة ونظيفة",
+      "covered": "مغطاة",
+      "open_or_damaged": "مفتوحة أو تالفة"
+    },
+    "reasons": {
+      "finished_during_event": "انتهى الطعام أثناء المناسبة",
+      "taken_by_hall": "احتفظت به القاعة أو الضيوف",
+      "storage_temperature": "درجة الحفظ غير مناسبة",
+      "time_exceeded": "تجاوز الوقت المسموح منذ الجاهزية",
+      "contamination": "علامات تلوث ظاهرة",
+      "packaging": "العبوات مفتوحة أو تالفة",
+      "other": "سبب آخر"
+    }
+  },
+  "notices": {
+    "title": "التنبيهات",
+    "subtitle": "تنبيهات داخلية فقط — لا رسائل SMS أو WhatsApp في النموذج.",
+    "filterLabel": "تصفية التنبيهات",
+    "all": "الكل ({count})",
+    "unread": "غير مقروءة ({count})",
+    "markAll": "تعليم الكل كمقروء",
+    "empty": "لا توجد تنبيهات",
+    "unreadTag": "غير مقروء",
+    "bellLabel": "{count, plural, =0 {التنبيهات} one {التنبيهات — تنبيه غير مقروء} two {التنبيهات — تنبيهان غير مقروءين} few {التنبيهات — # تنبيهات غير مقروءة} many {التنبيهات — # تنبيهًا غير مقروء} other {التنبيهات — # تنبيه غير مقروء}}",
+    "outcome": {
+      "rescued": "تم الإنقاذ",
+      "not_suitable": "غير مناسب"
+    },
+    "kinds": {
+      "task_assigned": {
+        "title": "مهمة جديدة أُسندت إليك",
+        "body": "{event} · الوصول المتوقع {time}"
+      },
+      "ready_time_updated": {
+        "title": "تحديث وقت الجاهزية",
+        "body": "{event} · {from} ← {to} (من القاعة)"
+      },
+      "handover_recorded": {
+        "title": "سُجّل تسليم مبدئي لـ {event}",
+        "body": "{qty} كجم · بانتظار تأكيد الجمعية"
+      },
+      "handover_confirmed": {
+        "title": "تأكّد استلام {event}",
+        "body": "{qty} كجم · اكتمل «تم الاستلام»"
+      },
+      "handover_disputed": {
+        "title": "اختلاف في كمية تسليم {event}",
+        "body": "أبلغت الجمعية عن اختلاف — راجع التسجيل وصحّحه"
+      },
+      "coordination_interest": {
+        "title": "أبدت {charity} الاهتمام بـ {event}",
+        "body": "الحالة الآن «بانتظار قبول الجمعية»"
+      },
+      "coordination_declined": {
+        "title": "اعتذرت {charity} عن {event}",
+        "body": "بقيت المناسبة متاحة لجمعية أخرى"
+      },
+      "rep_cannot_attend": {
+        "title": "تعذّر حضور الممثل لـ {event}",
+        "body": "{rep} أبلغ أنه لا يستطيع الحضور — أعد التنسيق"
+      },
+      "inspection_result": {
+        "title": "نتيجة معاينة {event}",
+        "body": "الحالة الآن «{status}»"
+      },
+      "request_received": {
+        "title": "طلب جديد {request}",
+        "body": "على الإعلان {listing} · بانتظار المراجعة"
+      },
+      "request_accepted": {
+        "title": "قُبل طلبك {request}",
+        "body": "جاهز للاستلام — راجع موعد ومكان الاستلام"
+      },
+      "request_rejected": {
+        "title": "رُفض طلبك {request}",
+        "body": "راجع السبب في «طلباتي» · 0 نقاط"
+      },
+      "request_confirmed": {
+        "title": "تحديث استلام الطلب {request}",
+        "body": "الحالة الآن «{status}»"
+      },
+      "report_received": {
+        "title": "بلاغ فائض جديد {report}",
+        "body": "بانتظار المراجعة — لا يُنشر تلقائيًا"
+      },
+      "report_info_requested": {
+        "title": "طلبت الجمعية معلومات عن {report}",
+        "body": "أضف المعلومات من «متابعة بلاغاتي»"
+      },
+      "report_info_added": {
+        "title": "أُضيفت معلومات إلى {report}",
+        "body": "عاد البلاغ للمراجعة"
+      },
+      "report_accepted": {
+        "title": "قُبل بلاغك {report}",
+        "body": "أُسندت معاينة — لا تُحتسب الكمية قبل التوثيق"
+      },
+      "report_rejected": {
+        "title": "رُفض بلاغك {report}",
+        "body": "راجع السبب في «متابعة بلاغاتي»"
+      },
+      "report_inspection_assigned": {
+        "title": "معاينة بلاغ {report} أُسندت إليك",
+        "body": "الموعد {time}"
+      },
+      "report_result": {
+        "title": "نتيجة معاينة {report}",
+        "body": "{outcome} — وثّق الإنقاذ أو اختم البلاغ"
+      },
+      "report_rescued": {
+        "title": "وُثّق إنقاذ {report}",
+        "body": "{qty} كجم · احتُسبت النقاط مرة واحدة"
+      },
+      "listing_published": {
+        "title": "إعلان جديد",
+        "body": "{listing}"
+      }
+    }
+  },
+  "flash": {
+    "eventUpdated": {
+      "title": "حُفظت تعديلات {event}",
+      "body": "لم تتغير الحالة، وأُضيف التعديل إلى سجل النشاط."
+    },
+    "hallConfirmed": {
+      "title": "أُكّد طرف القاعة في تسليم {event}",
+      "body": "«تم الاستلام» يكتمل بتأكيد الجمعية."
+    },
+    "interest": {
+      "title": "سُجّل اهتمام جمعيتك بـ {event}",
+      "body": "الحالة الآن «بانتظار قبول الجمعية». عيّن ممثلًا لنقلها إلى «تم الإسناد»."
+    },
+    "declined": {
+      "title": "رُفضت الفرصة {event}",
+      "body": "لن تُحذف المناسبة وتبقى متاحة لجمعية أخرى."
+    },
+    "assigned": {
+      "title": "أُسند ممثل إلى {event}",
+      "body": "تظهر المهمة في لوحة الممثل المختار فقط."
+    },
+    "handoverConfirmed": {
+      "title": "تأكّد استلام {event}",
+      "body": "{qty} كجم · اكتمل «تم الاستلام»."
+    },
+    "handoverDisputed": {
+      "title": "أُبلغ الممثل باختلاف الكمية في {event}",
+      "body": "لم تتغير الحالة حتى يُصحَّح التسجيل."
+    },
+    "listingPublished": {
+      "title": "نُشر الإعلان {listing}",
+      "body": "يظهر للمستفيدين بمنطقة عامة فقط."
+    },
+    "requestAccepted": {
+      "title": "قُبل الطلب {request}",
+      "body": "خُصمت الكمية من المتبقي وظهر القرار في «طلباتي» لدى المستفيد."
+    },
+    "requestRejected": {
+      "title": "رُفض الطلب {request}",
+      "body": "ظهر القرار في «طلباتي» لدى المستفيد."
+    },
+    "reportAccepted": {
+      "title": "قُبل البلاغ {report} وأُسندت معاينة",
+      "body": "لا تُحتسب الكمية منقذة قبل التوثيق."
+    },
+    "reportInfoRequested": {
+      "title": "طُلبت معلومات عن {report}",
+      "body": "يصل الطلب إلى المُبلِّغ في «متابعة بلاغاتي»."
+    },
+    "reportRejected": {
+      "title": "رُفض البلاغ {report}",
+      "body": "وصل السبب إلى المُبلِّغ."
+    },
+    "reportRescued": {
+      "title": "وُثّق إنقاذ {report}",
+      "body": "{qty} كجم تُحتسب في الأثر، ومُنحت النقاط مرة واحدة."
+    },
+    "checkedIn": {
+      "title": "سُجّل وصولك إلى {event}",
+      "body": "أكمل المعاينة الآن."
+    },
+    "cannotAttend": {
+      "title": "أُبلغ منسق الجمعية",
+      "body": "لم تتغير حالة {event} — يقرر المنسق الخطوة التالية."
+    },
+    "inspectionDraft": {
+      "title": "حُفظت المعاينة كمسودة",
+      "body": "لم تتغير حالة {event}."
+    },
+    "inspection_inspected": {
+      "title": "حُفظت المعاينة — {event}",
+      "body": "سجّل التسليم بالكمية الفعلية."
+    },
+    "inspection_no_surplus": {
+      "title": "سُجّلت الزيارة: لا يوجد فائض",
+      "body": "أُغلقت مهمة {event} مع الاحتفاظ بسجل الزيارة. لم يُسجَّل أي وزن مستلم."
+    },
+    "inspection_not_collectable": {
+      "title": "سُجّلت النتيجة: غير مناسب للاستلام",
+      "body": "أُغلقت مهمة {event} مع حفظ السبب. لا يكتمل أي تسليم."
+    },
+    "handoverRecorded": {
+      "title": "سُجّل التسليم المبدئي لـ {event}",
+      "body": "يكتمل «تم الاستلام» بعد تأكيد منسق الجمعية."
+    },
+    "reportResult": {
+      "title": "سُجّلت نتيجة معاينة {report}",
+      "body": "تُوثّق الجمعية الإنقاذ قبل احتساب الأثر والنقاط."
+    },
+    "requestSent": {
+      "title": "أُرسل الطلب {request}",
+      "body": "تراجعه الجمعية الآن. لا تُمنح نقاط عند الإرسال."
+    },
+    "confirm_full": {
+      "title": "تأكّد استلام {request}",
+      "body": "+{points} نقاط احتُسبت مرة واحدة."
+    },
+    "confirm_partial": {
+      "title": "سُجّل استلام جزئي لـ {request}",
+      "body": "تراجع الجمعية الفرق. لا تُمنح نقاط للاستلام الجزئي في النموذج."
+    },
+    "confirm_not_received": {
+      "title": "أُبلغت الجمعية: لم يصل {request}",
+      "body": "لا تُحتسب نقاط ولا كمية موزعة."
+    },
+    "reportSent": {
+      "title": "أُرسل البلاغ {report} للمراجعة",
+      "body": "لا يُنشر كطعام متاح تلقائيًا، ولا تُمنح نقاط عند الإرسال."
+    },
+    "reportInfoAdded": {
+      "title": "أُضيفت المعلومات إلى {report}",
+      "body": "عاد البلاغ إلى المراجعة."
+    },
+    "pledged": {
+      "title": "سُجّل تعهدك الأسبوعي",
+      "body": "التعهد لا يمنح نقاطًا ولا يُعد دليلًا على تغيّر السلوك."
+    }
   }
 }
