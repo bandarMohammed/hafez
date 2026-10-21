@@ -12,7 +12,8 @@ function keys(tree: Tree, prefix = ""): string[] {
 }
 
 function placeholders(text: string): string[] {
-  return [...text.matchAll(/\{(\w+)/g)].map((m) => m[1]!).sort();
+  // ICU arguments only: "{name}" or "{name, plural, …}" — not words inside plural branches.
+  return [...text.matchAll(/\{(\w+)\s*[,}]/g)].map((m) => m[1]!).sort();
 }
 
 function lookup(tree: Tree, path: string): string {

@@ -7,12 +7,14 @@ import type { ActivityLogEntry, DemoDataset, HallEvent } from "./types";
  */
 
 const isFinished = (e: HallEvent) => DEMO_CONFIG.finishedStatuses.includes(e.status);
+/** Timestamps may carry different offsets ("Z" vs "+03:00"), so compare instants — never the strings. */
+const time = (iso: string) => Date.parse(iso);
 
 /** Events of one hall only; active first (by event date), then finished (most recent first). */
 export function selectHallEvents(data: DemoDataset, hallId: string): HallEvent[] {
   const mine = data.events.filter((e) => e.hallId === hallId);
-  const active = mine.filter((e) => !isFinished(e)).sort((a, b) => a.eventDate.localeCompare(b.eventDate));
-  const finished = mine.filter(isFinished).sort((a, b) => b.eventDate.localeCompare(a.eventDate));
+  const active = mine.filter((e) => !isFinished(e)).sort((a, b) => time(a.eventDate) - time(b.eventDate));
+  const finished = mine.filter(isFinished).sort((a, b) => time(b.eventDate) - time(a.eventDate));
   return [...active, ...finished];
 }
 
@@ -40,7 +42,7 @@ export function selectHallActivity(data: DemoDataset, hallId: string, limit = 5)
   const ids = new Set(data.events.filter((e) => e.hallId === hallId).map((e) => e.id));
   return data.activity
     .filter((a) => a.entityType === "event" && ids.has(a.entityId))
-    .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+    .sort((a, b) => time(b.timestamp) - time(a.timestamp))
     .slice(0, limit);
 }
 
@@ -49,7 +51,7 @@ export function selectLatestActivityByEvent(data: DemoDataset): Map<string, Acti
   const latest = new Map<string, ActivityLogEntry>();
   for (const entry of data.activity) {
     const current = latest.get(entry.entityId);
-    if (!current || entry.timestamp > current.timestamp) latest.set(entry.entityId, entry);
+    if (!current || time(entry.timestamp) > time(current.timestamp)) latest.set(entry.entityId, entry);
   }
   return latest;
 }

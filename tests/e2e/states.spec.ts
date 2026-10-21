@@ -60,7 +60,7 @@ test.describe("routes", () => {
   });
 
   test("unknown paths render the localized 404", async ({ page }) => {
-    const res = await page.goto("/en/hall/events/not-an-id");
+    const res = await page.goto("/en/hall/not-a-screen");
     expect(res?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 

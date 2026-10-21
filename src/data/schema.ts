@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ACTIVITY_ACTIONS, EVENT_STATUSES, ROLES } from "@/domain/types";
+import { ACTIVITY_ACTIONS, EVENT_STATUSES, FOOD_TYPES, ROLES } from "@/domain/types";
 import type { DemoDataset } from "@/domain/types";
 
 /** Runtime validation for data read back from browser storage (it may be stale, edited or corrupted). */
@@ -38,6 +38,12 @@ export const datasetSchema = z.object({
       status,
       createdAt: iso,
       createdBy: z.string(),
+      endsAt: iso.optional(),
+      plannedQuantityKg: z.number().positive().optional(),
+      foodTypes: z.array(z.enum(FOOD_TYPES)).optional(),
+      contactName: z.string().optional(),
+      contactPhone: z.string().optional(),
+      notes: z.string().nullable().optional(),
     }),
   ),
   handovers: z.array(

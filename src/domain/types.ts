@@ -50,6 +50,10 @@ export interface DemoUser {
   initials: LocalizedText;
 }
 
+/** Food categories a hall can declare for an event (C2). Labels live in src/messages (newEvent.foodTypes). */
+export const FOOD_TYPES = ["hot_meals", "rice_dishes", "salads", "desserts", "bakery", "fruit"] as const;
+export type FoodType = (typeof FOOD_TYPES)[number];
+
 export interface HallEvent {
   id: string;
   hallId: string;
@@ -63,6 +67,19 @@ export interface HallEvent {
   status: EventStatus;
   createdAt: string;
   createdBy: string;
+  /*
+   * Fields captured by the C2 form. Optional because the older seed events were registered before C2
+   * existed (the blueprint keeps them minimal). User-entered text is stored as typed — not translated.
+   */
+  /** ISO 8601 — event end. Separate from `foodReadyAt` (blueprint: never merge the two times). */
+  endsAt?: string;
+  /** Planned food quantity prepared by the hall (kg). Input for the C3 forecast; not a surplus. */
+  plannedQuantityKg?: number;
+  foodTypes?: FoodType[];
+  contactName?: string;
+  /** Illustrative demo value — not called by the system. */
+  contactPhone?: string;
+  notes?: string | null;
 }
 
 export type QuantityUnit = "kg" | "meal_portions" | "boxes";

@@ -188,7 +188,87 @@
   },
   "screens": {
     "editEvent": "Edit event {event}",
-    "viewEvent": "Event details {event}",
-    "newEvent": "New event"
+    "viewEvent": "Event details {event}"
+  },
+  "newEvent": {
+    "crumbs": "Hafez / My hall's events / New event",
+    "title": "Register a new event",
+    "subtitle": "Record the event details to coordinate surplus food with charities — nothing is actually sent.",
+    "sectionTitle": "Event details",
+    "fields": {
+      "title": "Event name",
+      "date": "Event date",
+      "location": "City & district",
+      "guests": "Expected guests",
+      "endTime": "Event end time",
+      "readyTime": "Food ready time",
+      "foodTypes": "Expected food type",
+      "plannedKg": "Planned food quantity",
+      "contactName": "Contact person",
+      "contactPhone": "Contact phone",
+      "notes": "Notes for the charity (optional)"
+    },
+    "placeholders": {
+      "title": "e.g. Wedding",
+      "date": "Choose a date",
+      "time": "Choose a time",
+      "foodTypes": "Choose food type",
+      "contactPhone": "05XXXXXXXX",
+      "notes": "e.g. use the rear loading gate"
+    },
+    "hints": {
+      "location": "Shown to charities as text — no maps in the MVP",
+      "guests": "Guest count alone doesn't prove a surplus",
+      "readyTime": "If earlier than the end time, it counts as after midnight",
+      "plannedKg": "Used to compute the surplus forecast & recommendation next (C3)",
+      "contactPhone": "Illustrative, not callable"
+    },
+    "kgUnit": "kg",
+    "defaultContact": "Hall manager (demo)",
+    "foodTypes": {
+      "hot_meals": "Hot meals",
+      "rice_dishes": "Rice dishes",
+      "salads": "Salads & starters",
+      "desserts": "Desserts",
+      "bakery": "Baked goods",
+      "fruit": "Fruit"
+    },
+    "actions": {
+      "available": "Save & make available",
+      "registered": "Save as registered",
+      "cancel": "Cancel"
+    },
+    "summary": {
+      "title": "The event wasn't saved",
+      "requiredOnly": "Complete {count, plural, one {# required field} other {# required fields}}: {fields}. The status didn't change.",
+      "mixed": "Check {count, plural, one {# field} other {# fields}}: {fields}. The status didn't change.",
+      "dismiss": "Dismiss alert"
+    },
+    "errors": {
+      "required": "This field is required",
+      "readyTime_required": "Set the food ready time — it's separate from the event end time",
+      "foodTypes_required": "Choose at least one type",
+      "titleLength": "Use {min} to {max} characters",
+      "dateRange": "Choose a date from the list",
+      "wholeNumber": "Enter a whole number",
+      "guestsRange": "Enter a number between {min} and {max}",
+      "quantityRange": "Enter a quantity between {min} and {max} kg",
+      "phone": "Enter a 10-digit mobile number starting with 05",
+      "tooLong": "Use at most {max} characters"
+    },
+    "after": {
+      "title": "What happens after saving?",
+      "step1": "1. The event is created as 'Registered' and logged.",
+      "step2": "2. Once available, it appears as an opportunity to charities in range.",
+      "step3": "3. Track its status here until handover or 'no surplus'.",
+      "note": "Fields marked * are required. Errors appear next to the field, and status doesn't change if validation fails."
+    },
+    "saved": {
+      "title": "Event {event} saved as “{status}”",
+      "available": "It now appears to charities as a coordination opportunity.",
+      "registered": "Charities won't see it until it's made available.",
+      "dismiss": "Dismiss message"
+    },
+    "notAllowed": "This account can't create events."
   }
 }

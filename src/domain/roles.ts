@@ -38,7 +38,7 @@ export const ROLE_CONFIG: readonly RoleConfig[] = [
     nav: [
       { key: "home", href: "/hall", icon: "dashboard", implemented: true },
       { key: "myEvents", href: "/hall/events", icon: "events", implemented: false },
-      { key: "newEvent", href: "/hall/events/new", icon: "plus", implemented: false },
+      { key: "newEvent", href: "/hall/events/new", icon: "plus", implemented: true },
       { key: "handovers", href: "/hall/handovers", icon: "pickup", implemented: false },
       { key: "activity", href: "/hall/activity", icon: "listChecks", implemented: false },
       { key: "profile", href: "/hall/profile", icon: "halls", implemented: false },

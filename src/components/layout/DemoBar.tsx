@@ -12,7 +12,7 @@ import { LanguageSwitch, LanguageToggleCompact } from "./LanguageSwitch";
 export function DemoBar() {
   const t = useTranslations("common");
   return (
-    <div className="relative z-40 flex min-h-13 items-center justify-between gap-3 bg-warning-bg px-4 py-2 lg:px-8">
+    <div className="relative z-40 flex min-h-13 items-center lg:min-h-16 justify-between gap-3 bg-warning-bg px-4 py-2 lg:px-8">
       <div className="flex min-w-0 items-center gap-2">
         <span className="inline-flex items-center gap-1 rounded-full bg-warning px-3 py-1 text-caption whitespace-nowrap text-on-action">
           <Icon name="info" size={16} />

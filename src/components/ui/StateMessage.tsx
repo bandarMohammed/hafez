@@ -16,7 +16,7 @@ const TONES = {
 interface StateMessageProps {
   icon: IconKey;
   title: string;
-  body: string;
+  body?: string;
   tone?: keyof typeof TONES;
   badge?: string;
   actions?: ReactNode;
@@ -43,7 +43,7 @@ export function StateMessage({
       </span>
       {badge ? <span className="rounded-full bg-warning-bg px-3 py-1 text-caption text-warning">{badge}</span> : null}
       <Heading className="text-h4 text-heading">{title}</Heading>
-      <p className="text-small text-muted">{body}</p>
+      {body ? <p className="text-small text-muted">{body}</p> : null}
       {actions ? <div className="mt-3 flex flex-wrap items-center justify-center gap-3">{actions}</div> : null}
     </div>
   );

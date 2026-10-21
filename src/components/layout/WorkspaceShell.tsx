@@ -29,9 +29,12 @@ export function WorkspaceShell({
   const drawer = useRef<HTMLDialogElement>(null);
 
   return (
-    <div className="flex min-h-[calc(100dvh-52px)] flex-col lg:flex-row">
-      <aside className="sticky top-0 hidden h-[calc(100dvh-52px)] w-70 shrink-0 lg:block">
-        <Sidebar items={nav} labelNamespace={labelNamespace} />
+    <div className="flex min-h-[calc(100dvh-4rem)] flex-col lg:flex-row">
+      {/* The Forest column spans the full page height; its content stays pinned while scrolling. */}
+      <aside className="hidden w-70 shrink-0 bg-inverse lg:block">
+        <div className="sticky top-0 h-[calc(100dvh-4rem)]">
+          <Sidebar items={nav} labelNamespace={labelNamespace} />
+        </div>
       </aside>
 
       <div className="flex items-center justify-between border-b border-line bg-surface px-4 py-3 lg:hidden">
