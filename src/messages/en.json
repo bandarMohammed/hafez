@@ -596,6 +596,11 @@
       "contamination": "Visible signs of contamination",
       "packaging": "Containers open or damaged",
       "other": "Other reason"
+    },
+    "nav": {
+      "tasks": "My tasks",
+      "notices": "Notices",
+      "profile": "Profile"
     }
   },
   "notices": {
@@ -1205,6 +1210,189 @@
       "opportunities": "Opportunities",
       "tasks": "Tasks",
       "handovers": "Handovers"
+    }
+  },
+  "fieldScreens": {
+    "tasks": {
+      "title": "My tasks",
+      "subtitle": "Only tasks assigned to you. You can't see other events or self-assign.",
+      "inProgress": "In progress",
+      "completed": "Completed",
+      "emptyTitle": "No tasks assigned to you right now",
+      "emptyBody": "A task appears here when the charity coordinator assigns it to you.",
+      "noCompleted": "No completed tasks yet.",
+      "handedAt": "{date} · handed over {time}",
+      "visitAt": "{date} · visit {time}",
+      "actual": "{qty} actual",
+      "noWeight": "Documented visit — no received weight",
+      "planned": "{date} · planned arrival {time}",
+      "noEstimate": "The hall didn't estimate the surplus",
+      "estimate": "Hall estimate: {qty} (unconfirmed)",
+      "arrived": "Arrived {time} · ready {ready}",
+      "nextInspect": "Next: complete the inspection",
+      "nextFix": "Next: correct the handover after the charity's note",
+      "nextCharity": "Waiting for the charity to confirm receipt",
+      "nextHandover": "Next: record the handover",
+      "reportTitle": "Report inspection: {food}",
+      "reportArea": "{area} (general area)",
+      "reportDone": "Result recorded: {outcome}",
+      "reportOutcome": {
+        "rescued": "Rescued",
+        "not_suitable": "Not suitable"
+      },
+      "reportNext": "Next: record the inspection result"
+    },
+    "task": {
+      "notFound": "This task isn't assigned to you",
+      "notFoundBody": "You only see tasks assigned to you.",
+      "back": "My tasks",
+      "assignedBy": "assigned to you by the {charity} coordinator",
+      "hall": "Hall",
+      "location": "Location",
+      "locationValue": "{place} (text — no maps)",
+      "plannedArrival": "Planned arrival",
+      "readyAt": "Food ready",
+      "foodTypes": "Expected food type",
+      "estimate": "Hall estimate",
+      "noEstimate": "Not estimated",
+      "estimateValue": "{qty} — unconfirmed",
+      "contact": "Contact",
+      "nextSteps": "Next steps",
+      "steps": {
+        "checkin": "Check in",
+        "inspect": "Inspection & safety checklist",
+        "handover": "Handover or “No surplus”"
+      },
+      "done": "done",
+      "checkIn": "Check in now",
+      "cannotAttend": "I can't attend — tell the coordinator",
+      "goInspect": "Continue the inspection",
+      "fixHandover": "Correct the handover",
+      "goHandover": "Record the handover",
+      "waitingCharity": "Provisional handover recorded ({qty}) — waiting for the charity coordinator to confirm.",
+      "viewResult": "View visit result",
+      "collected": "“Collected” complete — {qty} actual.",
+      "disputed": "The charity reported a difference: {note}"
+    },
+    "result": {
+      "noSurplus": {
+        "title": "Visit recorded: no surplus",
+        "body": "Task {event} closed with the visit kept. No received weight was recorded, and the visit shows in reports as operational information."
+      },
+      "notCollectable": {
+        "title": "Result recorded: not suitable to collect",
+        "body": "Task {event} closed with the reason kept. No handover was completed and no received weight was recorded."
+      },
+      "outcome": "Outcome",
+      "reason": "Reason",
+      "visitTime": "Visit time",
+      "weight": "Received weight",
+      "noWeight": "Not recorded",
+      "back": "Back to my tasks"
+    },
+    "inspect": {
+      "back": "Task",
+      "title": "Inspect {event}",
+      "subtitle": "Arrived {time} · record the actual result. Expected guests don't prove a surplus.",
+      "notSaved": "The result wasn't saved — complete the required fields. The status didn't change.",
+      "outcome": "Inspection outcome",
+      "estimatedNow": "Estimated now",
+      "estimatedHint": "Your estimate at inspection — the actual weight is recorded at handover",
+      "unit": "Unit",
+      "foodCondition": "Food condition",
+      "packaging": "Packaging condition",
+      "choose": "Choose",
+      "reason": "Reason",
+      "checklistTitle": "Safety checklist (illustrative)",
+      "checklist": {
+        "temperature": "Food kept at a suitable temperature",
+        "sealed": "Containers sealed and clean",
+        "within_two_hours": "Less than 2 hours since food was ready",
+        "no_contamination": "No visible signs of contamination"
+      },
+      "checklistNote": "Illustrative list — must be approved by a competent authority before real use.",
+      "notes": "Notes (optional)",
+      "saveClose": "Save result & close task",
+      "saveContinue": "Save inspection & continue",
+      "saveDraft": "Save as draft",
+      "errors": {
+        "outcome": "Choose the inspection outcome",
+        "estimatedQuantity": "Enter the estimated quantity",
+        "unit": "Choose the unit",
+        "foodCondition": "Choose the food condition",
+        "packagingCondition": "Choose the packaging condition",
+        "reason": "Choose the reason"
+      }
+    },
+    "handover": {
+      "back": "Task",
+      "title": "Handover {event}",
+      "subtitle": "Surplus available to collect · record the actual quantity, time and receiving organisation.",
+      "cannotConfirm": "“Collected” can't be confirmed",
+      "qtyRequired": "The actual quantity is required. The status didn't change.",
+      "fixFields": "Complete the required fields. The status didn't change.",
+      "disputed": "Charity's note: {note} — correct the details and record again.",
+      "actual": "Actual quantity",
+      "actualHint": "Separate from the inspection estimate ({estimate})",
+      "qtyPlaceholder": "Enter the quantity",
+      "unit": "Unit",
+      "foodTypes": "Food type received",
+      "foodPlaceholder": "e.g. pastries, juices",
+      "day": "Handover day",
+      "time": "Handover time",
+      "receiving": "Receiving organisation",
+      "receivingHint": "Your assigned charity — can't change",
+      "handedBy": "Handed by (hall)",
+      "handedByPlaceholder": "e.g. Hall manager (demo)",
+      "rule": "This is a provisional record. “Collected” completes after the charity coordinator confirms.",
+      "submit": "Record provisional handover",
+      "resubmit": "Record the handover again",
+      "errors": {
+        "actualQuantity": "Required — separate from the inspection estimate ({estimate})",
+        "unit": "Choose the unit",
+        "foodTypesText": "Write the food type received",
+        "handedOverAt": "Choose the handover time",
+        "handedBy": "Write who handed the food over"
+      }
+    },
+    "report": {
+      "notFound": "This inspection isn't assigned to you",
+      "back": "My tasks",
+      "title": "Inspect report {report}",
+      "subtitle": "Record what was actually rescued. Quantity and points don't count before the charity documents it.",
+      "foodType": "Food type",
+      "estimate": "Reporter's estimate",
+      "estimateValue": "{qty} {unit} (unconfirmed)",
+      "area": "Area",
+      "areaValue": "{area} (general) — the coordinator shares the exact location",
+      "readyAt": "Ready time",
+      "planned": "Inspection time",
+      "notes": "Reporter's notes",
+      "result": "Recorded result",
+      "rescued": "Rescued · {qty}",
+      "notSuitable": "Not suitable · {note}",
+      "outcome": "Inspection outcome",
+      "outcomes": {
+        "rescued": {
+          "title": "Rescued",
+          "description": "Record the actual quantity in kilograms"
+        },
+        "not_suitable": {
+          "title": "Not suitable to collect",
+          "description": "Write the reason — no quantity is recorded"
+        }
+      },
+      "actualKg": "Actual quantity (kg)",
+      "note": "Note",
+      "rule": "The safety checklist is illustrative. Don't assume the food is safe from the report alone.",
+      "submit": "Record result",
+      "waitingCharity": "Result recorded — waiting for the charity to document it.",
+      "closed": "The report is closed.",
+      "errors": {
+        "outcome": "Choose the outcome",
+        "actualKg": "Enter the actual quantity",
+        "note": "Write why it isn't suitable"
+      }
     }
   }
 }
