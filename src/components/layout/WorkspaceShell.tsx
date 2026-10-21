@@ -109,6 +109,8 @@ function BottomTabs({
   pathname: string;
 }) {
   const t = useTranslations();
+  // Short tab labels where Figma uses them (e.g. "الفرص" instead of "الفرص المتاحة").
+  const tabsNamespace = labelNamespace.replace(/\.nav$/, ".tabs");
   return (
     <nav
       aria-label={t("common.mainNav")}
@@ -133,7 +135,9 @@ function BottomTabs({
                   <Icon name={item.icon} size={22} />
                 </span>
                 <span className={cn("text-caption", active ? "font-bold text-heading" : "text-muted")}>
-                  {t(`${labelNamespace}.${item.key}`)}
+                  {t.has(`${tabsNamespace}.${item.key}`)
+                    ? t(`${tabsNamespace}.${item.key}`)
+                    : t(`${labelNamespace}.${item.key}`)}
                 </span>
               </Link>
             </li>

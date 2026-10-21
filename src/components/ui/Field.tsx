@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from "react";
+import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 import { Icon } from "./Icon";
 
@@ -116,5 +116,21 @@ export function UnitInput({
         {unit}
       </span>
     </div>
+  );
+}
+
+/** Multi-line text (notes, reasons, questions) with the same states as TextInput. */
+export function TextArea({
+  invalid,
+  className,
+  ...rest
+}: TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }) {
+  return (
+    <textarea
+      aria-invalid={invalid || undefined}
+      rows={3}
+      className={controlClasses(invalid, cn("py-3", className))}
+      {...rest}
+    />
   );
 }

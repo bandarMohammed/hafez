@@ -131,3 +131,22 @@ export function selectCharityReports(data: DemoDataset, charityId: string) {
     .filter((r) => r.charityId === charityId)
     .sort((a, b) => order[a.status] - order[b.status] || time(b.createdAt) - time(a.createdAt));
 }
+
+/**
+ * D4 planned-arrival options: every 15 minutes from one hour before to one hour after the food-ready time
+ * (Figma: "23:15 — قبل الجاهزية بـ 15 دقيقة"). Returned as ISO instants with the minutes offset to ready time.
+ */
+export function arrivalOptions(foodReadyAt: string): Array<{ iso: string; offsetMin: number }> {
+  const ready = Date.parse(foodReadyAt);
+  const out: Array<{ iso: string; offsetMin: number }> = [];
+  for (let m = -60; m <= 60; m += 15) out.push({ iso: new Date(ready + m * 60_000).toISOString(), offsetMin: m });
+  return out;
+}
+
+/** When an event became an opportunity (its latest move to "available"), for "نُشرت اليوم 19:10" (Figma D2). */
+export function publishedAt(data: DemoDataset, event: HallEvent): string {
+  const entry = data.activity
+    .filter((a) => a.entityType === "event" && a.entityId === event.id && a.after === "available")
+    .sort((a, b) => time(b.timestamp) - time(a.timestamp))[0];
+  return entry?.timestamp ?? event.forecast?.decidedAt ?? event.createdAt;
+}

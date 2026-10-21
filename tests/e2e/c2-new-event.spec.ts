@@ -99,7 +99,7 @@ test.describe("C2 — register a new event", () => {
 
     // The new event's links work (client-checked id), e.g. Edit → under development.
     await page.getByRole("link", { name: "Edit Wedding (demo scenario) · E-109" }).click();
-    await expect(page.getByRole("heading", { name: "“Edit event E-109” is under development" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Edit event E-109" })).toBeVisible();
   });
 
   test("Save as registered keeps the event hidden from charities", async ({ page }) => {

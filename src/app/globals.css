@@ -180,6 +180,17 @@
   .tabular {
     font-variant-numeric: tabular-nums;
   }
+  /* Below 1024px mobile-first roles have a fixed bottom tab bar: anything scrolled into view
+     (focus, anchors) stops above it instead of hiding behind it. */
+  @media (max-width: 1023px) {
+    html {
+      scroll-padding-bottom: 6rem;
+    }
+  }
+  /* Record codes (E-104, R-07…) are isolated and never split across lines inside Arabic text. */
+  bdi {
+    white-space: nowrap;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

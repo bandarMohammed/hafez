@@ -50,13 +50,28 @@ test.describe("guarded states", () => {
 });
 
 test.describe("routes", () => {
-  test("Edit on an event opens an honest under-development screen", async ({ page }) => {
+  test("Edit before pickup: save logs the change without changing status; locked events can't be edited", async ({
+    page,
+  }) => {
     await chooseAccount(page, "en", "demo-hall-01");
     await page.getByRole("link", { name: "Edit Wedding (demo) · E-104" }).click();
     await expect(page).toHaveURL(/\/en\/hall\/events\/E-104\/edit$/);
-    await expect(page.getByRole("heading", { name: "“Edit event E-104” is under development" })).toBeVisible();
-    await page.getByRole("link", { name: "Back to home" }).click();
-    await expect(page).toHaveURL(/\/en\/hall$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Edit event E-104" })).toBeVisible();
+    // Older seed events lack C2 fields: they must be completed with the same validation.
+    await page.locator("#ne-endTime").selectOption("23:00");
+    await page.locator("#ne-foodTypes").click();
+    await page.locator('#ne-foodTypes ~ div input[type="checkbox"]').first().check();
+    await page.keyboard.press("Escape");
+    await page.locator("#ne-plannedKg").fill("250");
+    await page.locator("#ne-contactPhone").fill("0500000000");
+    await page.getByRole("button", { name: "Save changes" }).click();
+    await expect(page).toHaveURL(/\/en\/hall\/events\/E-104$/);
+    await expect(page.getByText("Changes to E-104 saved")).toBeVisible();
+    await expect(page.getByRole("main").getByText("Awaiting charity").first()).toBeVisible();
+    await expect(page.getByRole("main").getByText("Event E-104 was edited").first()).toBeVisible();
+    // E-103 is finished → the edit route explains it's locked.
+    await page.goto("/en/hall/events/E-103/edit");
+    await expect(page.getByRole("heading", { name: "E-103 can't be edited now" })).toBeVisible();
   });
 
   test("unknown paths render the localized 404", async ({ page }) => {

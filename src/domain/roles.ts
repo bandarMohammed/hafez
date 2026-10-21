@@ -86,7 +86,7 @@ export const ROLE_CONFIG: readonly RoleConfig[] = [
     nav: [
       item("home", "/charity", "dashboard"),
       item("opportunities", "/charity/opportunities", "package", "^/charity/opportunities/[^/]+(/decline)?$"),
-      item("tasks", "/charity/tasks", "charities", "^/charity/opportunities/[^/]+/assign$"),
+      item("tasks", "/charity/tasks", "charities", "^/charity/(opportunities/[^/]+/assign|tasks/.+)$"),
       item("handovers", "/charity/handovers", "pickup", "^/charity/handovers/.+$"),
       item("listings", "/charity/listings", "utensils", "^/charity/listings/.+$"),
       item("reports", "/charity/reports", "heart", "^/charity/reports/.+$"),

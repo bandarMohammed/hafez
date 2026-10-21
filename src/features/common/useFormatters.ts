@@ -27,6 +27,11 @@ export function useFormatters(data: DemoDataset) {
   const shortDateTime = (iso: string) =>
     t("common.dateTime", { date: formatShortDate(iso, locale), time: formatTime(iso, locale) });
 
+  /** "13:00–16:00" kept left-to-right inside Arabic text (Unicode isolates stop the bidi reordering). */
+  const LRI = String.fromCharCode(0x2066);
+  const PDI = String.fromCharCode(0x2069);
+  const timeRange = (startIso: string, endIso: string) => `${LRI}${time(startIso)}–${time(endIso)}${PDI}`;
+
   const orgName = (id: string | null | undefined) =>
     (id && data.organizations.find((o) => o.id === id)?.name[locale]) || "—";
 
@@ -76,6 +81,7 @@ export function useFormatters(data: DemoDataset) {
     time,
     dateTime,
     shortDateTime,
+    timeRange,
     orgName,
     userName,
     actorName,

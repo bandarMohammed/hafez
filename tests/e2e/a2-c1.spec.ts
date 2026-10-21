@@ -63,10 +63,11 @@ test.describe("A2 → C1 (approved first flow)", () => {
   });
 
   test("an unbuilt role gets an explicit under-development page, not a fake dashboard", async ({ page }) => {
-    await chooseAccount(page, "en", "demo-charity-01");
-    await expect(page).toHaveURL(/\/en\/charity$/);
+    // Admin (B) stays unbuilt while the proposed B + F merge awaits the owner's approval.
+    await chooseAccount(page, "en", "demo-admin");
+    await expect(page).toHaveURL(/\/en\/admin$/);
     await expect(
-      page.getByRole("heading", { name: "The Charity coordinator workspace is under development" }),
+      page.getByRole("heading", { name: "The Platform admin workspace is under development" }),
     ).toBeVisible();
     await expect(page.getByText("Under development").first()).toBeVisible();
     await page.getByRole("link", { name: "Back to choose account" }).click();
