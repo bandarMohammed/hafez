@@ -65,8 +65,9 @@ If a future machine loads SWC fine, switching back to `createNextIntlPlugin("./s
 
 ### Routing & 404
 
-- Unbuilt hall screens (handovers, activity, profile) are a fixed list declared with `generateStaticParams` + `dynamicParams = false`, so unknown paths are a **real HTTP 404** in production. (A `notFound()` thrown after streaming starts can only produce 200 + `noindex` — see Next.js docs "Streaming › Status codes".)
-- In `next dev` those unknown hall paths still render the 404 page but with status 200; production (`next build && next start`) returns 404, which is what the E2E suite verifies.
+- Every hall/charity/field/beneficiary screen is a real route; unknown paths fall through to the localized 404 page (real HTTP 404 in production).
+- In `next dev` some unknown workspace paths render the 404 page with status 200; production (`next build && next start`) returns 404, which is what the E2E suite verifies.
+- Record pages (`/charity/.../[id]`, `/field/tasks/[id]`, `/beneficiary/food/[id]` ...) are checked on the client against `can()` like the hall event pages below: an unknown or not-permitted id shows the localized not-found / not-assigned state.
 - Event view/edit (`/hall/events/[eventId]` and `/edit`) are **checked on the client**, because events created in C2 exist only in the browser. An unknown id shows the localized not-found state with HTTP 200 (the server cannot see local demo data).
 
 ### C3 — surplus forecast & recommendation (Figma `49:5891` AR, `49:6078` EN)
@@ -103,53 +104,80 @@ If a future machine loads SWC fine, switching back to `createNextIntlPlugin("./s
 - Timestamps from the seed use `+03:00` while new ones use UTC (`Z`); all sorting compares instants (`Date.parse`), never strings.
 - Note on the demo clock: some seed activity is dated later today/tomorrow (fixed Figma scenario), so an event created now can appear _below_ those entries in "Latest activity".
 
+## 4b. Role flows C → D → E → H on one shared record
+
+All roles read and write the same `DemoDataset` through pure workflow commands in `src/domain/workflow/` (`hall`, `charity`, `field`, `beneficiary`, `notices`). Each command checks `can()`, writes an activity entry and in-app notices, and returns a flash message; screens never change records directly. Totals on every screen are computed by selectors from those records — none are hardcoded.
+
+| Hand-off                 | What happens                                                                                                            |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| C3 → D1                  | a published event (`available`) appears in the charity's opportunities                                                  |
+| D2 → D4 → E1             | interest → `awaiting_charity`; assignment → `assigned`, task + notice for that representative only                      |
+| E2 → E3                  | check-in → `representative_arrived`; final inspection → `inspected` / `no_surplus` / `not_collectable`                  |
+| E4 → D5 → C              | provisional handover (actual kg) → charity confirms → `collected` (hall confirmation optional; a dispute sends it back) |
+| D5 → D6 → H1             | a listing can be published only from a confirmed handover, never for more kg than remains unlisted                      |
+| H2 → D6 → H3             | request `pending` → accepted (`ready`, units deducted) or rejected with a reason                                        |
+| H7 → H5 / D6 impact      | full pickup → `completed`, +10 points once, counts as distributed; partial / not received → no points                   |
+| H4 → D7 → E → D7 → H8/H5 | report → review / info request → inspection by a rep → charity documents the rescue → +25 points once                   |
+
+### Deviations and decisions (no Figma frame, or data had to stay consistent)
+
+| Topic                         | Decision                                                                                                                                                                                                                                                                                                                                     |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Listing names / sizes         | All seed listings come from the one documented handover HO-101 (32 kg = 20 + 4 + 8), so titles say "أرز ولحم" (as recorded) instead of Figma's "أرز ودجاج", L-08 has 4 bags instead of 15, and all three are from Al Ataa. R-06 is not seeded.                                                                                               |
+| One open request per listing  | Not stated in the blueprint; kept from the shared data layer so the per-request limit can't be bypassed with repeat requests. The seeded beneficiary (#17) already has open requests on both open listings, so the H2 form appears after D accepts and H confirms R-07, or on a new listing (as in the journey test). **Open for decision.** |
+| Partial pickup                | No points — only a full confirmed pickup earns them (blueprint: points only after a verifiable event). **Open question.**                                                                                                                                                                                                                    |
+| Reports                       | Always routed to Al Ataa (`reportsCharityId`). Photos are never read or stored — only "attached: yes/no". The food type is picked from a fixed list and stored as text in the reporter's language.                                                                                                                                           |
+| Pickup point after acceptance | The model has only a general area, so H3 shows "charity office — {area}"; no exact address is stored anywhere.                                                                                                                                                                                                                               |
+| H5 history                    | Ledger entries plus 0-point rows for the user's own reports not yet documented. Figma's "duplicate report" row isn't shown because no duplicate record exists. Newest first, so the sum reads "10 + 10 + 25".                                                                                                                                |
+| H6                            | One fixed demo tip; the pledge is stored once and earns nothing.                                                                                                                                                                                                                                                                             |
+| H7 "Report a problem"         | Opens H7 with "not received" preselected (no separate Figma frame).                                                                                                                                                                                                                                                                          |
+| Screens without Figma frames  | Hall event detail/list/handovers/activity/profile, charity tasks/activity, the publish-listing form and the rep's report inspection — built from the existing components and patterns.                                                                                                                                                       |
+| Navigation                    | Every role has an in-app Notices page; D's extra items sit in a mobile menu drawer; D4 confirm returns to D1 (as in Figma).                                                                                                                                                                                                                  |
+| Seed text                     | Seed food types and reasons are Arabic text and show as typed in English too (user-entered data is not translated).                                                                                                                                                                                                                          |
+| Demo clock                    | Seed dates are fixed (e.g. L-08 pickup 21 Oct 12:00–20:00); after that time the listing shows "Availability ended".                                                                                                                                                                                                                          |
+
 ## 5. Provisional values (not final — central in `src/config/demo.ts`)
 
-| Value                                                                                                             | Current                                                   | Status                                                            |
-| ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------- |
-| Hall can edit an event while status is                                                                            | `registered`, `available`, `awaiting_charity`             | provisional (blueprint open question Q6)                          |
-| "Finished" statuses (sorting)                                                                                     | `collected`, `no_surplus`, `not_collectable`, `closed`    | provisional                                                       |
-| Time zone                                                                                                         | `Asia/Riyadh`                                             | assumption                                                        |
-| C2 limits: date window, time slots, title 3–80, guests 1–5000, planned 1–5000 kg, notes ≤ 300, phone `05XXXXXXXX` | `DEMO_CONFIG.newEvent`                                    | provisional (demo choices)                                        |
-| Food types list (hot meals, rice dishes, salads & starters, desserts, baked goods, fruit)                         | `FOOD_TYPES` in `src/domain/types.ts`                     | provisional                                                       |
-| C3 forecast: 0.5 kg/guest, 20% safety margin, 2 kg per box; adjustable 0.1–2 kg and 0–50%                         | `DEMO_CONFIG.forecast`                                    | illustrative (Figma scenario) — must be calibrated with real data |
-| Points, request limits (Q18–Q21)                                                                                  | **not used yet** — no screen in this iteration needs them | to be added to the same config when their screens are built       |
+| Value                                                                                                             | Current                                                | Status                                                            |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------- |
+| Hall can edit an event while status is                                                                            | `registered`, `available`, `awaiting_charity`          | provisional (blueprint open question Q6)                          |
+| "Finished" statuses (sorting)                                                                                     | `collected`, `no_surplus`, `not_collectable`, `closed` | provisional                                                       |
+| Time zone                                                                                                         | `Asia/Riyadh`                                          | assumption                                                        |
+| C2 limits: date window, time slots, title 3–80, guests 1–5000, planned 1–5000 kg, notes ≤ 300, phone `05XXXXXXXX` | `DEMO_CONFIG.newEvent`                                 | provisional (demo choices)                                        |
+| Food types list (hot meals, rice dishes, salads & starters, desserts, baked goods, fruit)                         | `FOOD_TYPES` in `src/domain/types.ts`                  | provisional                                                       |
+| C3 forecast: 0.5 kg/guest, 20% safety margin, 2 kg per box; adjustable 0.1–2 kg and 0–50%                         | `DEMO_CONFIG.forecast`                                 | illustrative (Figma scenario) — must be calibrated with real data |
+| Points: +10 confirmed pickup, +25 documented rescue; Silver at 50, Gold at 150; badge target 5 pickups            | `DEMO_CONFIG.points`                                   | provisional (blueprint Q18–Q21) — adjustable, not a final policy  |
+| Beneficiary: 3 units per request, 2 kg per unit (default), "few left" at ≤ 2 units                                | `DEMO_CONFIG.beneficiary`                              | provisional                                                       |
+| Surplus reports go to                                                                                             | `charity-ataa` (`DEMO_CONFIG.reportsCharityId`)        | demo assumption                                                   |
 
-Seed records (halls, charities, events E-101…E-108, activity) are fictional demo data matching the Figma screens.
+Seed records (halls, charities, events E-101…E-108, coordination, handovers, listings, requests, reports, points, notices, activity) are fictional demo data matching the Figma screens.
 
 ## 6. Verified results (2026-10-21, Windows 11, Node 24.16)
 
-| Check                                 | Result                                                                                                                                                                                                                                                                        |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run typecheck`                   | ✅ 0 errors                                                                                                                                                                                                                                                                   |
-| `npm run lint`                        | ✅ 0 problems                                                                                                                                                                                                                                                                 |
-| `npm run format:check`                | ✅ clean                                                                                                                                                                                                                                                                      |
-| `npm test` (Vitest)                   | ✅ 59 / 59 passed (6 files)                                                                                                                                                                                                                                                   |
-| `npm run build`                       | ✅ success                                                                                                                                                                                                                                                                    |
-| `npm run test:e2e` (Playwright, Edge) | ✅ 57 passed, 1 skipped by design (drawer test runs on mobile only) — every test also asserts zero console errors                                                                                                                                                             |
-| Manual visual review vs Figma         | A2, C1, C2 (AR error + EN valid, food-type picker), C3 (AR, EN with adjusted assumptions, mobile) and C1 after each decision, at 1440 and 390 — frames `19:974`, `19:1219`, `15:650`, `19:1462`, `19:1689`, `49:5891`, `49:6078`. Mobile C3 cards measured: no text overflow. |
+| Check                                 | Result                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `npm run typecheck`                   | ✅ 0 errors                                                                                                               |
+| `npm run lint`                        | ✅ 0 problems                                                                                                             |
+| `npm run format:check`                | ✅ clean                                                                                                                  |
+| `npm test` (Vitest)                   | ✅ 73 / 73 passed (7 files)                                                                                               |
+| `npm run build`                       | ✅ success (run by the Playwright web server)                                                                             |
+| `npm run test:e2e` (Playwright, Edge) | ✅ 105 passed, 3 skipped by design (tests that exist for one viewport only) — every test also asserts zero console errors |
+| Manual visual review vs Figma         | C, D, E and H screens in AR and EN at 390 and 1440, compared with the Figma frames; no horizontal scroll on any of them   |
 
-E2E coverage: A2 → C1 (AR & EN, card click and Continue), derived metrics 3/1/0, own-hall events only, Edit vs View by `can()`, session survives reload, language switch keeps the screen, unbuilt role page, storage keys, no session, access denied (both directions), corrupted data + reset, empty hall, under-development screen + back, 404 (AR/EN), skip link, keyboard card selection, account switcher (Esc returns focus, switching role), mobile drawer side + Esc, no horizontal scroll on A2/C1/C2.
-C2: Figma error state (summary focused, exact AR text, field errors, nothing stored, live update), Save & make available → E-109 registered → C3 → publish → confirmation + metrics 4 + persisted + one-time banner + working Edit link, Save as registered (stored fields, activity entry), Cancel saves nothing, food-type picker by keyboard, unknown event id → not-found.
-C3: Figma numbers and calculation texts (AR), current nav item, Keep 210 kg (60 kg estimate stored), Adjust assumptions (live recalculation, invalid value blocks the decision, assumptions stored), Restore defaults, no second decision, seed event without planned quantity, another hall's event → not found, leaving C3 keeps the event registered.
+E2E coverage by role: `a2-c1`, `states`, `keyboard`, `c2-new-event`, `c3-forecast` (hall); `d-charity` (D1–D7, permissions, team availability, publish rules); `e-field` (own tasks only, check-in, no-surplus reason, handover validation, D5 confirmation, report inspection → rescue → points once); `h-beneficiary` (H1 availability and filters, duplicate and over-quantity request, own requests only, H7 validation and points once, H4 validation and review-only, H8 answer, H6 pledge, mobile tabs); `journey` (one event from C2 to H7 across every role).
 
 ## 7. Known limitations
 
-- Only A2, C1, C2 and C3 are functional; other screens/roles show an explicit "under development" page.
-- An event left on C3 without a decision can only be published by reopening its forecast URL (`/hall/events/E-xxx/forecast`) — event edit isn't built yet.
-- The forecast values (0.5 kg/guest, 20%, 2 kg boxes) are illustrative, not calibrated.
-- Cancel on C2 discards typed values without asking (no "unsaved changes" prompt in Figma).
-- No backend, no real auth, no persistence beyond the current browser.
-- The account switcher is a demo convenience, not authentication.
+- B (admin) and F (judges) still show the "under development" page — the Platform Manager merge is a proposal awaiting approval.
+- No backend, no real auth, no persistence beyond the current browser; the account switcher is a demo convenience, not authentication.
+- Forecast, points and limits are illustrative, not calibrated (see §5).
+- Seed food types/reasons are Arabic-only text; seed dates are fixed, so some listings and events change state as the real clock passes them.
+- Cancel on forms discards typed values without asking (no "unsaved changes" prompt in Figma).
 - Visual comparison with Figma was manual (screenshots), not pixel-diff automated.
 - Not tested on Safari/Firefox or real iOS/Android devices (Edge/Chromium emulation only).
 
-## 8. Next steps for the other roles
+## 8. Next steps
 
-1. **Hall:** event detail/edit gated by `can("event.edit")` reusing `validateNewEvent` (with a way back to C3 for registered events), then handovers and hall activity — writing `ActivityLogEntry` on every change.
-2. **Charity (D1…):** opportunities list = events where `can(charity, "event.view")`; "express interest" transitions `available → awaiting_charity` and logs `coordination.interest`.
-3. **Field representative (E1…):** assigned tasks → arrival → inspection result → handover; quantities stay separate from estimates.
-4. **Admin (B1) / Judges (F1):** read-everything views reusing the same selectors; judges strictly read-only.
-5. **Beneficiary (H1):** separate data model (requests), never sees events.
-6. For each role: add its nav to `ROLE_CONFIG`, flip `implemented: true`, add selectors + unit tests, and extend the E2E suite.
-7. Before any real deployment: real backend + server-side authorization, real auth, and replacing the local repository.
+1. **B + F → Platform Manager (مدير المنصة):** proposal prepared and waiting for approval; nothing applied yet.
+2. Decide the open questions: one open request per listing, points for partial pickup, final point values.
+3. Before any real deployment: real backend + server-side authorization, real auth, and replacing the local repository.
