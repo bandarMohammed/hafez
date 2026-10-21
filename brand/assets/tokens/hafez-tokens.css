@@ -1,0 +1,74 @@
+/* Hafez | حفيظ — design tokens
+   Source of truth: hafez-tokens.json. Fonts: Inter (Latin) + Tajawal (Arabic), OFL, files in ../fonts */
+
+@font-face { font-family: "Inter"; src: url("../fonts/Inter-Variable.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Tajawal"; src: url("../fonts/Tajawal-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Tajawal"; src: url("../fonts/Tajawal-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Tajawal"; src: url("../fonts/Tajawal-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Tajawal"; src: url("../fonts/Tajawal-ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: swap; }
+
+:root {
+  /* core palette */
+  --hz-forest: #0E3524;
+  --hz-green: #2E7D5A;
+  --hz-sprout: #A7BB68;
+  --hz-sand: #F4EDE1;
+  --hz-paper: #FAFAF7;
+
+  /* supporting */
+  --hz-forest-700: #1A4432;
+  --hz-gold: #D1AE74;
+  --hz-gold-line: #C39E5D;
+  --hz-olive: #5E793F;
+  --hz-ink: #1C2B24;
+  --hz-muted: #5D6B63;
+  --hz-line: #E4DDD0;
+  --hz-mint: #E4EFE6;
+  --hz-white: #FFFFFF;
+
+  /* status */
+  --hz-success: #236446;   --hz-success-bg: #D9EFD5;
+  --hz-warning: #8A5A0B; --hz-warning-bg: #FAE9C1;
+  --hz-info: #4A4E8C;    --hz-info-bg: #E8E7F0;
+  --hz-danger: #A33A2B;   --hz-danger-bg: #F6DEDA;
+
+  /* semantic roles */
+  --hz-bg: var(--hz-paper);
+  --hz-surface: #FFFFFF;
+  --hz-surface-alt: var(--hz-sand);
+  --hz-text: var(--hz-ink);
+  --hz-heading: var(--hz-forest);
+  --hz-text-muted: var(--hz-muted);
+  --hz-action: var(--hz-green);
+  --hz-action-strong: var(--hz-forest);
+  --hz-border: var(--hz-line);
+
+  /* type */
+  --hz-font-ar: "Tajawal", "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --hz-font-en: "Inter", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --hz-fs-display: 3.5rem;  --hz-lh-display: 1.14;
+  --hz-fs-h1: 2.5rem;       --hz-lh-h1: 1.25;
+  --hz-fs-h2: 2rem;         --hz-lh-h2: 1.3;
+  --hz-fs-h3: 1.5rem;       --hz-lh-h3: 1.4;
+  --hz-fs-h4: 1.25rem;      --hz-lh-h4: 1.5;
+  --hz-fs-body-lg: 1.125rem;
+  --hz-fs-body: 1rem;       --hz-lh-body: 1.7;
+  --hz-fs-small: .875rem;
+  --hz-fs-caption: .75rem;
+  --hz-tracking-overline: .16em;
+
+  /* space (4px base) */
+  --hz-space-1: 4px; --hz-space-2: 8px; --hz-space-3: 12px; --hz-space-4: 16px;
+  --hz-space-5: 24px; --hz-space-6: 32px; --hz-space-7: 48px; --hz-space-8: 64px; --hz-space-9: 96px;
+
+  /* radius */
+  --hz-radius-xs: 6px; --hz-radius-sm: 10px; --hz-radius-md: 14px;
+  --hz-radius-lg: 20px; --hz-radius-xl: 28px; --hz-radius-pill: 999px;
+
+  /* elevation */
+  --hz-shadow-card: 0 1px 2px rgba(14,53,36,.06), 0 8px 24px rgba(14,53,36,.06);
+  --hz-shadow-raised: 0 12px 40px rgba(14,53,36,.12);
+
+  /* icons */
+  --hz-icon-stroke: 1.75;
+}

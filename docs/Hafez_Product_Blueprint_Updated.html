@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hafez | وثيقة تجربة المستخدم والصلاحيات وتدفق البيانات</title>
+<style>
+:root{--forest:#173f35;--green:#286b53;--leaf:#78a85a;--lime:#c8d86a;--cream:#f7f5ed;--paper:#fffefa;--ink:#1e302a;--muted:#66756e;--line:#dfe6dc;--soft:#edf3eb;--gold:#a67b32;--red:#a84848;--blue:#426b8a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.85}
+a{color:var(--green)}.shell{max-width:1180px;margin:auto;padding:24px}.hero{background:linear-gradient(130deg,#173f35,#286b53);color:white;padding:42px;border-radius:24px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;left:-35px;top:-70px;width:260px;height:260px;border:1px solid #ffffff30;border-radius:50%;box-shadow:0 0 0 35px #ffffff0d,0 0 0 70px #ffffff08}.eyebrow{font-size:12px;letter-spacing:1px;color:var(--lime);font-weight:bold}.hero h1{font-size:clamp(30px,5vw,48px);margin:8px 0 4px;line-height:1.25}.hero p{max-width:760px;color:#e4eee7;margin:12px 0 0}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.pill{display:inline-block;padding:4px 11px;border:1px solid #ffffff45;border-radius:30px;font-size:12px}.layout{display:grid;grid-template-columns:250px 1fr;gap:22px;margin-top:22px;align-items:start}.nav{position:sticky;top:14px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px}.nav strong{display:block;margin-bottom:8px}.nav a{display:block;text-decoration:none;color:var(--muted);padding:7px 10px;border-radius:9px;font-size:13px}.nav a:hover{background:var(--soft);color:var(--forest)}main{min-width:0}.section{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:25px;margin-bottom:18px;scroll-margin-top:15px}.section h2{margin:0 0 12px;font-size:24px;color:var(--forest)}.section h3{font-size:17px;color:var(--green);margin:22px 0 8px}.lead{color:var(--muted);margin-top:-4px}.callout{border-right:4px solid var(--leaf);background:var(--soft);padding:12px 16px;border-radius:10px;margin:14px 0}.warn{border-color:var(--gold);background:#fbf5e7}.danger{border-color:var(--red);background:#fbefee}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:13px;padding:15px;background:#fff}.card h3{margin:0 0 5px}.small{font-size:13px;color:var(--muted)}table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}th,td{border:1px solid var(--line);padding:10px;text-align:right;vertical-align:top}th{background:var(--soft);color:var(--forest)}tr:nth-child(even) td{background:#fff}.tag{display:inline-block;background:#edf3eb;color:#286b53;padding:1px 8px;border-radius:6px;font-size:11px;white-space:nowrap}.tag.red{background:#fae9e7;color:#a84848}.tag.gold{background:#fbf1d8;color:#805e21}.flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;margin:16px 0}.node{flex:1 1 120px;border:1px solid #cddbcf;background:#f5f8f1;border-radius:12px;padding:12px;text-align:center;font-size:13px}.arrow{align-self:center;color:var(--leaf);font-weight:bold}.mono{font-family:Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap;background:#172e28;color:#e5f1e8;padding:18px;border-radius:12px;font-size:12px;overflow:auto}.checklist{padding-right:20px}.checklist li{margin:6px 0}.footer{padding:20px;text-align:center;color:var(--muted);font-size:12px}.swatches{display:flex;gap:10px;flex-wrap:wrap}.swatch{width:110px}.color{height:38px;border-radius:8px;border:1px solid #0001}.swatch small{display:block;color:var(--muted);font-size:11px}.role-switch{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.role-switch button{border:1px solid var(--line);background:white;border-radius:9px;padding:8px 12px;font-family:inherit;cursor:pointer}.role-switch button.active{background:var(--forest);color:white}.role-panel{border:1px dashed var(--leaf);border-radius:12px;padding:14px;background:#f7faf4}.hide{display:none}.badge{font-size:11px;padding:2px 7px;border-radius:20px;background:#e8eee7;color:var(--forest)}@media(max-width:850px){.layout{grid-template-columns:1fr}.nav{position:static}.nav div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:28px}.section{padding:18px}.cards{grid-template-columns:1fr}}@media print{body{background:white}.shell{max-width:none;padding:0}.layout{display:block}.nav{display:none}.hero,.section{break-inside:avoid}.section{box-shadow:none}.hero{border-radius:0}.section{border-radius:0}.role-switch{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="hero">
+<div class="eyebrow">HAFEZ · PRODUCT & ENGINEERING BLUEPRINT</div>
+<h1>وثيقة المنتج وتجربة المستخدم</h1>
+<div style="font-size:19px;color:#dbe9df">Hafez</div>
+<p>مرجع منتج وتجربة مستخدم محدث لمشروع حفيظ: تنسيق فائض الطعام بين القاعات والجمعيات، مع إضافة واجهة مستقلة للمستفيد تتيح استكشاف الطعام المتاح وطلبه، والإبلاغ عن فائض لديه، وتحفيز السلوك الإيجابي عبر درع ونقاط. هذه الوثيقة مرجع لمراجعة تصميم Figma أولًا؛ لا تبدأ البرمجة قبل اعتماد التصميم.</p>
+<div class="meta"><span class="pill">نسخة MVP للعرض</span><span class="pill">واجهة عربية RTL</span><span class="pill">بيانات تجريبية فقط</span><span class="pill">وثيقة مرجعية للتنفيذ</span></div>
+</header>
+<div class="layout">
+<aside class="nav"><strong>محتويات الوثيقة</strong><div>
+<a href="#summary">1. الملخص والحدود</a><a href="#actors">2. المستخدمون والصلاحيات</a><a href="#beneficiary">2.1 واجهة المستفيد الجديدة</a><a href="#usecases">3. حالات الاستخدام</a><a href="#journey">4. رحلة المستخدم</a><a href="#flow">5. تدفق البيانات</a><a href="#states">6. الحالات وقواعد العمل</a><a href="#data">7. نموذج البيانات</a><a href="#architecture">8. هيكل المشروع</a><a href="#screens">9. الشاشات المطلوبة</a><a href="#demo">10. حسابات العرض والتبديل</a><a href="#security">11. الخصوصية والأمان</a><a href="#acceptance">12. معايير القبول</a><a href="#build">13. ترتيب التنفيذ</a><a href="#prompt">14. تعليمات Claude Code</a>
+</div></aside>
+<main>
+<section class="section" id="summary">
+<h2>1. الملخص والحدود</h2>
+<p class="lead">الهدف: بناء نموذج أولي يمكن للحكّام تجربته بالكامل دون إنشاء حسابات حقيقية أو إرسال بيانات إلى خدمات خارجية.</p>
+<div class="callout"><b>قرار المنتج:</b> كل الوظائف المتفق عليها تُعرض داخل نموذج تجريبي واحد. توجد حسابات وهمية مزروعة مسبقًا في بيانات التطبيق، ويمكن للمقدم تبديل الدور من شريط واضح بعنوان «وضع العرض — تبديل المستخدم» دون تسجيل خروج تقني أو إعادة تشغيل التطبيق.</div>
+<h3>ما الذي يحله Hafez؟</h3>
+يساعد قاعات المناسبات والجهات الخيرية على تنسيق استلام فائض الطعام المتوقع، وتوثيق الكميات والحالة وخطوات التسليم، بدل الاعتماد على اتصالات عشوائية بعد انتهاء المناسبة.
+<h3>داخل نطاق النسخة التجريبية</h3>
+<ul class="checklist"><li>تسجيل مناسبة وبياناتها الأساسية من القاعة.</li><li>عرض المناسبات للجهة الخيرية المناسبة وتأكيد الاهتمام بالاستلام.</li><li>إسناد ممثل ميداني وتوثيق نتيجة المعاينة.</li><li>تسجيل الكمية الفعلية، حالة سلامة الطعام، وبيانات التسليم.</li><li>لوحة متابعة للمشرف مع مؤشرات وتقارير تجريبية.</li><li>تبديل الأدوار لإظهار واجهات وصلاحيات كل مستخدم للحكّام.</li></ul>
+<h3>خارج النطاق حاليًا</h3>
+<ul><li>تكاملات حكومية أو ربط فعلي مع جمعيات أو قاعات.</li><li>إشعارات SMS / WhatsApp أو خرائط وخرائط مسارات فعلية.</li><li>دفع إلكتروني، رفع وثائق رسمية، أو تسجيل عام للجمهور.</li><li>الادعاء بأن الطعام آمن تلقائيًا أو أن عدد الحضور يثبت وجود فائض.</li><li>تطبيق إنتاجي وطني؛ التوسع الوطني هدف مستقبلي وليس شرطًا تقنيًا للـMVP.</li></ul>
+<div class="callout warn"><b>مهم:</b> هذا نموذج عرض وليس نظامًا آمنًا للإنتاج. تبديل الدور يشرح الصلاحيات بصريًا فقط؛ لا يجوز وصفه بأنه مصادقة أو تفويض حقيقي على خادم.</div>
+</section>
+
+<section class="section" id="actors">
+<h2>2. المستخدمون والصلاحيات</h2>
+<p>اعتمد مبدأ أقل صلاحية لازمة: كل دور يرى بياناته والمهام التي تخصه فقط. في العرض يمكن التبديل بين الحسابات، لكن يجب أن تتغير الواجهة والبيانات والأزرار المتاحة مع الدور.</p>
+<table><thead><tr><th>الدور</th><th>المهام الأساسية</th><th>ما يمكنه فعله</th><th>ما لا يمكنه فعله</th></tr></thead><tbody>
+<tr><td><b>مشرف المنصة</b><br><span class="small">admin</span></td><td>متابعة التشغيل وإدارة التنسيق</td><td>عرض كل المناسبات؛ مراجعة الجهات والقاعات؛ إسناد ممثل؛ تغيير الحالة؛ عرض التقارير وسجل النشاط</td><td>لا تُعرض له كلمات مرور أو أسرار. لا توجد إدارة حسابات حقيقية في النموذج</td></tr>
+<tr><td><b>مسؤول القاعة</b><br><span class="small">hall_manager</span></td><td>تسجيل المناسبة وتحديث تفاصيلها</td><td>إنشاء مناسبة؛ تعديل مناسبات قاعته قبل الاستلام؛ إدخال الحضور المتوقع ونوع الطعام ووقت الجاهزية؛ مشاهدة حالة الطلب</td><td>لا يرى مناسبات القاعات الأخرى؛ لا يؤكد الاستلام نيابة عن الجمعية</td></tr>
+<tr><td><b>منسق الجمعية</b><br><span class="small">charity_coordinator</span></td><td>مراجعة الفرص وتنسيق الاستلام</td><td>مشاهدة الفرص المتاحة ضمن نطاقه؛ إبداء الاهتمام؛ قبول/رفض الإسناد؛ تعيين ممثل من فريقه؛ تأكيد استلام الجمعية</td><td>لا يعدل تفاصيل المناسبة الأصلية أو سجلات قاعة أخرى؛ لا يرى بيانات غير لازمة عن المستفيدين</td></tr>
+<tr><td><b>الممثل الميداني</b><br><span class="small">field_representative</span></td><td>المعاينة والتوثيق والتسليم</td><td>مشاهدة المهام المسندة إليه؛ تسجيل الوصول والمعاينة؛ إدخال الكمية المقدرة/الفعلية؛ تعبئة قائمة السلامة؛ توثيق التسليم</td><td>لا يرى جميع المناسبات؛ لا يسند مهامًا لنفسه؛ لا يغيّر إعدادات المنصة</td></tr>
+<tr><td><b>حساب مراقب للحكّام</b><br><span class="small">judge_viewer</span></td><td>استعراض رحلة المنتج</td><td>مشاهدة بيانات عرض مختارة والتنقل بين صفحات القراءة فقط</td><td>لا ينشئ أو يعدّل أو يحذف أي سجل</td></tr>
+<tr><td><b>المستفيد</b><br><span class="small">beneficiary</span></td><td>العثور على الطعام المناسب، طلبه، والإبلاغ عن فائض قابل للإنقاذ</td><td>استعراض الإعلانات المتاحة، طلب كمية، متابعة الطلب، إرسال بلاغ فائض، مشاهدة الدرع والنقاط وسجلها، وتأكيد الاستلام عند انطباقه</td><td>لا يرى بيانات شخصية لمتبرعين أو مستفيدين آخرين؛ لا يعتمد سلامة الطعام بنفسه؛ لا يمنح نفسه نقاطًا ولا يعدّل طلبات غيره</td></tr>
+</tbody></table>
+<h3>مصفوفة صلاحيات مختصرة</h3>
+<table><thead><tr><th>الإجراء</th><th>مشرف</th><th>القاعة</th><th>الجمعية</th><th>الممثل</th><th>الحكّام</th></tr></thead><tbody>
+<tr><td>عرض جميع المناسبات</td><td>نعم</td><td>لا</td><td>الفرص ذات الصلة</td><td>المسندة إليه</td><td>عينة عرض فقط</td></tr>
+<tr><td>إنشاء مناسبة</td><td>نعم</td><td>نعم</td><td>لا</td><td>لا</td><td>لا</td></tr>
+<tr><td>تعديل تفاصيل القاعة</td><td>نعم</td><td>مناسباته قبل الاستلام</td><td>لا</td><td>لا</td><td>لا</td></tr>
+<tr><td>إبداء اهتمام/قبول مهمة</td><td>نعم</td><td>لا</td><td>نعم</td><td>لا</td><td>لا</td></tr>
+<tr><td>إدخال نتيجة المعاينة</td><td>عرض/تصحيح إداري</td><td>عرض فقط</td><td>عرض مهام جمعيته</td><td>نعم للمهمة المسندة</td><td>لا</td></tr>
+<tr><td>تأكيد التسليم</td><td>نعم</td><td>تأكيد طرف القاعة</td><td>تأكيد الجمعية</td><td>تسجيل تسليم مبدئي</td><td>لا</td></tr>
+<tr><td>إدارة المستخدمين والجهات</td><td>عرض/إدارة تجريبية</td><td>لا</td><td>لا</td><td>لا</td><td>لا</td></tr>
+<tr><td>عرض سجل النشاط</td><td>كامل</td><td>سجل قاعته</td><td>سجل جمعيته</td><td>سجل مهامه</td><td>ملخص فقط</td></tr>
+<tr><td>استعراض الطعام المتاح وطلبه</td><td>إشراف</td><td>لا</td><td>إدارة إعلانات جمعيته</td><td>لا</td><td>لا</td><td>نعم</td></tr>
+<tr><td>الإبلاغ عن فائض لدى المستخدم</td><td>متابعة</td><td>لا</td><td>استقبال/معالجة البلاغات</td><td>معاينة إذا أُسندت له</td><td>لا</td><td>نعم</td></tr>
+<tr><td>إدارة نقاط الدرع</td><td>مراجعة السجل</td><td>لا</td><td>لا</td><td>لا</td><td>لا</td><td>مشاهدة الرصيد والسجل فقط</td></tr>
+</tbody></table>
+
+</section>
+
+<section class="section" id="beneficiary">
+<h2>2.1 واجهة المستفيد — إضافة معتمدة في نطاق التصميم</h2>
+<p class="lead">المستفيد مستخدم مستقل في تجربة حفيظ، وليس مجرد سجل تابع للجمعية. الهدف تمكينه من الوصول للطعام المتاح، وطلبه بطريقة تحفظ الكرامة والخصوصية، وكذلك الإبلاغ عن فائض الطعام الذي لديه لإنقاذه.</p>
+<div class="callout"><b>قرار التصميم:</b> أضف دورًا سادسًا باسم «المستفيد» إلى اختيار الحساب التجريبي وشريط تبديل المستخدم، مع واجهة مستقلة Mobile-first. أبقِ الأدوار الخمسة الحالية كما هي، ولا تعِد بناء الملف من الصفر.</div>
+<h3>شاشات المستفيد المطلوبة</h3>
+<table><thead><tr><th>الرمز</th><th>الشاشة</th><th>المحتوى والسلوك</th></tr></thead><tbody>
+<tr><td>H1</td><td>الرئيسية / الطعام المتاح</td><td>بطاقات طعام منشورة من جمعيات تجريبية: نوع الطعام، الكمية المتاحة، وصف مختصر، منطقة عامة، وقت الاستلام أو انتهاء الإتاحة، حالة التوفر، وزر «عرض التفاصيل». لا تعرض بيانات شخصية أو عنوانًا دقيقًا قبل الحاجة.</td></tr>
+<tr><td>H2</td><td>تفاصيل الطعام وطلبه</td><td>تفاصيل الكمية ونوع الطعام ووقت/مكان الاستلام والتعليمات المعتمدة في بيانات العرض؛ اختيار الكمية المطلوبة وإرسال الطلب؛ منع طلب كمية أكبر من المتاح؛ عرض حالة الطلب: قيد المراجعة، مقبول، جاهز للاستلام، مكتمل، مرفوض أو ملغي.</td></tr>
+<tr><td>H3</td><td>طلباتي</td><td>قائمة طلبات المستفيد وحالتها وتاريخها وتفاصيل الاستلام. تحديث حالة الطلب يجب أن ينعكس في واجهة الجمعية كذلك.</td></tr>
+<tr><td>H4</td><td>الإبلاغ عن فائض</td><td>نموذج يضم نوع الطعام، كمية تقديرية ووحدتها، وقت الجاهزية، منطقة/موقع الاستلام، ملاحظات، وصورة اختيارية. يُرسل البلاغ للجمعية/الجهة المنسقة للمراجعة؛ لا يُعرض تلقائيًا كطعام متاح قبل التحقق وقبول الجهة المختصة.</td></tr>
+<tr><td>H5</td><td>درعي ونقاطي</td><td>درع بصري بمستوى حالي وشريط تقدم للنقاط، شارات إنجاز، رصيد النقاط، وسجل يشرح سبب كل إضافة أو خصم. يجب ألا تكون النقاط أرقامًا تجميلية ثابتة؛ تُشتق من أحداث موثقة.</td></tr>
+<tr><td>H6</td><td>توعية قصيرة / نصيحة اليوم</td><td>رسالة قصيرة مرتبطة بتقليل هدر الطعام، مع إجراء اختياري بسيط مثل «قرأت النصيحة» أو تعهد أسبوعي. لا تدّعِ أن فتح النصيحة وحده يثبت تغيير السلوك.</td></tr>
+<tr><td>H7</td><td>تأكيد الاستلام / ملاحظات</td><td>عند الطلب المقبول، يمكن للمستفيد تأكيد الاستلام أو الإبلاغ عن عدم الوصول/استلام جزئي، وإرسال تقييم اختياري. لا تُعرض بياناته الشخصية للمتبرعين أو المستفيدين الآخرين.</td></tr>
+</tbody></table>
+<h3>قواعد نقاط الدرع — نموذج أولي قابل للمراجعة</h3>
+<ul class="checklist">
+<li>امنح نقاطًا فقط بعد حدث قابل للتحقق، مثل إكمال استلام مؤكد أو إتمام بلاغ فائض وقبوله من الجهة المختصة.</li>
+<li>لا تمنح نقاطًا لمجرد إنشاء طلب أو تكرار الضغط أو رفع بلاغ مكرر.</li>
+<li>احتفظ بسجل نقاط يضم الحدث، عدد النقاط، التاريخ، وحالة التحقق؛ وامنع تكرار احتساب الحدث نفسه.</li>
+<li>استخدم نقاطًا تجريبية واضحة في العرض، مع توضيح أن نظام المكافآت قابل للضبط وليس سياسة نهائية.</li>
+<li>لا تربط النقاط بكمية الطعام وحدها بما قد يشجع على تضخيم الكميات أو سلوك غير آمن.</li>
+</ul>
+<h3>حالات سير العمل</h3>
+<div class="flow"><div class="node"><b>الجمعية</b><br>تنشر فائضًا متاحًا</div><div class="arrow">←</div><div class="node"><b>المستفيد</b><br>يستعرض ويطلب كمية</div><div class="arrow">←</div><div class="node"><b>الجمعية</b><br>تقبل الطلب وتحدد الاستلام</div><div class="arrow">←</div><div class="node"><b>المستفيد</b><br>يؤكد الاستلام</div><div class="arrow">←</div><div class="node"><b>حفيظ</b><br>يحدث الأثر والنقاط</div></div>
+<div class="flow"><div class="node"><b>المستفيد</b><br>يبلغ عن فائض لديه</div><div class="arrow">←</div><div class="node"><b>الجمعية / المنسق</b><br>يراجع البلاغ</div><div class="arrow">←</div><div class="node"><b>الممثل</b><br>يعاين عند الحاجة</div><div class="arrow">←</div><div class="node"><b>اعتماد الجهة</b><br>تحديث الحالة والأثر</div></div>
+<div class="callout warn"><b>سلامة وخصوصية:</b> لا يُعتبر الطعام مناسبًا تلقائيًا بسبب بلاغ المستفيد. تتولى الجهة المختصة المراجعة والمعاينة وفق الإجراءات المعتمدة. استخدم بيانات تجريبية فقط، ولا تعرض أسماء المستفيدين أو عناوينهم الدقيقة في قوائم عامة.</div>
+</section>
+
+<section class="section" id="usecases">
+<h2>3. حالات الاستخدام الأساسية</h2>
+<div class="cards">
+<div class="card"><h3>UC-01 · تسجيل مناسبة</h3><span class="tag">مسؤول القاعة</span><p>يدخل الاسم والتاريخ والموقع والعدد المتوقع ووقت انتهاء المناسبة ووقت جاهزية الطعام ومعلومات التواصل ونوع الطعام المتوقع.</p><p class="small"><b>النتيجة:</b> تنشأ مناسبة بحالة «مسجلة»، ويظهر سجل نشاط.</p></div>
+<div class="card"><h3>UC-02 · استكشاف فرصة</h3><span class="tag">منسق الجمعية</span><p>يفتح قائمة الفرص، يراجع الوقت والمنطقة ونوع الطعام والكمية المتوقعة، ثم يبدي الاهتمام أو يرفض مع سبب اختياري.</p><p class="small"><b>النتيجة:</b> يُنشأ طلب تنسيق مرتبط بالجمعية.</p></div>
+<div class="card"><h3>UC-03 · إسناد ممثل</h3><span class="tag">المشرف / منسق الجمعية</span><p>يحدد ممثلًا من الفريق ويؤكد وقت الزيارة المتوقع. تظهر المهمة في لوحة الممثل فقط.</p><p class="small"><b>النتيجة:</b> تتغير الحالة إلى «تم الإسناد».</p></div>
+<div class="card"><h3>UC-04 · معاينة الفائض</h3><span class="tag">الممثل الميداني</span><p>يسجل وقت الوصول، تقدير الكمية، نوع الطعام، طريقة الحفظ، حالة العبوات، وملاحظات السلامة. يمكنه اختيار «لا يوجد فائض قابل للاستلام».</p><p class="small"><b>النتيجة:</b> توثيق المعاينة وتحديد قرار الاستلام.</p></div>
+<div class="card"><h3>UC-05 · استلام وتسليم</h3><span class="tag">الممثل + الجمعية + القاعة</span><p>إذا كان الطعام مناسبًا للاستلام، يسجل الممثل الكمية الفعلية ووحدتها ووقت التسليم، ثم يؤكد الطرف المستلم. لا يتم افتراض السلامة من العدد وحده.</p><p class="small"><b>النتيجة:</b> سجل تسليم قابل للمراجعة.</p></div>
+<div class="card"><h3>UC-06 · مراجعة المؤشرات</h3><span class="tag">المشرف</span><p>يراجع عدد المناسبات، الطلبات المفتوحة، عمليات الاستلام المكتملة، والكمية المسجلة مع إمكانية فتح سجل كل مناسبة.</p><p class="small"><b>النتيجة:</b> لوحة متابعة مبنية على البيانات التجريبية الفعلية داخل التطبيق.</p></div>
+<div class="card"><h3>UC-07 · استعراض الصلاحيات</h3><span class="tag">مقدم العرض</span><p>يختار حسابًا تجريبيًا من قائمة التبديل أعلى الواجهة، فيتغير الدور والاسم والقوائم والأزرار والبيانات الظاهرة فورًا.</p><p class="small"><b>النتيجة:</b> يستطيع الحكّام رؤية الفرق بين كل دور من دون تسجيل دخول معقد.</p></div>
+<div class="card"><h3>UC-08 · معالجة عدم وجود فائض</h3><span class="tag">الممثل</span><p>يسجل نتيجة «لا يوجد فائض» أو «غير مناسب للاستلام»، ويختار سببًا، ثم تغلق المهمة مع الاحتفاظ بسجل الزيارة.</p><p class="small"><b>النتيجة:</b> لا يُسجل أي وزن مستلم بشكل زائف، وتظهر الزيارة في التقارير.</p></div>
+<div class="card"><h3>UC-09 · طلب طعام متاح</h3><span class="tag">المستفيد + الجمعية</span><p>يستعرض المستفيد الإعلانات المتاحة، يختار الكمية، ويرسل الطلب. تراجع الجمعية الطلب وتقبله أو ترفضه مع تحديث الحالة لدى الطرفين.</p><p class="small"><b>النتيجة:</b> طلب مترابط يمنع تجاوز الكمية المتاحة ويوثق الاستلام النهائي.</p></div>
+<div class="card"><h3>UC-10 · الإبلاغ عن فائض</h3><span class="tag">المستفيد + الجمعية</span><p>يرسل المستفيد بلاغًا عن فائض لديه مع كمية تقديرية ووقت وموقع. يبقى البلاغ «بانتظار المراجعة» حتى تقبله الجهة المختصة وتحدد الإجراء المناسب.</p><p class="small"><b>النتيجة:</b> فرصة إنقاذ موثقة دون افتراض سلامة الطعام أو نشره تلقائيًا.</p></div>
+<div class="card"><h3>UC-11 · الدرع والنقاط</h3><span class="tag">المستفيد</span><p>يشاهد المستخدم مستواه ونقاطه وسجل الاستحقاق. تُضاف النقاط من أحداث موثقة فقط، مثل استلام مؤكد أو فائض قُبل وتوثق إنقاذه.</p><p class="small"><b>النتيجة:</b> تحفيز سلوكي شفاف قابل للقياس، دون مكافأة الطلبات المكررة أو البلاغات غير المؤكدة.</p></div>
+</div>
+</section>
+
+<section class="section" id="journey">
+<h2>4. رحلة المستخدم من البداية إلى النهاية</h2>
+<div class="flow"><div class="node"><b>1. القاعة</b><br>تسجيل المناسبة والعدد المتوقع والوقت</div><div class="arrow">←</div><div class="node"><b>2. المنصة</b><br>تُنشئ فرصة وتعرضها للجهات الملائمة</div><div class="arrow">←</div><div class="node"><b>3. الجمعية</b><br>تراجع الفرصة وتبدي الاهتمام</div><div class="arrow">←</div><div class="node"><b>4. الإسناد</b><br>تعيين ممثل ووقت زيارة</div></div>
+<div class="flow"><div class="node"><b>5. المعاينة</b><br>الوصول وتقييم الفائض وسلامة التعامل</div><div class="arrow">←</div><div class="node"><b>6. القرار</b><br>استلام / لا يوجد فائض / غير مناسب</div><div class="arrow">←</div><div class="node"><b>7. التسليم</b><br>تسجيل الكمية والوقت وتأكيد الأطراف</div><div class="arrow">←</div><div class="node"><b>8. الإغلاق</b><br>تقرير وسجل نشاط ومؤشرات</div></div>
+<h3>مسار المستفيد المضاف</h3>
+<div class="flow"><div class="node"><b>أ. استكشاف</b><br>المستفيد يرى الطعام المنشور من الجمعيات</div><div class="arrow">←</div><div class="node"><b>ب. الطلب</b><br>يختار الكمية ويرسل الطلب</div><div class="arrow">←</div><div class="node"><b>ج. التنسيق</b><br>الجمعية تقبل وتحدد آلية الاستلام</div><div class="arrow">←</div><div class="node"><b>د. تأكيد</b><br>المستفيد يؤكد الاستلام أو يبلّغ عن مشكلة</div><div class="arrow">←</div><div class="node"><b>هـ. التحفيز</b><br>تُحدّث النقاط بعد التحقق</div></div>
+<div class="flow"><div class="node"><b>الإبلاغ عن فائض</b><br>المستفيد يرسل بلاغًا</div><div class="arrow">←</div><div class="node"><b>المراجعة</b><br>الجمعية/المنسق يتحقق من التفاصيل</div><div class="arrow">←</div><div class="node"><b>الاعتماد</b><br>تُسند معاينة عند الحاجة</div><div class="arrow">←</div><div class="node"><b>الأثر</b><br>تسجل الكمية المنقذة بعد التأكيد</div></div>
+<div class="callout warn">يجب أن يدعم النظام نتيجة «لا يوجد فائض» من دون اعتبارها فشلًا تقنيًا؛ فالزيارة الموثقة معلومة تشغيلية مهمة. وفي النموذج، تظهر المواعيد والزيارات كبيانات تجريبية وليست طلبات حقيقية.</div>
+</section>
+
+<section class="section" id="flow">
+<h2>5. تدفق البيانات</h2>
+<h3>التدفق الوظيفي</h3>
+<div class="flow"><div class="node">نموذج المناسبة<br><span class="small">Hall Event</span></div><div class="arrow">←</div><div class="node">التحقق من الحقول<br><span class="small">Validation</span></div><div class="arrow">←</div><div class="node">حفظ سجل المناسبة<br><span class="small">Demo Data Store</span></div><div class="arrow">←</div><div class="node">فرصة متاحة للجمعيات<br><span class="small">Opportunity</span></div></div>
+<div class="flow"><div class="node">اهتمام الجمعية</div><div class="arrow">←</div><div class="node">طلب تنسيق</div><div class="arrow">←</div><div class="node">إسناد ممثل</div><div class="arrow">←</div><div class="node">معاينة</div><div class="arrow">←</div><div class="node">تسليم/إغلاق</div></div>
+<h3>ما الذي يحدث عند الضغط على زر؟</h3>
+<ol><li>التحقق من الحقول المطلوبة وصحة القيم.</li><li>فحص الدور الحالي ونطاق السجل في منطق الواجهة.</li><li>تحديث كائن البيانات المناسب عبر دالة خدمة واحدة، وليس بتغيير واجهة العرض فقط.</li><li>تحديث الواجهة والمؤشرات من مصدر البيانات نفسه.</li><li>إضافة حدث إلى سجل النشاط: من قام بالإجراء، ما الإجراء، على أي سجل، ومتى.</li><li>إظهار رسالة نجاح أو خطأ واضحة، وعدم تغيير الحالة إذا فشل التحقق.</li></ol>
+<h3>مصدر البيانات في الـMVP</h3>
+<p>ابدأ ببيانات ثابتة Seed Data في ملفات TypeScript مع طبقة Repository موحدة. إذا احتجتم استمرار التغييرات بعد تحديث الصفحة، استخدم localStorage خلف هذه الطبقة. أضف زر «إعادة ضبط بيانات العرض» للمشرف. لا تضع أسرارًا أو بيانات شخصية حقيقية. لا تستخدم قاعدة بيانات أو API خارجيًا في هذه المرحلة.</p>
+<div class="callout"><b>قاعدة مهمة:</b> جميع الأرقام في لوحة المؤشرات يجب أن تُحسب من سجلات المناسبات والتسليم الموجودة فعلًا، لا من أرقام مكتوبة يدويًا داخل عناصر الواجهة.</div>
+</section>
+
+<section class="section" id="states">
+<h2>6. حالات السجل وقواعد العمل</h2>
+<h3>حالات المناسبة / الاستلام</h3>
+<table><thead><tr><th>الحالة</th><th>المعنى</th><th>من يستطيع نقلها إليها</th></tr></thead><tbody>
+<tr><td><span class="tag">مسجلة</span></td><td>أُدخلت المناسبة ولم يتم تأكيد تنسيق الاستلام</td><td>مسؤول القاعة عند الإنشاء</td></tr>
+<tr><td><span class="tag">متاحة للتنسيق</span></td><td>المناسبة جاهزة للعرض على الجهات الخيرية</td><td>القاعة أو المشرف</td></tr>
+<tr><td><span class="tag">بانتظار قبول الجمعية</span></td><td>تم إرسال طلب تنسيق تجريبي</td><td>النظام بعد اهتمام القاعة/المشرف</td></tr>
+<tr><td><span class="tag">تم الإسناد</span></td><td>تم تعيين جمعية وممثل وموعد متوقع</td><td>منسق الجمعية أو المشرف</td></tr>
+<tr><td><span class="tag">وصل الممثل</span></td><td>تم تسجيل الوصول الميداني</td><td>الممثل المسند</td></tr>
+<tr><td><span class="tag">تمت المعاينة</span></td><td>تم تسجيل نتيجة المعاينة</td><td>الممثل المسند</td></tr>
+<tr><td><span class="tag">تم الاستلام</span></td><td>تم تسجيل كمية مستلمة وتأكيد التسليم</td><td>الممثل + تأكيد الجهة المستلمة</td></tr>
+<tr><td><span class="tag gold">لا يوجد فائض</span></td><td>تمت المعاينة ولم يوجد فائض قابل للاستلام</td><td>الممثل المسند</td></tr>
+<tr><td><span class="tag red">غير مناسب للاستلام</span></td><td>الطعام أو ظروف حفظه لا تسمح بالاستلام وفق قائمة التحقق المعتمدة</td><td>الممثل المسند، مع سبب</td></tr>
+<tr><td><span class="tag">مغلقة</span></td><td>انتهت المهمة مع حفظ النتيجة وسجل النشاط</td><td>المشرف أو سير العمل بعد اكتمال المتطلبات</td></tr>
+</tbody></table>
+<h3>قواعد العمل التي يجب فرضها</h3>
+<ul class="checklist">
+<li>لا يمكن تأكيد «تم الاستلام» دون كمية فعلية ووحدة قياس ووقت استلام واسم الجهة المستلمة.</li>
+<li>الكمية المتوقعة والكمية الفعلية حقول منفصلة ولا يجوز الخلط بينهما.</li>
+<li>الحضور المتوقع ليس دليلًا كافيًا على وجود فائض؛ المعاينة تسجل النتيجة الفعلية.</li>
+<li>عند اختيار «لا يوجد فائض» يجب ألا يُنشأ سجل كمية مستلمة بقيمة موجبة.</li>
+<li>إذا كانت النتيجة «غير مناسب للاستلام»، يجب تسجيل السبب وعدم إكمال التسليم.</li>
+<li>لا يسمح بتغيير حالة إلى مرحلة لاحقة إذا لم تتحقق متطلبات المرحلة الحالية.</li>
+<li>أي تعديل مؤثر يضيف سجل نشاط مع القيمة السابقة والجديدة عند الإمكان.</li>
+<li>تظهر للمستخدم أزرار الإجراءات التي يسمح بها دوره فقط، وتظهر رسالة تفسيرية عند منع الإجراء.</li>
+<li>وقت المناسبة ووقت جاهزية الطعام ووقت المعاينة حقول مستقلة.</li>
+</ul>
+</section>
+
+<section class="section" id="data">
+<h2>7. نموذج البيانات المقترح</h2>
+<p class="lead">استخدم أنواعًا واضحة وعلاقات بالمعرّفات. لا تكرر بيانات الجهة كاملة داخل كل مناسبة؛ خزّن معرف الجهة واربطه عند العرض.</p>
+<table><thead><tr><th>الكيان</th><th>أهم الحقول</th><th>الغرض</th></tr></thead><tbody>
+<tr><td><code>DemoUser</code></td><td>id, name, role, organizationId, avatarInitials, demoLabel</td><td>الحسابات الوهمية وأدوارها</td></tr>
+<tr><td><code>Organization</code></td><td>id, name, type (hall/charity), city, district, contactName, contactPhoneDemo, active</td><td>القاعة أو الجمعية</td></tr>
+<tr><td><code>HallEvent</code></td><td>id, hallId, title, eventDate, endTime, foodReadyAt, city, district, expectedGuests, expectedSurplusKg, foodTypes, notes, status, createdAt, createdBy</td><td>بيانات المناسبة وتوقع الفائض</td></tr>
+<tr><td><code>CoordinationRequest</code></td><td>id, eventId, charityId, status, interestAt, decisionReason, createdAt</td><td>اهتمام الجمعية وقرارها</td></tr>
+<tr><td><code>Assignment</code></td><td>id, eventId, charityId, representativeId, plannedArrivalAt, assignedBy, status</td><td>ربط المناسبة بالجمعية والممثل</td></tr>
+<tr><td><code>Inspection</code></td><td>id, eventId, representativeId, arrivedAt, estimatedKg, outcome, foodCondition, packagingCondition, storageNotes, safetyChecklist, notes</td><td>نتيجة المعاينة الميدانية</td></tr>
+<tr><td><code>Handover</code></td><td>id, eventId, inspectionId, actualQuantity, unit, foodTypes, handedOverAt, handedBy, receivedBy, receivingOrganizationId, confirmationStatus</td><td>توثيق التسليم الفعلي</td></tr>
+<tr><td><code>ActivityLog</code></td><td>id, actorUserId, action, entityType, entityId, timestamp, summary, beforeValue?, afterValue?</td><td>سجل تدقيق تجريبي للعمليات</td></tr>
+<tr><td><code>DemoNotice</code></td><td>id, recipientUserId/role, title, body, createdAt, readAt?, relatedEventId?</td><td>تنبيهات داخلية وهمية داخل الواجهة</td></tr>
+</tbody></table>
+<h3>قيم ثابتة (Enums) مقترحة</h3>
+<div class="mono">UserRole = 'admin' | 'hall_manager' | 'charity_coordinator' | 'field_representative' | 'judge_viewer'
+
+OrganizationType = 'hall' | 'charity'
+
+InspectionOutcome = 'surplus_available' | 'no_surplus' | 'not_safe_to_collect'
+
+QuantityUnit = 'kg' | 'meal_portions' | 'boxes'
+
+ConfirmationStatus = 'pending' | 'confirmed_by_charity' | 'confirmed_by_hall' | 'confirmed_by_both'
+
+EventStatus = 'registered' | 'available' | 'awaiting_charity' | 'assigned' |
+              'representative_arrived' | 'inspected' | 'collected' |
+              'no_surplus' | 'not_collectable' | 'closed'</div>
+<h3>بيانات عرض تجريبية</h3>
+<ul><li>3 قاعات وهمية بأسماء واضحة أنها بيانات عرض.</li><li>3 جمعيات وهمية.</li><li>4 ممثلين ميدانيين وهميين.</li><li>6–8 مناسبات موزعة على حالات مختلفة، بينها مناسبة مكتملة، وأخرى بانتظار قبول، وحالة «لا يوجد فائض»، وحالة «غير مناسب للاستلام».</li><li>لا تستخدم أرقام هواتف أو أسماء أشخاص حقيقية؛ استخدم قيمًا توضيحية مثل «05XXXXXXXX» أو بيانات غير قابلة للاتصال.</li></ul>
+</section>
+
+<section class="section" id="architecture">
+<h2>8. هيكل المشروع والوثائق</h2>
+<p>هيكل مقترح لتطبيق Next.js + TypeScript + Tailwind. يمكن تعديله حسب المشروع الحالي؛ لا تنشئ تطبيقًا ثانيًا إذا كان المستودع يحتوي على بنية قائمة.</p>
+<div class="mono">hafez/
+├── README.md
+├── docs/
+│   ├── PRODUCT_BRIEF.md
+│   ├── USER_ROLES_AND_PERMISSIONS.md
+│   ├── USE_CASES.md
+│   ├── USER_FLOWS.md
+│   ├── DATA_MODEL.md
+│   ├── STATE_MACHINE.md
+│   ├── UI_DESIGN_SYSTEM.md
+│   ├── DEMO_SCRIPT.md
+│   └── ACCEPTANCE_CRITERIA.md
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── dashboard/page.tsx
+│   │   ├── events/page.tsx
+│   │   ├── events/new/page.tsx
+│   │   ├── events/[id]/page.tsx
+│   │   ├── opportunities/page.tsx
+│   │   ├── assignments/page.tsx
+│   │   ├── inspections/page.tsx
+│   │   ├── handovers/page.tsx
+│   │   ├── organizations/page.tsx
+│   │   ├── activity/page.tsx
+│   │   └── reports/page.tsx
+│   ├── components/
+│   │   ├── layout/ (AppShell, Sidebar, Topbar, RoleSwitcher)
+│   │   ├── dashboard/ (MetricCard, StatusChart)
+│   │   ├── events/ (EventForm, EventTable, EventStatusBadge)
+│   │   ├── workflow/ (AssignmentPanel, InspectionForm, HandoverForm)
+│   │   └── ui/ (Button, Modal, EmptyState, Toast, ConfirmDialog)
+│   ├── features/
+│   │   ├── auth-demo/ (demoUsers, currentDemoUser, roleConfig)
+│   │   ├── events/
+│   │   ├── coordination/
+│   │   ├── inspections/
+│   │   ├── handovers/
+│   │   └── activity/
+│   ├── lib/
+│   │   ├── permissions.ts
+│   │   ├── validation.ts
+│   │   ├── dates.ts
+│   │   └── formatters.ts
+│   ├── data/
+│   │   ├── seed.ts
+│   │   └── demoStore.ts
+│   └── types/
+│       ├── user.ts
+│       ├── organization.ts
+│       ├── event.ts
+│       └── workflow.ts
+└── public/
+    └── brand/ (ضع مرجع الهوية هنا إن توفر)</div>
+<h3>الوثائق التي يجب إنشاؤها قبل/مع الكود</h3>
+<table><thead><tr><th>الوثيقة</th><th>ماذا تحسم؟</th></tr></thead><tbody>
+<tr><td>PRODUCT_BRIEF.md</td><td>المشكلة، القيمة، المستخدمون، النطاق وما هو خارج النطاق</td></tr>
+<tr><td>USER_ROLES_AND_PERMISSIONS.md</td><td>كل دور، نطاق البيانات، الأفعال المسموحة والممنوعة</td></tr>
+<tr><td>USE_CASES.md</td><td>السيناريوهات الأساسية والشروط والنتائج</td></tr>
+<tr><td>USER_FLOWS.md</td><td>خطوات الانتقال بين القاعة والجمعية والممثل والمشرف</td></tr>
+<tr><td>DATA_MODEL.md</td><td>الكيانات والحقول والعلاقات والقيم الثابتة</td></tr>
+<tr><td>STATE_MACHINE.md</td><td>حالات المناسبة وانتقالات الحالة والشروط اللازمة</td></tr>
+<tr><td>UI_DESIGN_SYSTEM.md</td><td>الألوان، الخطوط، RTL، المكونات وحالات الواجهة</td></tr>
+<tr><td>DEMO_SCRIPT.md</td><td>سيناريو عرض مدته 3–5 دقائق وترتيب تبديل الأدوار</td></tr>
+<tr><td>ACCEPTANCE_CRITERIA.md</td><td>اختبارات قابلة للتحقق قبل العرض</td></tr>
+</tbody></table>
+</section>
+
+<section class="section" id="screens">
+<h2>9. الشاشات المطلوبة حسب الدور</h2>
+<table><thead><tr><th>الشاشة</th><th>المشرف</th><th>القاعة</th><th>الجمعية</th><th>الممثل</th><th>الحكّام</th></tr></thead><tbody>
+<tr><td>لوحة رئيسية ومؤشرات</td><td>كل المنصة</td><td>مناسبات قاعته</td><td>فرص ومهام جمعيته</td><td>مهامه القادمة</td><td>عرض قراءة فقط</td></tr>
+<tr><td>المناسبات</td><td>كل المناسبات</td><td>قاعته فقط + إنشاء</td><td>الفرص ذات الصلة</td><td>المسندة إليه</td><td>قائمة عرض محددة</td></tr>
+<tr><td>تفاصيل المناسبة</td><td>كل الحقول</td><td>حقول قاعته</td><td>تفاصيل التنسيق اللازمة</td><td>بيانات المهمة اللازمة</td><td>عرض فقط</td></tr>
+<tr><td>الفرص المتاحة</td><td>عرض/إدارة</td><td>متابعة مناسباته</td><td>تصفح + إبداء اهتمام</td><td>لا</td><td>عرض فقط</td></tr>
+<tr><td>المهام والإسناد</td><td>إسناد ومتابعة</td><td>حالة التنسيق</td><td>إدارة فريق الجمعية</td><td>المهام المسندة</td><td>عرض فقط</td></tr>
+<tr><td>المعاينة</td><td>مراجعة</td><td>عرض النتيجة</td><td>عرض نتيجة مهامها</td><td>إنشاء/تحديث للمهمة</td><td>عرض فقط</td></tr>
+<tr><td>التسليمات</td><td>كل السجلات</td><td>تأكيد طرف القاعة</td><td>تأكيد الاستلام</td><td>تسجيل مبدئي</td><td>عرض فقط</td></tr>
+<tr><td>الجهات والمستخدمون</td><td>إدارة تجريبية</td><td>ملف القاعة فقط</td><td>ملف الجمعية والفريق</td><td>ملفه فقط</td><td>لا</td></tr>
+<tr><td>سجل النشاط والتقارير</td><td>كامل</td><td>قاعته</td><td>جمعيته</td><td>مهامه</td><td>ملخص مختار</td></tr>
+</tbody></table>
+<h3>متطلبات عامة لكل شاشة</h3>
+<ul><li>عنوان واضح ومسار تنقل (Breadcrumb) عند الحاجة.</li><li>حالات تحميل/فراغ/خطأ/نجاح حتى لو كانت البيانات محلية.</li><li>بحث أو تصفية عندما تكون القائمة أطول من 5 عناصر.</li><li>نماذج بها تحقق ورسائل خطأ بجانب الحقول.</li><li>تأكيد قبل الإجراءات الحساسة مثل الإغلاق أو إعادة ضبط بيانات العرض.</li><li>توافق جوال، واتجاه RTL، وتباين مقروء.</li></ul>
+</section>
+
+<section class="section" id="demo">
+<h2>10. حسابات العرض والتبديل بين الأدوار</h2>
+<p>يجب أن يكون تبديل الحساب واضحًا للحكّام ولا يتطلب كلمة مرور. استخدم قائمة ثابتة للحسابات الوهمية، مع شارة دائمة «وضع العرض التجريبي».</p>
+<div class="role-switch" id="roleButtons">
+<button class="active" data-role="admin">مشرف المنصة</button><button data-role="hall_manager">مسؤول القاعة</button><button data-role="charity_coordinator">منسق الجمعية</button><button data-role="field_representative">الممثل الميداني</button><button data-role="judge_viewer">حساب الحكّام</button>
+</div>
+<div class="role-panel" id="rolePanel"><b>المستخدم الحالي: مشرف المنصة</b><p>يرى لوحة المنصة الكاملة، جميع المناسبات التجريبية، أدوات الإسناد والتقارير وسجل النشاط.</p><span class="badge">admin.demo@hafez.test</span> <span class="badge">بيانات وهمية</span></div>
+<p class="small">هذا المثال التوضيحي داخل الوثيقة يشرح تجربة التبديل المطلوبة. على التطبيق نفسه، يجب أن يغيّر زر التبديل حالة المستخدم الحالية ويعيد رسم عناصر التنقل والصفحات والأزرار بناءً على صلاحياته.</p>
+<h3>حسابات البذور المقترحة</h3>
+<table><thead><tr><th>معرّف الحساب</th><th>الدور</th><th>الجهة</th><th>سياق العرض</th></tr></thead><tbody>
+<tr><td><code>demo-admin</code></td><td>مشرف المنصة</td><td>إدارة Hafez التجريبية</td><td>يرى كل البيانات ويُسند المهام</td></tr>
+<tr><td><code>demo-hall-01</code></td><td>مسؤول القاعة</td><td>قاعة النخيل التجريبية</td><td>ينشئ مناسبة ويشاهد حالة التنسيق</td></tr>
+<tr><td><code>demo-charity-01</code></td><td>منسق الجمعية</td><td>جمعية العطاء التجريبية</td><td>يقبل فرصة ويعين ممثلًا</td></tr>
+<tr><td><code>demo-field-01</code></td><td>الممثل الميداني</td><td>فريق جمعية العطاء</td><td>يسجل معاينة وتسليمًا أو عدم وجود فائض</td></tr>
+<tr><td><code>demo-judge</code></td><td>حساب الحكّام</td><td>مراقب</td><td>يتصفح نسخة قراءة فقط</td></tr>
+</tbody></table>
+<div class="callout danger"><b>لا تخلط بين «التبديل لعرض الديمو» والأمان الحقيقي.</b> لأن التطبيق محلي وبدون مصادقة خلفية، يمكن للمستخدم التقني تجاوز ضوابط الواجهة. هذا مقبول لعرض هاكاثون فقط، ويجب كتابة ذلك بوضوح في README.</div>
+</section>
+
+<section class="section" id="security">
+<h2>11. الخصوصية والأمان والحوكمة</h2>
+<ul class="checklist">
+<li>استخدم بيانات اصطناعية فقط؛ لا تدخل أسماء مستفيدين أو أرقامًا حقيقية أو بيانات صحية.</li>
+<li>اعرض شارة «بيئة تجريبية — لا يوجد إرسال فعلي» في الشريط العلوي.</li>
+<li>لا تستخدم كلمات مرور ثابتة أو مفاتيح API أو أسرارًا داخل الكود.</li>
+<li>اجعل فحص الصلاحية في دوال الإجراءات مركزيًا، مثل <code>can(user, action, resource)</code>، لا عبر إخفاء الزر فقط.</li>
+<li>في الإنتاج، يلزم خادم يتحقق من الهوية والصلاحيات على كل طلب؛ لا تعتمد على localStorage أو صلاحيات الواجهة.</li>
+<li>لا تسجل تفاصيل حساسة في سجل النشاط. سجّل الحد الأدنى اللازم للتدقيق.</li>
+<li>أضف تأكيدًا قبل حذف بيانات عرض أو إعادة ضبطها، ويفضل أن تكون عمليات الحذف أرشفة لا حذفًا نهائيًا.</li>
+<li>لا تدّعِ اعتمادًا صحيًا أو قانونيًا؛ قائمة سلامة الطعام في النموذج توضيحية ويجب اعتمادها من جهة مختصة قبل الاستخدام الحقيقي.</li>
+</ul>
+</section>
+
+<section class="section" id="acceptance">
+<h2>12. معايير القبول قبل العرض</h2>
+<ul class="checklist">
+<li>يمكن تشغيل التطبيق محليًا باتباع تعليمات README واضحة.</li>
+<li>تظهر العربية وRTL بشكل صحيح في جميع الشاشات الرئيسية.</li>
+<li>تظهر حسابات الديمو الخمسة ويمكن التبديل بينها من أي شاشة.</li>
+<li>يتغير الشريط الجانبي والصفحة الرئيسية والأزرار حسب الدور.</li>
+<li>لا يستطيع مسؤول القاعة تعديل مناسبة تخص قاعة أخرى عبر الواجهة.</li>
+<li>لا يستطيع الممثل تسجيل معاينة لمهمة غير مسندة إليه.</li>
+<li>لا يستطيع حساب الحكّام إنشاء أو تعديل أو إغلاق سجلات.</li>
+<li>إنشاء مناسبة يضيفها إلى القائمة ولوحة المؤشرات وسجل النشاط.</li>
+<li>قبول فرصة وإسناد ممثل يحدّثان الحالة في كل الشاشات المرتبطة.</li>
+<li>تسجيل معاينة «لا يوجد فائض» لا ينتج عنه وزن مستلم.</li>
+<li>إتمام التسليم يتطلب كمية فعلية ووحدة ووقتًا وجهة مستلمة.</li>
+<li>تتحدث مؤشرات لوحة التحكم من البيانات نفسها بعد كل عملية.</li>
+<li>زر إعادة ضبط العرض يعيد البيانات الأولية دون حذف ملفات أو بيانات خارجية.</li>
+<li>توجد رسائل واضحة للخطأ والنجاح والفراغ، ولا توجد أزرار شكلية بلا وظيفة.</li>
+<li>يوجد دور سادس للمستفيد مع واجهة مستقلة، ويظهر في اختيار الحساب التجريبي وتبديل المستخدم.</li>
+<li>يستطيع المستفيد استعراض الطعام المنشور والمتاح وطلب كمية لا تتجاوز الكمية المتبقية.</li>
+<li>قبول الجمعية أو رفضها للطلب ينعكس في قائمة طلبات المستفيد وفي لوحة الجمعية.</li>
+<li>يستطيع المستفيد إرسال بلاغ فائض؛ ويظل البلاغ قيد المراجعة حتى تتخذ الجهة المختصة إجراءً.</li>
+<li>تظهر واجهة الدرع رصيد النقاط وسجلًا يوضح سبب كل استحقاق، وتمنع احتساب الحدث نفسه مرتين.</li>
+<li>لا تُمنح النقاط لمجرد إنشاء طلب أو بلاغ غير متحقق، ولا تُسجل كمية منقذة قبل تأكيدها.</li>
+<li>لا تُعرض بيانات شخصية أو عناوين دقيقة للمستفيدين في القوائم العامة.</li>
+<li>لا توجد روابط مكسورة أو صفحات فارغة في مسار العرض الأساسي.</li>
+</ul>
+</section>
+
+<section class="section" id="build">
+<h2>13. ترتيب التنفيذ المقترح</h2>
+<ol>
+<li><b>فحص المستودع الحالي:</b> معرفة التقنية والملفات الموجودة قبل تغيير أي شيء.</li>
+<li><b>إنشاء الوثائق:</b> كتابة ملفات docs المذكورة من هذه الوثيقة، وتثبيت القرارات قبل بناء كل الشاشات.</li>
+<li><b>النموذج والبيانات:</b> أنواع TypeScript، الحسابات التجريبية، seed data، وحالات سير العمل.</li>
+<li><b>الصلاحيات والتبديل:</b> بناء role switcher ودوال الصلاحيات أولًا حتى لا تُبنى الصفحات بمنطق متضارب.</li>
+<li><b>الهيكل البصري:</b> تطبيق الهوية، RTL، الشريط الجانبي، الشريط العلوي، بطاقات المؤشرات، الجداول والنماذج.</li>
+<li><b>رحلة العرض الأساسية:</b> قاعة تنشئ مناسبة → جمعية تبدي اهتمامًا → تعيين ممثل → معاينة → تسليم أو لا يوجد فائض.</li>
+<li><b>لوحة المشرف والتقارير:</b> بعد التأكد أن كل المؤشرات مشتقة من البيانات.</li>
+<li><b>الاختبار والتلميع:</b> اختبار كل دور، حالات الخطأ، الجوال، وإعادة ضبط بيانات الديمو.</li>
+</ol>
+<h3>سيناريو عرض للحكّام (3–5 دقائق)</h3>
+<ol><li>ابدأ بالمشرف: اعرض المؤشرات والمناسبة الموجودة.</li><li>بدّل إلى مسؤول القاعة: أنشئ مناسبة جديدة.</li><li>بدّل إلى منسق الجمعية: افتح الفرصة وأبدِ الاهتمام وعين ممثلًا.</li><li>بدّل إلى الممثل: سجل الوصول والمعاينة والكمية الفعلية، أو اعرض سيناريو عدم وجود فائض.</li><li>ارجع للمشرف: وضّح تغيّر الحالة وسجل النشاط والمؤشرات.</li><li>اعرض حساب الحكّام لإثبات أنه قراءة فقط.</li></ol>
+</section>
+
+<section class="section" id="prompt">
+<h2>14. تعليمات جاهزة لـ Claude Code</h2>
+<p>انسخ النص التالي إلى Claude Code مع إرفاق هذه الوثيقة أو حفظها داخل المستودع باسم <code>docs/HAFEZ_PRODUCT_BLUEPRINT.html</code>.</p>
+<div class="mono" id="claudePrompt">اقرأ الملفات المرجعية الموجودة في المشروع قبل تعديل التصميم:
+- docs/HAFEZ_PRODUCT_BLUEPRINT.html (النسخة المحدثة من متطلبات المنتج)
+- docs/design/02-DESIGN-DELIVERY.md
+- ملفات الهوية والألوان والخطوط والأصول الحالية
+- ملف Figma الحالي: https://www.figma.com/design/1Q6IN25XtV3xKKFgAKSSCr
+
+المهمة الآن هي مراجعة وتحديث تصميم Figma فقط. لا تبرمج التطبيق ولا تنشئ كودًا ولا تغيّر ملفات المشروع البرمجية. لا تبدأ البرمجة إلا بعد موافقة صريحة لاحقة.
+
+حافظ على التصميم الحالي ونظام التصميم والأصول والصفحات والتفاعلات قدر الإمكان. لا تعِد التصميم من الصفر. نفّذ تغييرات تدريجية ومحددة، مع الحفاظ على هوية حفيظ (الأخضر الغابي، الأخضر، الكريمي، Tajawal للعربية وInter للإنجليزية) واتجاه RTL.
+
+أولًا: راجع المسارات الحالية مقابل السيناريو المعتمد:
+1) مسؤول القاعة ينشئ مناسبة.
+2) النظام يعرض توقع الفائض والتوصية بخفض الكمية، ويجب أن يكون واضحًا أنها تقديرات توضيحية/قواعد حسابية وليست نموذج AI مدرّبًا ما لم توجد آلية حقيقية موثقة.
+3) الجمعية تراجع الفرصة وتقبل التنسيق.
+4) يُسند ممثل ميداني للمعاينة وتوثيق الكمية الفعلية وملاءمة الطعام.
+5) تُسجل عملية التسليم وتأكيد الاستلام.
+6) تتحدث مؤشرات الأثر من البيانات نفسها، مع الفصل بين الفائض المتوقع، والكمية المنقذة والمسلّمة فعلًا، والكمية المتلفة.
+7) لا تعرض نسبة «خفض الهدر» إلا مع خط أساس واضح ومعادلة قابلة للتفسير.
+
+ثانيًا: أضف دورًا سادسًا مستقلًا باسم «المستفيد» دون حذف أو دمج الأدوار الخمسة الحالية. أضفه إلى شاشة اختيار الحساب التجريبي وشريط تبديل المستخدم وخريطة الأدوار/الصلاحيات.
+
+ثالثًا: صمّم مسار المستفيد Mobile-first، وأضف الشاشات التالية ضمن صفحة الشاشات الحالية أو قسم جديد منظم:
+- الرئيسية: الطعام المتاح من الجمعيات، مع نوع الطعام والكمية المتاحة ومنطقة عامة ووقت الاستلام والحالة.
+- تفاصيل الطعام: اختيار كمية وإرسال طلب، مع منع تجاوز الكمية المتاحة.
+- طلباتي: حالات قيد المراجعة، مقبول، جاهز للاستلام، مكتمل، مرفوض.
+- الإبلاغ عن فائض: نوع الطعام، كمية تقديرية ووحدتها، وقت الجاهزية، موقع/منطقة الاستلام، ملاحظات وصورة اختيارية.
+- متابعة بلاغاتي: قيد المراجعة، يحتاج معلومات، مقبول، مرفوض، تم التنسيق/الاستلام.
+- «درعي ونقاطي»: درع بمستوى، شارات، شريط تقدم، رصيد نقاط وسجل يشرح سبب كل استحقاق.
+- تأكيد الاستلام أو الإبلاغ عن استلام جزئي/عدم الوصول، مع تقييم اختياري.
+- بطاقة توعية قصيرة تقلل الهدر، مع تفاعل اختياري؛ لا تدّعِ أن قراءة الرسالة وحدها تثبت تغير السلوك.
+
+رابعًا: اربط التفاعلات في النموذج الأولي بحيث تتضح الرحلة:
+أ) الجمعية تنشر فائضًا متاحًا ← المستفيد يستعرضه ويطلب كمية ← الجمعية تقبل/ترفض ← حالة الطلب تتغير لدى الطرفين ← المستفيد يؤكد الاستلام ← يظهر الحدث في الأثر.
+ب) المستفيد يرسل بلاغ فائض ← الجمعية/المنسق يراجع ← تُسند معاينة عند الحاجة ← الجهة تعتمد النتيجة ← لا تسجل الكمية كمنقذة إلا بعد توثيق الاستلام/الإنقاذ.
+ج) نقاط الدرع تُضاف بعد أحداث موثقة فقط، مثل استلام مؤكد أو بلاغ فائض قُبل وتم توثيق إنقاذه. لا تمنح نقاطًا لمجرد إرسال طلب أو بلاغ، ولا تكرر مكافأة الحدث نفسه. اجعل نظام النقاط تجريبيًا وقابلًا للضبط ولا تخترع جوائز مالية.
+
+خامسًا: حافظ على الخصوصية والسلامة:
+- لا تعرض بيانات شخصية أو عناوين دقيقة للمستفيدين في القوائم العامة.
+- لا تجعل الطعام الذي أبلغ عنه المستفيد متاحًا تلقائيًا قبل مراجعة الجهة المختصة.
+- لا توحِ بأن التطبيق يضمن سلامة الطعام؛ أي قائمة سلامة تبقى توضيحية لحين اعتمادها من جهة مختصة.
+- استخدم بيانات تجريبية واضحة فقط.
+
+سادسًا: راجع الأرقام والحسابات في سيناريو العرض:
+- مناسبة تجريبية: 300 ضيف، 210 كجم مخططة، توصية بخفضها إلى 180 كجم.
+- الفائض المتوقع بعد التوصية: 30 كجم.
+- إذا كانت العبوات 2 كجم ممتلئة بالكامل، فـ30 كجم تعني 15 عبوة. إذا كان التسليم 20 كجم فقط، وضّح أن 10 عبوات ممتلئة (أو عدّل كمية/سعة العبوات) ولا تترك تناقضًا بين الأرقام.
+- مثال الإغلاق: 180 كجم مجهزة، 150 كجم مستهلكة، 30 كجم متبقية؛ 20 كجم محفوظة/مسلّمة و10 كجم متلفة. وضّح أن هذه بيانات سيناريو تجريبي.
+- لا تستخدم 83.3% كخفض للهدر إلا إذا شرحت خط الأساس الافتراضي 60 كجم والمعادلة: (60-10)/60 = 83.3%، وسمّها مقارنة افتراضية لا نتيجة مثبتة.
+- كل المؤشرات يجب أن تكون قابلة للاشتقاق من بيانات السيناريو، لا مجرد أرقام زخرفية.
+
+سابعًا: ضوابط التنفيذ:
+- افحص النموذج الأولي الحالي في Present فعليًا إن أمكن، ولا تعتبر التفاعلات مؤكدة لمجرد وجود روابط.
+- حافظ على الصفحات الثلاث الحالية قدر الإمكان؛ إذا اصطدمت بقيود Figma Starter فرتّب المحتوى داخل الصفحات الحالية بدل إنشاء صفحات كثيرة.
+- لا تحذف أي شاشة قائمة إلا إذا كانت مكررة بوضوح، واذكر السبب قبل الحذف.
+- لا تغيّر هوية المشروع أو تعيد تصميم الشاشات الحالية جذريًا.
+- بعد التعديل، تحقق من المسارات العربية RTL، وحالات النجاح/الخطأ/الفراغ، والروابط بين شاشات المستفيد والجمعية، وسجل قائمة واضحة بما تغيّر وما بقي غير مكتمل.
+- لا تبدأ البرمجة. المطلوب في هذه المرحلة تصميم Figma وتحديث ملف التسليم/المتطلبات فقط.
+
+قبل التنفيذ، اعرض خطة قصيرة للشاشات والتغييرات التي ستضيفها، ثم نفّذ التعديلات التدريجية. في النهاية سلّم ملخصًا بالمسارات التي جرى اختبارها وأي نقاط تحتاج قرارًا من صاحب المشروع.</div>
+<button onclick="copyPrompt()" style="margin-top:10px;background:var(--forest);color:white;border:0;border-radius:9px;padding:10px 16px;font-family:inherit;cursor:pointer">نسخ تعليمات Claude Code</button><span id="copyStatus" class="small" style="margin-right:10px"></span>
+</section>
+<div class="footer">Hafez · وثيقة داخلية لتخطيط نموذج الهاكاثون · الإصدار 1.1 · إضافة دور المستفيد ومسارات الطلب والبلاغ والدرع · بيانات تجريبية فقط</div>
+</main></div></div>
+<script>
+const roleInfo={
+admin:{name:"مشرف المنصة",email:"admin.demo@hafez.test",desc:"يرى لوحة المنصة الكاملة، جميع المناسبات التجريبية، أدوات الإسناد والتقارير وسجل النشاط."},
+hall_manager:{name:"مسؤول القاعة",email:"hall.demo@hafez.test",desc:"يرى مناسبات قاعته فقط، ويمكنه تسجيل مناسبة جديدة ومتابعة حالة التنسيق دون تعديل سجلات القاعات الأخرى."},
+charity_coordinator:{name:"منسق الجمعية",email:"charity.demo@hafez.test",desc:"يرى الفرص ذات الصلة بجمعيته، ويبدي الاهتمام ويُنسّق تعيين ممثل من فريقه."},
+field_representative:{name:"الممثل الميداني",email:"field.demo@hafez.test",desc:"يرى المهام المسندة إليه فقط، ويسجل الوصول والمعاينة والكمية الفعلية ونتيجة الزيارة."},
+judge_viewer:{name:"حساب الحكّام",email:"judge.demo@hafez.test",desc:"يتصفح بيانات عرض مختارة للقراءة فقط؛ لا تظهر له أزرار إنشاء أو تعديل أو حذف."}
+};
+document.querySelectorAll("#roleButtons button").forEach(btn=>btn.addEventListener("click",()=>{
+ document.querySelectorAll("#roleButtons button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
+ const r=roleInfo[btn.dataset.role];document.getElementById("rolePanel").innerHTML="<b>المستخدم الحالي: "+r.name+"</b><p>"+r.desc+"</p><span class='badge'>"+r.email+"</span> <span class='badge'>بيانات وهمية</span>";
+}));
+function copyPrompt(){const t=document.getElementById("claudePrompt").innerText;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>document.getElementById("copyStatus").textContent="تم النسخ").catch(()=>fallbackCopy(t));}else fallbackCopy(t)}
+function fallbackCopy(t){const x=document.createElement("textarea");x.value=t;document.body.appendChild(x);x.select();try{document.execCommand("copy");document.getElementById("copyStatus").textContent="تم النسخ"}catch(e){document.getElementById("copyStatus").textContent="حدد النص وانسخه يدويًا"}x.remove()}
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+{
+  "brand": {
+    "name_en": "Hafez",
+    "name_ar": "حفيظ",
+    "tagline_en": "From Occasions to Impact",
+    "tagline_ar": "من مناسباتنا إلى أثر مستدام"
+  },
+  "color": {
+    "core": {
+      "forest": {
+        "hex": "#0E3524",
+        "role": "Primary — logo, headings, dark surfaces",
+        "ar": "الأخضر الغابي (أساسي)"
+      },
+      "green": {
+        "hex": "#2E7D5A",
+        "role": "Secondary — actions, links, tagline",
+        "ar": "أخضر الورقة (ثانوي)"
+      },
+      "sprout": {
+        "hex": "#A7BB68",
+        "role": "Accent — highlights on dark, graphics only on light",
+        "ar": "أخضر البرعم (مميز)"
+      },
+      "sand": {
+        "hex": "#F4EDE1",
+        "role": "Neutral — cards, panels, packaging",
+        "ar": "الرملي (محايد)"
+      },
+      "paper": {
+        "hex": "#FAFAF7",
+        "role": "Background",
+        "ar": "الورقي (خلفية)"
+      }
+    },
+    "supporting": {
+      "forest700": {
+        "hex": "#1A4432",
+        "role": "Raised dark surface / hover on forest"
+      },
+      "gold": {
+        "hex": "#D1AE74",
+        "role": "Seed in the symbol; small highlights on dark"
+      },
+      "goldline": {
+        "hex": "#C39E5D",
+        "role": "Short divider rule under headlines (decorative)"
+      },
+      "olive": {
+        "hex": "#5E793F",
+        "role": "Sprout tip in the symbol only"
+      },
+      "ink": {
+        "hex": "#1C2B24",
+        "role": "Body text on light"
+      },
+      "muted": {
+        "hex": "#5D6B63",
+        "role": "Secondary text"
+      },
+      "line": {
+        "hex": "#E4DDD0",
+        "role": "Borders and dividers"
+      },
+      "mint": {
+        "hex": "#E4EFE6",
+        "role": "Soft green tint for selected states"
+      }
+    },
+    "status": {
+      "success": {
+        "fg": "#236446",
+        "bg": "#D9EFD5"
+      },
+      "warning": {
+        "fg": "#8A5A0B",
+        "bg": "#FAE9C1"
+      },
+      "info": {
+        "fg": "#4A4E8C",
+        "bg": "#E8E7F0"
+      },
+      "danger": {
+        "fg": "#A33A2B",
+        "bg": "#F6DEDA"
+      }
+    }
+  },
+  "font": {
+    "latin": {
+      "family": "Inter",
+      "fallback": "system-ui, 'Segoe UI', Roboto, Arial, sans-serif",
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ]
+    },
+    "arabic": {
+      "family": "Tajawal",
+      "fallback": "'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif",
+      "weights": [
+        400,
+        500,
+        700,
+        800
+      ]
+    }
+  },
+  "typeScale": {
+    "display": {
+      "size": 56,
+      "lineHeight": 64,
+      "weight": 700
+    },
+    "h1": {
+      "size": 40,
+      "lineHeight": 50,
+      "weight": 700
+    },
+    "h2": {
+      "size": 32,
+      "lineHeight": 42,
+      "weight": 700
+    },
+    "h3": {
+      "size": 24,
+      "lineHeight": 34,
+      "weight": 700
+    },
+    "h4": {
+      "size": 20,
+      "lineHeight": 30,
+      "weight": 600
+    },
+    "bodyLarge": {
+      "size": 18,
+      "lineHeight": 30,
+      "weight": 400
+    },
+    "body": {
+      "size": 16,
+      "lineHeight": 27,
+      "weight": 400
+    },
+    "small": {
+      "size": 14,
+      "lineHeight": 22,
+      "weight": 400
+    },
+    "caption": {
+      "size": 12,
+      "lineHeight": 18,
+      "weight": 500
+    },
+    "overline": {
+      "size": 12,
+      "lineHeight": 16,
+      "weight": 600,
+      "letterSpacing": "0.16em",
+      "transform": "uppercase (Latin only)"
+    }
+  },
+  "space": {
+    "unit": 4,
+    "scale": [
+      4,
+      8,
+      12,
+      16,
+      24,
+      32,
+      48,
+      64,
+      96
+    ]
+  },
+  "radius": {
+    "xs": 6,
+    "sm": 10,
+    "md": 14,
+    "lg": 20,
+    "xl": 28,
+    "pill": 999,
+    "appIcon": "22.6%"
+  },
+  "shadow": {
+    "card": "0 1px 2px rgba(14,53,36,.06), 0 8px 24px rgba(14,53,36,.06)",
+    "raised": "0 12px 40px rgba(14,53,36,.12)"
+  },
+  "icon": {
+    "grid": 24,
+    "stroke": 1.75,
+    "linecap": "round",
+    "linejoin": "round",
+    "tile": {
+      "size": 56,
+      "radius": 14,
+      "bg": "sand/paper"
+    }
+  },
+  "logo": {
+    "clearSpace": "1X = height of the seed in the symbol (≈30% of symbol height)",
+    "minWidth": {
+      "horizontalWithTagline": {
+        "px": 160,
+        "mm": 40
+      },
+      "compact": {
+        "px": 96,
+        "mm": 24
+      },
+      "symbol": {
+        "px": 24,
+        "mm": 6
+      },
+      "symbolSmall": {
+        "px": 16
+      }
+    }
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "title": "Hafez | حفيظ — Food surplus coordination",
+    "description": "Demo prototype for coordinating food surplus between event halls and charities — fictional data only."
+  },
+  "common": {
+    "brand": "Hafez",
+    "demoBadge": "Demo mode",
+    "demoBadgeShort": "Demo",
+    "demoNotice": "Demo environment — nothing is actually sent · fictional data",
+    "switchUserLabel": "Demo mode — switch user:",
+    "computedFromDemo": "Computed from demo data",
+    "skipToContent": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main navigation",
+    "kg": "{value} kg",
+    "dateTime": "{date} · {time}",
+    "arrow": "→",
+    "navUnbuiltLegend": "Marked screens are under development in this build"
+  },
+  "language": {
+    "label": "Language",
+    "ar": "العربية",
+    "en": "English",
+    "compactSwitch": "عربي",
+    "compactSwitchLabel": "التبديل إلى العربية"
+  },
+  "roles": {
+    "admin": {
+      "name": "Platform admin",
+      "summary": "Sees all events and assigns tasks"
+    },
+    "hall_manager": {
+      "name": "Hall manager",
+      "summary": "Creates events, tracks coordination"
+    },
+    "charity_coordinator": {
+      "name": "Charity coordinator",
+      "summary": "Accepts opportunities, assigns a rep"
+    },
+    "field_representative": {
+      "name": "Field representative",
+      "summary": "Logs inspection and handover"
+    },
+    "judge_viewer": {
+      "name": "Judges",
+      "summary": "Browses a read-only copy"
+    },
+    "beneficiary": {
+      "name": "Beneficiary",
+      "summary": "Requests available food, reports surplus"
+    }
+  },
+  "orgLabel": {
+    "beneficiary": "Demo beneficiary"
+  },
+  "accountMenu": {
+    "button": "Switch demo account — current account: {role}",
+    "heading": "Choose a demo account",
+    "note": "No password — switching illustrates permissions; it is not real authentication."
+  },
+  "picker": {
+    "title": "Choose a demo account",
+    "subtitle": "No password needed. The account changes the screens, menus, actions and data you see, based on the role's permissions.",
+    "notice": "This is a local demo: switching illustrates permissions and is not real authentication or authorization.",
+    "continueAs": "Continue as {role}",
+    "underDevelopment": "Under development",
+    "current": "Current account"
+  },
+  "status": {
+    "registered": "Registered",
+    "available": "Available",
+    "awaiting_charity": "Awaiting charity",
+    "assigned": "Assigned",
+    "representative_arrived": "Rep arrived",
+    "inspected": "Inspected",
+    "collected": "Collected",
+    "no_surplus": "No surplus",
+    "not_collectable": "Not collectable",
+    "closed": "Closed"
+  },
+  "quantity": {
+    "estimate": "{value} kg (estimate)",
+    "notEstimated": "Not estimated",
+    "actual": "{value} kg (actual)",
+    "noSurplus": "0 — no surplus",
+    "notRecorded": "Not recorded — unsuitable"
+  },
+  "activity": {
+    "event_created": "Event {event} was created",
+    "event_updated": "Event {event} was edited",
+    "coordination_interest": "{actor} expressed interest in {event}",
+    "assignment_created": "{actor} assigned a rep to {event}",
+    "inspection_arrived": "The rep checked in at {event}",
+    "inspection_recorded": "Inspection result recorded for {event}",
+    "handover_confirmed": "{actor} confirmed receipt for {event}",
+    "noPrevious": "—",
+    "short": {
+      "event_created": "Created",
+      "event_updated": "Edited",
+      "coordination_interest": "{actor} expressed interest",
+      "assignment_created": "Rep assigned",
+      "inspection_arrived": "Rep arrived",
+      "inspection_recorded": "Inspection: {status}",
+      "handover_confirmed": "Receipt confirmed"
+    }
+  },
+  "hall": {
+    "nav": {
+      "home": "Home",
+      "myEvents": "My hall's events",
+      "newEvent": "New event",
+      "handovers": "Handovers",
+      "activity": "Hall activity",
+      "profile": "Hall profile"
+    },
+    "crumbs": "Hafez / Home",
+    "welcome": "Welcome, {hall}",
+    "scope": "You only see your hall's events · {district}, {city}",
+    "newEvent": "New event",
+    "metrics": {
+      "total": "My hall's events",
+      "awaiting": "Awaiting a charity",
+      "completed": "Completed handovers"
+    },
+    "events": {
+      "title": "My hall's events",
+      "hint": "You can edit an event until a rep is assigned; after that details are locked and shown for tracking only.",
+      "colEvent": "Event",
+      "colLastUpdate": "Last update",
+      "colReady": "Date",
+      "colQuantity": "Expected qty",
+      "colStatus": "Status",
+      "colAction": "Action",
+      "edit": "Edit",
+      "view": "View",
+      "editLabel": "Edit {event}",
+      "viewLabel": "View {event}",
+      "readyAt": "Food ready: {value}"
+    },
+    "rules": {
+      "title": "What this role can't do",
+      "otherHalls": "You can't see other halls' events or data.",
+      "confirmForCharity": "You can't confirm receipt for the charity — only the hall's side.",
+      "editAfterAssign": "You can't edit an event after a rep is assigned."
+    },
+    "activityTitle": "Latest activity in your hall",
+    "empty": {
+      "title": "No events for your hall yet",
+      "body": "Register your first event to see it here with its status and metrics.",
+      "noActivity": "No activity recorded yet."
+    }
+  },
+  "states": {
+    "loading": "Loading demo data…",
+    "error": {
+      "title": "Couldn't read the demo data",
+      "body": "The data saved in this browser is invalid. No external record was changed. Reset the demo data to continue.",
+      "reset": "Reset demo data"
+    },
+    "noAccount": {
+      "title": "Choose a demo account first",
+      "body": "This page belongs to a specific role. Choose an account to see the screens that match its permissions.",
+      "action": "Choose an account"
+    },
+    "accessDenied": {
+      "title": "You don't have access to this page",
+      "body": "The current account ({role}) can't open this workspace. Switch accounts from the demo bar to see what each role can do.",
+      "goHome": "Go to my workspace",
+      "switch": "Switch account"
+    },
+    "comingSoon": {
+      "badge": "Under development",
+      "roleTitle": "The {role} workspace is under development",
+      "roleBody": "This workspace is designed in Figma (screen {frame}) but not yet implemented in this version. Implemented flow today: choose account → hall manager home.",
+      "screenTitle": "“{screen}” is under development",
+      "screenBody": "This screen is designed in Figma but not implemented yet. No record was changed.",
+      "backToPicker": "Back to choose account",
+      "backToHome": "Back to home",
+      "tryHall": "Try the hall manager workspace"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "body": "Check the link or go back to choosing an account.",
+      "action": "Choose an account"
+    }
+  },
+  "screens": {
+    "editEvent": "Edit event {event}",
+    "viewEvent": "Event details {event}",
+    "newEvent": "New event"
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "title": "حفيظ | Hafez — تنسيق فائض الطعام",
+    "description": "نموذج عرض تجريبي لتنسيق فائض الطعام بين قاعات المناسبات والجمعيات الخيرية — بيانات وهمية فقط."
+  },
+  "common": {
+    "brand": "حفيظ",
+    "demoBadge": "وضع العرض التجريبي",
+    "demoBadgeShort": "عرض تجريبي",
+    "demoNotice": "بيئة تجريبية — لا يوجد إرسال فعلي · بيانات وهمية",
+    "switchUserLabel": "وضع العرض — تبديل المستخدم:",
+    "computedFromDemo": "محسوب من بيانات العرض",
+    "skipToContent": "تخطَّ إلى المحتوى",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "mainNav": "التنقل الرئيسي",
+    "kg": "{value} كجم",
+    "dateTime": "{date} · {time}",
+    "arrow": "←",
+    "navUnbuiltLegend": "الشاشات المعلّمة قيد التطوير في هذا الإصدار"
+  },
+  "language": {
+    "label": "اللغة",
+    "ar": "العربية",
+    "en": "English",
+    "compactSwitch": "EN",
+    "compactSwitchLabel": "Switch to English"
+  },
+  "roles": {
+    "admin": {
+      "name": "مشرف المنصة",
+      "summary": "يرى كل المناسبات ويُسند المهام"
+    },
+    "hall_manager": {
+      "name": "مسؤول القاعة",
+      "summary": "ينشئ مناسبة ويتابع التنسيق"
+    },
+    "charity_coordinator": {
+      "name": "منسق الجمعية",
+      "summary": "يقبل فرصة ويعيّن ممثلًا"
+    },
+    "field_representative": {
+      "name": "الممثل الميداني",
+      "summary": "يسجل المعاينة والتسليم"
+    },
+    "judge_viewer": {
+      "name": "حساب الحكّام",
+      "summary": "يتصفح نسخة قراءة فقط"
+    },
+    "beneficiary": {
+      "name": "المستفيد",
+      "summary": "يطلب طعامًا متاحًا ويبلّغ عن فائض"
+    }
+  },
+  "orgLabel": {
+    "beneficiary": "مستفيد تجريبي"
+  },
+  "accountMenu": {
+    "button": "تبديل الحساب التجريبي — الحساب الحالي: {role}",
+    "heading": "اختر حسابًا تجريبيًا",
+    "note": "بدون كلمة مرور — التبديل يوضح الصلاحيات بصريًا وليس تسجيل دخول حقيقي."
+  },
+  "picker": {
+    "title": "اختر حسابًا تجريبيًا",
+    "subtitle": "لا يتطلب كلمة مرور. يغيّر الحساب الواجهة والقوائم والأزرار والبيانات الظاهرة حسب صلاحيات الدور.",
+    "notice": "هذا نموذج عرض محلي: التبديل يشرح الصلاحيات بصريًا ولا يُعد مصادقة أو تفويضًا حقيقيًا.",
+    "continueAs": "متابعة كـ{role}",
+    "underDevelopment": "قيد التطوير",
+    "current": "الحساب الحالي"
+  },
+  "status": {
+    "registered": "مسجلة",
+    "available": "متاحة للتنسيق",
+    "awaiting_charity": "بانتظار قبول الجمعية",
+    "assigned": "تم الإسناد",
+    "representative_arrived": "وصل الممثل",
+    "inspected": "تمت المعاينة",
+    "collected": "تم الاستلام",
+    "no_surplus": "لا يوجد فائض",
+    "not_collectable": "غير مناسب للاستلام",
+    "closed": "مغلقة"
+  },
+  "quantity": {
+    "estimate": "{value} كجم (تقدير)",
+    "notEstimated": "لم يُقدَّر بعد",
+    "actual": "{value} كجم (فعلي)",
+    "noSurplus": "0 — لا يوجد فائض",
+    "notRecorded": "لا يُسجَّل — غير مناسب"
+  },
+  "activity": {
+    "event_created": "أُنشئت المناسبة {event}",
+    "event_updated": "عُدّلت المناسبة {event}",
+    "coordination_interest": "{actor} أبدت الاهتمام بـ {event}",
+    "assignment_created": "{actor} أسندت ممثلًا لـ {event}",
+    "inspection_arrived": "سجّل الممثل الوصول إلى {event}",
+    "inspection_recorded": "سُجّلت نتيجة المعاينة لـ {event}",
+    "handover_confirmed": "{actor} أكّدت الاستلام لـ {event}",
+    "noPrevious": "—",
+    "short": {
+      "event_created": "أُنشئت",
+      "event_updated": "عُدّلت",
+      "coordination_interest": "أبدت {actor} الاهتمام",
+      "assignment_created": "أُسند ممثل",
+      "inspection_arrived": "وصل الممثل",
+      "inspection_recorded": "المعاينة: {status}",
+      "handover_confirmed": "تأكد الاستلام"
+    }
+  },
+  "hall": {
+    "nav": {
+      "home": "الرئيسية",
+      "myEvents": "مناسبات قاعتي",
+      "newEvent": "مناسبة جديدة",
+      "handovers": "التسليمات",
+      "activity": "سجل القاعة",
+      "profile": "ملف القاعة"
+    },
+    "crumbs": "حفيظ / الرئيسية",
+    "welcome": "أهلًا، {hall}",
+    "scope": "ترى مناسبات قاعتك فقط · {district}، {city}",
+    "newEvent": "مناسبة جديدة",
+    "metrics": {
+      "total": "مناسبات قاعتي",
+      "awaiting": "بانتظار قبول جمعية",
+      "completed": "تسليمات مكتملة لقاعتي"
+    },
+    "events": {
+      "title": "مناسبات قاعتي",
+      "hint": "يمكنك تعديل المناسبة حتى يتم إسناد ممثل. بعدها تُقفل التفاصيل وتظهر للمتابعة فقط.",
+      "colEvent": "المناسبة",
+      "colLastUpdate": "آخر تحديث",
+      "colReady": "الموعد",
+      "colQuantity": "الكمية المتوقعة",
+      "colStatus": "الحالة",
+      "colAction": "الإجراء",
+      "edit": "تعديل",
+      "view": "عرض",
+      "editLabel": "تعديل {event}",
+      "viewLabel": "عرض {event}",
+      "readyAt": "الجاهزية: {value}"
+    },
+    "rules": {
+      "title": "ما لا يمكنك فعله في هذا الدور",
+      "otherHalls": "لا ترى مناسبات القاعات الأخرى أو بياناتها.",
+      "confirmForCharity": "لا تؤكد الاستلام نيابة عن الجمعية — تؤكد طرف القاعة فقط.",
+      "editAfterAssign": "لا تعدّل المناسبة بعد إسناد ممثل."
+    },
+    "activityTitle": "آخر نشاط في قاعتك",
+    "empty": {
+      "title": "لا توجد مناسبات لقاعتك بعد",
+      "body": "سجّل أول مناسبة لتظهر هنا مع حالتها ومؤشراتها.",
+      "noActivity": "لا يوجد نشاط مسجل بعد."
+    }
+  },
+  "states": {
+    "loading": "جارٍ تحميل بيانات العرض…",
+    "error": {
+      "title": "تعذّر قراءة بيانات العرض",
+      "body": "البيانات المحفوظة في هذا المتصفح غير صالحة. لم يتغير أي سجل خارجي. أعد ضبط بيانات العرض للمتابعة.",
+      "reset": "إعادة ضبط بيانات العرض"
+    },
+    "noAccount": {
+      "title": "اختر حسابًا تجريبيًا أولًا",
+      "body": "هذه الصفحة تخص دورًا محددًا. اختر حسابًا لعرض الواجهة المناسبة لصلاحياته.",
+      "action": "اختيار حساب"
+    },
+    "accessDenied": {
+      "title": "لا تملك صلاحية دخول هذه الصفحة",
+      "body": "الحساب الحالي ({role}) لا يملك صلاحية هذه الواجهة. بدّل الحساب من شريط وضع العرض لرؤية الإجراءات المتاحة لكل دور.",
+      "goHome": "الذهاب إلى واجهتي",
+      "switch": "تبديل الحساب"
+    },
+    "comingSoon": {
+      "badge": "قيد التطوير",
+      "roleTitle": "واجهة {role} قيد التطوير",
+      "roleBody": "صُممت هذه الواجهة في Figma (الشاشة {frame}) ولم تُنفَّذ برمجيًا في هذه النسخة بعد. التدفق المنفّذ حاليًا: اختيار الحساب ← رئيسية مسؤول القاعة.",
+      "screenTitle": "«{screen}» قيد التطوير",
+      "screenBody": "هذه الشاشة مصممة في Figma ولم تُنفَّذ برمجيًا بعد. لم يتغير أي سجل.",
+      "backToPicker": "العودة لاختيار الحساب",
+      "backToHome": "العودة إلى الرئيسية",
+      "tryHall": "جرّب واجهة مسؤول القاعة"
+    },
+    "notFound": {
+      "title": "الصفحة غير موجودة",
+      "body": "تحقق من الرابط أو عد إلى اختيار الحساب.",
+      "action": "اختيار حساب"
+    }
+  },
+  "screens": {
+    "editEvent": "تعديل المناسبة {event}",
+    "viewEvent": "تفاصيل المناسبة {event}",
+    "newEvent": "مناسبة جديدة"
+  }
+}

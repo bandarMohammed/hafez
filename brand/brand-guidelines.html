@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دليل هوية حفيظ</title>
+<meta name="description" content="دليل الهوية البصرية لعلامة Hafez | حفيظ — من مناسباتنا إلى أثر مستدام">
+<link rel="icon" href="assets/logo/app/hafez-favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+/* Local copies of the brand fonts (OFL) so the guide also works offline from the folder. */
+@font-face { font-family: "Hafez Inter"; src: url("assets/fonts/Inter-Variable.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Hafez Tajawal"; src: url("assets/fonts/Tajawal-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Hafez Tajawal"; src: url("assets/fonts/Tajawal-Medium.ttf") format("truetype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Hafez Tajawal"; src: url("assets/fonts/Tajawal-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Hafez Tajawal"; src: url("assets/fonts/Tajawal-ExtraBold.ttf") format("truetype"); font-weight: 800; font-display: swap; }
+
+/* Layout: a guide document — sticky chapter index on the right (RTL), reading column on the left; chapters stack on phones. */
+:root {
+  /* brand constants (specimens — identical in both themes) */
+  --hz-forest: #0E3524; --hz-forest-700: #1A4432; --hz-green: #2E7D5A; --hz-sprout: #A7BB68;
+  --hz-sand: #F4EDE1; --hz-paper: #FAFAF7; --hz-gold: #D1AE74; --hz-gold-line: #C39E5D; --hz-olive: #5E793F;
+  --hz-ink: #1C2B24; --hz-muted: #5D6B63; --hz-line: #E4DDD0; --hz-white: #FFFFFF;
+
+  /* page theme */
+  --bg: #FAFAF7; --surface: #FFFFFF; --surface-2: #F4EDE1; --fg: #1C2B24; --heading: #0E3524; --muted: #5D6B63;
+  --line: #E4DDD0; --accent: #2E7D5A; --accent-ink: #FFFFFF; --soft: #E4EFE6; --rule: #C39E5D;
+  --good: #236446; --good-soft: #D9EFD5; --bad: #A33A2B; --bad-soft: #F6DEDA; --code-bg: #0E3524; --code-fg: #E4EFE6;
+
+  --font-ar: "Hafez Tajawal", "Tajawal", "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --font-en: "Hafez Inter", "Inter", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", Consolas, "SFMono-Regular", monospace;
+  --r-sm: 10px; --r-md: 14px; --r-lg: 20px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A1C14; --surface: #10261C; --surface-2: #163024; --fg: #DCE6E0; --heading: #F1F4EE; --muted: #9DB0A5;
+    --line: #24402F; --accent: #A7BB68; --accent-ink: #0E3524; --soft: #163A29; --rule: #D1AE74;
+    --good: #8FD0A8; --good-soft: #173A28; --bad: #F0A496; --bad-soft: #3A1E19; --code-bg: #061109; --code-fg: #DCE6E0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A1C14; --surface: #10261C; --surface-2: #163024; --fg: #DCE6E0; --heading: #F1F4EE; --muted: #9DB0A5;
+  --line: #24402F; --accent: #A7BB68; --accent-ink: #0E3524; --soft: #163A29; --rule: #D1AE74;
+  --good: #8FD0A8; --good-soft: #173A28; --bad: #F0A496; --bad-soft: #3A1E19; --code-bg: #061109; --code-fg: #DCE6E0;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--font-ar); font-size: 16px; line-height: 1.75;
+  padding-inline: 16px; padding-block: 0;
+}
+img { max-width: 100%; display: block; }
+.en, [lang="en"] { font-family: var(--font-en); }
+code, .mono { font-family: var(--mono); font-size: .88em; direction: ltr; unicode-bidi: isolate; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.shell { max-width: 1240px; margin-inline: auto; display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; }
+@media (max-width: 960px) { .shell { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+
+/* ---------- index */
+.toc { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; padding-block: 32px; max-height: 100vh; overflow-y: auto; }
+.toc img { width: 150px; margin-block-end: 24px; }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: ch; }
+.toc li { counter-increment: ch; }
+.toc a { display: flex; gap: 10px; align-items: baseline; padding: 6px 10px; border-radius: var(--r-sm); color: var(--muted); text-decoration: none; font-size: 15px; }
+.toc a::before { content: counter(ch, decimal-leading-zero); font-family: var(--font-en); font-size: 11px; font-weight: 600; color: var(--rule); min-width: 18px; }
+.toc a:hover, .toc a.on { background: var(--soft); color: var(--heading); }
+.toc .meta { margin-block-start: 24px; font-size: 13px; color: var(--muted); border-block-start: 1px solid var(--line); padding-block-start: 16px; }
+@media (max-width: 960px) {
+  .toc { position: static; max-height: none; padding-block: 16px 0; }
+  .toc img { display: none; }
+  .toc details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 8px 12px; }
+  .toc ol { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .toc .meta { display: none; }
+}
+.toc summary { cursor: pointer; font-weight: 700; color: var(--heading); padding: 4px 0; }
+@media (min-width: 961px) { .toc summary { display: none; } }
+
+/* ---------- cover */
+.cover {
+  margin-block: 32px 0; border-radius: 28px; background: var(--hz-forest); color: var(--hz-paper);
+  position: relative; overflow: hidden; padding: clamp(28px, 6vw, 64px);
+  display: grid; gap: 28px;
+}
+.cover::after { content: ""; position: absolute; inset-inline-start: -60px; top: -40px; width: 480px; height: 400px;
+  background: url("assets/patterns/hafez-corner-leaves.svg") no-repeat center / contain; transform: scaleX(-1); pointer-events: none; }
+.cover > * { position: relative; z-index: 1; }
+.cover .logos { display: flex; flex-wrap: wrap; gap: 28px 48px; align-items: center; }
+.cover .logos img:first-child { width: min(340px, 100%); }
+.cover .logos img:last-child { width: min(300px, 100%); }
+.cover h1 { margin: 0; font-size: clamp(32px, 5vw, 52px); line-height: 1.2; font-weight: 800; text-wrap: balance; }
+.cover p { margin: 0; max-width: 60ch; color: #C9D6CF; font-size: 18px; }
+.cover .tag { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; color: var(--hz-sprout); }
+.cover .tag .en { letter-spacing: .16em; text-transform: uppercase; font-size: 13px; font-weight: 600; }
+.cover .tag span:first-child { font-size: 20px; font-weight: 500; }
+.gold-rule { width: 48px; height: 3px; border-radius: 2px; background: var(--hz-gold); }
+
+/* ---------- chapters */
+main { min-width: 0; padding-block-end: 64px; }
+section { padding-block: 56px 8px; border-block-end: 1px solid var(--line); scroll-margin-top: 16px; }
+section:last-of-type { border-block-end: 0; }
+.eyebrow { font-family: var(--font-en); font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--rule); }
+h2 { font-size: clamp(28px, 4vw, 38px); line-height: 1.25; margin: 4px 0 12px; color: var(--heading); font-weight: 800; text-wrap: balance; }
+h3 { font-size: 21px; line-height: 1.4; margin: 36px 0 12px; color: var(--heading); font-weight: 700; }
+h2 + .lead, .lead { font-size: 18px; color: var(--muted); max-width: 64ch; margin: 0 0 24px; }
+p { max-width: 68ch; }
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px; min-width: 0; }
+.note { background: var(--soft); border-radius: var(--r-md); padding: 14px 18px; font-size: 15px; max-width: none; }
+.note strong { color: var(--heading); }
+figure { margin: 0; }
+figcaption { font-size: 14px; color: var(--muted); margin-block-start: 10px; }
+.cap-title { font-weight: 700; color: var(--fg); }
+ul.rules { margin: 0; padding-inline-start: 1.2em; display: grid; gap: 6px; }
+
+/* specimen tiles: brand-fixed surfaces */
+.tile { border-radius: var(--r-lg); display: grid; place-items: center; padding: 32px 24px; min-height: 200px; }
+.t-paper { background: var(--hz-paper); border: 1px solid var(--hz-line); }
+.t-white { background: var(--hz-white); border: 1px solid var(--hz-line); }
+.t-sand { background: var(--hz-sand); }
+.t-forest { background: var(--hz-forest); }
+.t-green { background: var(--hz-green); }
+.t-sprout { background: var(--hz-sprout); }
+.tile img { max-height: 120px; width: auto; }
+.tile.tall img { max-height: 180px; }
+.lbl { font-size: 14px; margin-block-start: 10px; display: flex; justify-content: space-between; gap: 8px; color: var(--muted); }
+.lbl b { color: var(--fg); font-weight: 700; }
+
+/* do / don't */
+.verdict { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; border-radius: 999px; padding: 2px 10px 2px 12px; }
+.verdict svg { width: 16px; height: 16px; }
+.v-ok { background: var(--good-soft); color: var(--good); }
+.v-no { background: var(--bad-soft); color: var(--bad); }
+.misuse .tile { min-height: 170px; overflow: hidden; }
+.misuse .tile img { max-height: 70px; }
+
+/* table */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 560px; }
+th, td { text-align: start; padding: 12px 16px; border-block-end: 1px solid var(--line); vertical-align: top; }
+th { font-size: 13px; color: var(--muted); font-weight: 700; background: var(--surface-2); }
+tr:last-child td { border-block-end: 0; }
+td.num { font-variant-numeric: tabular-nums; font-family: var(--font-en); }
+.badge { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 999px; padding: 1px 10px; white-space: nowrap; }
+.b-sure { background: var(--good-soft); color: var(--good); }
+.b-infer { background: var(--surface-2); color: var(--fg); border: 1px solid var(--line); }
+.b-fix { background: var(--bad-soft); color: var(--bad); }
+
+/* colours */
+.swatch { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line); background: var(--surface); display: grid; grid-template-rows: 150px auto; }
+.swatch .chip { display: flex; align-items: flex-end; padding: 14px 16px; font-family: var(--font-en); font-weight: 600; font-size: 13px; }
+.swatch .info { padding: 14px 16px 16px; display: grid; gap: 4px; }
+.swatch .name { font-weight: 800; color: var(--heading); font-size: 18px; }
+.swatch .name .en { font-weight: 600; font-size: 13px; color: var(--muted); margin-inline-start: 6px; }
+.swatch .codes { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 13px; color: var(--muted); }
+.copy { font: 600 13px var(--font-en); color: var(--fg); background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 3px 9px; cursor: pointer; direction: ltr; }
+.copy:hover { border-color: var(--accent); }
+.copy.done { background: var(--good-soft); color: var(--good); }
+.swatch .role { font-size: 14px; color: var(--fg); }
+.ratio { display: flex; height: 64px; border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--line); }
+.ratio div { display: flex; align-items: flex-end; padding: 8px 10px; font: 600 12px var(--font-en); min-width: 0; overflow: hidden; white-space: nowrap; }
+.mini-sw { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; align-items: center; }
+.mini-sw i { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); }
+.mini-sw div { font-size: 14px; line-height: 1.5; }
+.mini-sw b { color: var(--heading); }
+.status-pill { display: inline-block; border-radius: 999px; padding: 3px 14px; font-weight: 700; font-size: 14px; }
+.cdot { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; border: 1px solid rgba(0,0,0,.15); margin-inline-end: 4px; }
+
+/* type */
+.spec { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px; min-width: 0; }
+.spec .big { font-size: clamp(56px, 9vw, 96px); line-height: 1.05; color: var(--heading); margin: 8px 0 12px; }
+.spec .glyphs { font-size: 20px; color: var(--muted); line-height: 1.8; overflow-wrap: anywhere; }
+.weights { display: grid; gap: 4px; margin-block-start: 16px; border-block-start: 1px solid var(--line); padding-block-start: 12px; }
+.weights div { display: flex; justify-content: space-between; gap: 12px; font-size: 20px; color: var(--fg); }
+.weights small { font: 500 12px var(--font-en); color: var(--muted); }
+.scale td:last-child { color: var(--heading); }
+
+/* icons */
+.icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; }
+.icons figure { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px 8px 12px; display: grid; justify-items: center; gap: 8px; text-align: center; }
+.icons svg { width: 32px; height: 32px; color: var(--heading); }
+.icons figcaption { margin: 0; font-size: 13px; color: var(--fg); line-height: 1.3; }
+.icons code { font-size: 10.5px; color: var(--muted); }
+.icon-tiles { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.itile { width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; }
+.itile svg { width: 24px; height: 24px; }
+
+/* graphics & photography */
+.pattern { min-height: 180px; border-radius: var(--r-lg); background-size: 120px; }
+.photo { border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 16 / 9; max-width: 100%; background: var(--surface-2); }
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* applications */
+.app figure { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 12px; }
+.app img { border-radius: 12px; width: 100%; }
+.app figcaption { padding-inline: 6px; }
+
+/* code */
+pre { background: var(--code-bg); color: var(--code-fg); border-radius: var(--r-md); padding: 18px 20px; overflow-x: auto; font: 13px/1.7 var(--mono); direction: ltr; text-align: left; margin: 0; }
+.tree { white-space: pre; }
+
+footer { padding-block: 32px 48px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 12px 32px; align-items: center; justify-content: space-between; border-block-start: 1px solid var(--line); }
+footer img { width: 120px; }
+</style>
+</head>
+<body>
+<!--ICON_SPRITE:START--><svg style="display:none" xmlns="http://www.w3.org/2000/svg"><symbol id="hz-events" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2"/></symbol><symbol id="hz-halls" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h17M5 9.5h14M4.5 9.5 12 4l7.5 5.5M7 12.5v5M10.3 12.5v5M13.7 12.5v5M17 12.5v5"/></symbol><symbol id="hz-charities" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3"/><path d="M6.5 19.5c0-3.1 2.5-5.3 5.5-5.3s5.5 2.2 5.5 5.3"/><circle cx="5.5" cy="10" r="2"/><circle cx="18.5" cy="10" r="2"/><path d="M2.5 18c0-2.1 1.2-3.5 3-3.8M21.5 18c0-2.1-1.2-3.5-3-3.8"/></symbol><symbol id="hz-pickup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5h10.5v10H3zM13.5 10h4l3.5 3.6v2.9h-7.5"/><circle cx="7" cy="17.5" r="2" fill="var(--surface)"/><circle cx="17.2" cy="17.5" r="2" fill="var(--surface)"/></symbol><symbol id="hz-food-surplus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5 12 12l8-4.5M12 12v9M8 5.25l8 4.5"/></symbol><symbol id="hz-reports" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h17"/><rect x="5" y="13" width="3" height="5" rx=".8"/><rect x="10.5" y="9" width="3" height="9" rx=".8"/><rect x="16" y="5" width="3" height="13" rx=".8"/></symbol><symbol id="hz-reduce-waste" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-8.5"/><path d="M12 12.5c0-4.6 3-7.7 8-7.7 0 4.6-3 7.7-8 7.7z"/><path d="M12 15.5c0-3.6-2.5-6.1-6.5-6.1 0 3.6 2.5 6.1 6.5 6.1z"/></symbol><symbol id="hz-community" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19.5s-7.5-4.4-7.5-10A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 7.5 2.5c0 5.6-7.5 10-7.5 10z"/></symbol><symbol id="hz-partnership" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.2 1.2"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.2-1.2"/></symbol><symbol id="hz-meals" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v5.5a2 2 0 0 0 4 0V3M9 3v18M17 21V3c-2 1.4-3 3.8-3 6.8V13h3"/></symbol><symbol id="hz-location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6.5-5.6 6.5-11a6.5 6.5 0 0 0-13 0c0 5.4 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.4"/></symbol><symbol id="hz-time" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol><symbol id="hz-weight" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2"/><path d="M6.2 9h11.6l2.2 10.5a1 1 0 0 1-1 1.2H5a1 1 0 0 1-1-1.2z"/><path d="M9.5 15h5"/></symbol><symbol id="hz-food-safety" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 19 6v5.6c0 4.4-3 7.7-7 9.2-4-1.5-7-4.8-7-9.2V6z"/><path d="m9 12 2.1 2.1L15.2 10"/></symbol><symbol id="hz-temperature" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.3V5a2 2 0 1 1 4 0v9.3a4 4 0 1 1-4 0z"/><path d="M12 9v7.5"/></symbol><symbol id="hz-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5.5" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.5 5.5h7a3.5 3.5 0 0 1 0 7h-7a3.5 3.5 0 0 0 0 7h7"/></symbol><symbol id="hz-notification" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></symbol><symbol id="hz-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 3.8h3.3l1.8 4.5-2.2 1.4a11 11 0 0 0 6.2 6.2l1.4-2.2 4.5 1.8v3.3a1.6 1.6 0 0 1-1.7 1.6C10.6 19.9 4.1 13.4 3.6 5.5a1.6 1.6 0 0 1 1.6-1.7z"/></symbol><symbol id="hz-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m3.6 7 8.4 6 8.4-6"/></symbol><symbol id="hz-web" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5s-1.1 6.1-3.4 8.5c-2.3-2.4-3.4-5.2-3.4-8.5S9.7 5.9 12 3.5z"/></symbol><symbol id="hz-impact" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5 9 12l3.5 3.5 8-8"/><path d="M15 7.5h5.5V13"/></symbol></svg><!--ICON_SPRITE:END-->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ui-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="ui-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+</svg>
+
+<div class="shell" dir="rtl" lang="ar">
+  <nav class="toc" aria-label="فهرس الدليل">
+    <img src="assets/logo/ar/hafez-ar-horizontal-color.svg" alt="حفيظ">
+    <details open>
+      <summary>فهرس الدليل</summary>
+      <ol>
+        <li><a href="#overview">عن العلامة</a></li>
+        <li><a href="#reference">تحليل المرجع</a></li>
+        <li><a href="#logo">الشعار ونسخه</a></li>
+        <li><a href="#variants">الألوان والخلفيات</a></li>
+        <li><a href="#clearspace">المساحة والأحجام</a></li>
+        <li><a href="#misuse">الاستخدامات الخاطئة</a></li>
+        <li><a href="#color">لوحة الألوان</a></li>
+        <li><a href="#type">الخطوط</a></li>
+        <li><a href="#tagline">الشعار اللفظي</a></li>
+        <li><a href="#icons">الأيقونات</a></li>
+        <li><a href="#graphics">العناصر الرسومية</a></li>
+        <li><a href="#photo">التصوير</a></li>
+        <li><a href="#applications">التطبيقات</a></li>
+        <li><a href="#dev">للمطورين</a></li>
+      </ol>
+    </details>
+    <div class="meta">الإصدار 1.0 — أكتوبر 2026<br>جميع الأصول في <code>brand/assets/</code></div>
+  </nav>
+
+  <main>
+    <header class="cover" id="top">
+      <div class="logos">
+        <img src="assets/logo/en/hafez-en-horizontal-reverse.svg" alt="Hafez — From Occasions to Impact">
+        <img src="assets/logo/ar/hafez-ar-horizontal-reverse.svg" alt="حفيظ — من مناسباتنا إلى أثر مستدام">
+      </div>
+      <div class="gold-rule"></div>
+      <h1>دليل الهوية البصرية</h1>
+      <p>المرجع الموحّد لفريق التصميم والمطورين: الشعار ونسخه، الألوان، الخطوط، الأيقونات، العناصر الرسومية، وقواعد تطبيق هوية حفيظ على المطبوعات والزي والتغليف والواجهات الرقمية.</p>
+      <div class="tag"><span>من مناسباتنا إلى أثر مستدام</span><span class="en" lang="en">From Occasions to Impact</span></div>
+    </header>
+
+    <!-- ===================================================== 01 -->
+    <section id="overview">
+      <div class="eyebrow" lang="en">01 · Brand</div>
+      <h2>عن العلامة</h2>
+      <p class="lead">حفيظ منصة تنسّق فائض الطعام بين قاعات المناسبات والجمعيات الخيرية، فيتحول ما يتبقى من الولائم إلى وجبات تصل لمن يحتاجها في الوقت المناسب وبشروط سلامة واضحة.</p>
+      <div class="grid g3">
+        <div class="card"><h3 style="margin-top:0">الوعد</h3><p style="margin:0">لا يُهدر طعام صالح من مناسباتنا. كل كيلوغرام يُنقذ يُسجَّل ويصل بأمان.</p></div>
+        <div class="card"><h3 style="margin-top:0">الشخصية</h3><p style="margin:0">موثوقة، دافئة، عملية، مجتمعية. تتحدث بهدوء وبأرقام واضحة، وتحترم كرم الضيافة.</p></div>
+        <div class="card"><h3 style="margin-top:0">الجمهور</h3><p style="margin:0">مديرو القاعات ومنظمو المناسبات، الجمعيات الخيرية، المتطوعون الميدانيون، والجهات الداعمة.</p></div>
+      </div>
+      <h3>الأسماء الرسمية</h3>
+      <div class="tablewrap"><table>
+        <tr><th>العنصر</th><th>العربية</th><th>الإنجليزية</th></tr>
+        <tr><td>اسم العلامة</td><td><b>حفيظ</b></td><td lang="en"><b>Hafez</b></td></tr>
+        <tr><td>الشعار اللفظي</td><td>من مناسباتنا إلى أثر مستدام</td><td lang="en">From Occasions to Impact</td></tr>
+        <tr><td>صيغة الاسمين معًا</td><td colspan="2"><span lang="en">Hafez</span> | حفيظ — مع فاصل عمودي، ولا تُستخدم واو العطف بينهما.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===================================================== 02 -->
+    <section id="reference">
+      <div class="eyebrow" lang="en">02 · Reference</div>
+      <h2>تحليل الصورة المرجعية</h2>
+      <p class="lead">بُنيت الهوية من لوحة الهوية المرجعية الموجودة في جذر المشروع («هوية حافظ_ من المناسبات إلى الأثر المستدام.png»، <bdi dir="ltr">1536×1024</bdi>). قيست الألوان بأخذ وسيط البكسلات من كل منطقة، وقيست نسب الشعار بالبكسل. الجدول يفصل بين ما هو مؤكد وما هو مستنتج أو مصحّح.</p>
+      <div class="grid g2" style="margin-bottom:20px">
+        <figure class="card" style="padding:12px"><img src="../هوية حافظ_ من المناسبات إلى الأثر المستدام.png" alt="لوحة الهوية المرجعية" style="border-radius:10px"><figcaption>اللوحة المرجعية كما وردت (للمقارنة فقط، ليست ملف أصول).</figcaption></figure>
+        <div class="card">
+          <h3 style="margin-top:0">ما يمكن إعادة إنتاجه بدقة</h3>
+          <ul class="rules">
+            <li>رمز الورقتين والبذرة والبرعم: أُعيد رسمه متجهيًا ومطابقته فوق المرجع بالتراكب.</li>
+            <li>الكلمة <span lang="en">Hafez</span>: تطابق <span lang="en">Inter Bold</span> (نسبة ارتفاع x إلى الحروف الكبيرة 0.75 مقيسة، وهي نسبة الخط نفسها).</li>
+            <li>الشعار الإنجليزي أسفل الاسم بعرض الكلمة نفسه، بحروف كبيرة متباعدة.</li>
+            <li>أسلوب الأيقونات الخطية، والبطاقات الفاتحة بزوايا مستديرة، والخط الذهبي القصير تحت العناوين.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tablewrap"><table>
+        <tr><th>العنصر</th><th>ما ورد في المرجع</th><th>القيمة المعتمدة</th><th>الحالة</th></tr>
+        <tr><td>الأساسي</td><td>الملصق يقرأ <code>#0F1132</code> (لون كحلي لا يطابق المربع الأخضر — نص مشوّه في الصورة)</td><td class="num"><span class="cdot" style="background:#0E3524"></span>#0E3524 — من وسيط بكسلات الشعار والمربعات الداكنة</td><td><span class="badge b-fix">مصحّح</span></td></tr>
+        <tr><td>الثانوي</td><td><code>#2E7DSA</code> (حرف S بدل 5)</td><td class="num"><span class="cdot" style="background:#2E7D5A"></span>#2E7D5A — مطابق للبكسلات المقيسة <bdi dir="ltr">#2F7555</bdi> تقريبًا</td><td><span class="badge b-fix">مصحّح</span></td></tr>
+        <tr><td>المميز</td><td><code>#A7C9S7</code> (غير مقروء)</td><td class="num"><span class="cdot" style="background:#A7BB68"></span>#A7BB68 — من وسيط بكسلات المربع</td><td><span class="badge b-fix">مقيس</span></td></tr>
+        <tr><td>المحايد / الخلفية</td><td><code>#F4EDE1</code> / <code>#FAFAF7</code></td><td class="num" dir="ltr" style="text-align:right">#F4EDE1 / #FAFAF7</td><td><span class="badge b-sure">مؤكد</span></td></tr>
+        <tr><td>ذهبي البذرة، زيتي البرعم</td><td>غير مذكورين في اللوحة</td><td class="num"><bdi dir="ltr">#D1AE74</bdi> / <bdi dir="ltr">#5E793F</bdi> — مقيسان من الرمز</td><td><span class="badge b-infer">مستنتج</span></td></tr>
+        <tr><td>الخطوط</td><td><span lang="en">Inter</span> للإنجليزية، تجوال للعربية</td><td>كما هي</td><td><span class="badge b-sure">مؤكد</span></td></tr>
+        <tr><td>الشعار العربي</td><td>غير موجود في المرجع</td><td>صُمّم جديدًا بخط تجوال ExtraBold على نظام الشعار الإنجليزي نفسه</td><td><span class="badge b-infer">مستنتج</span></td></tr>
+        <tr><td>الرمز على الخلفية الداكنة</td><td>أوراق بيضاء وبذرة ذهبية، والبرعم غير ظاهر بوضوح</td><td>أبقينا البرعم بلون البرعم الأخضر حفاظًا على بنية الرمز الواحدة</td><td><span class="badge b-infer">قرار تصميمي</span></td></tr>
+        <tr><td>ألوان الحالات</td><td>شارات لوحة التحكم (أخضر، كهرماني، بنفسجي، وردي)</td><td>أُخذت الخلفيات من المرجع، وعُدّلت ألوان النص لتحقق تباين AA</td><td><span class="badge b-infer">مستنتج</span></td></tr>
+        <tr><td>الصور</td><td>صور مولّدة تحتوي نصوصًا مشوّهة</td><td>تُستخدم للاسترشاد بالأسلوب فقط، ولا تُنشر</td><td><span class="badge b-fix">تحذير</span></td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===================================================== 03 -->
+    <section id="logo">
+      <div class="eyebrow" lang="en">03 · Logo</div>
+      <h2>الشعار ونسخه</h2>
+      <p class="lead">يتكون الشعار من رمز (ورقتان تحتضنان بذرة ينبت منها برعم) واسم العلامة. جميع الملفات متجهية والنصوص فيها محوّلة إلى مسارات، فلا تحتاج أي خط مثبت.</p>
+
+      <div class="grid g2">
+        <div class="tile t-paper tall"><img src="assets/logo/symbol/hafez-symbol-color.svg" alt="رمز حفيظ" style="max-height:200px"></div>
+        <div class="card">
+          <h3 style="margin-top:0">قراءة مقترحة للرمز</h3>
+          <div class="grid" style="gap:12px">
+            <div class="mini-sw"><i style="background:#0E3524"></i><div><b>الورقة الكبرى</b> — قاعات المناسبات، مصدر الكرم.</div></div>
+            <div class="mini-sw"><i style="background:#2E7D5A"></i><div><b>الورقة المقابلة</b> — الجمعيات التي تستقبل وتوزّع.</div></div>
+            <div class="mini-sw"><i style="background:#D1AE74"></i><div><b>البذرة</b> — الطعام المحفوظ بين الطرفين.</div></div>
+            <div class="mini-sw"><i style="background:#5E793F"></i><div><b>البرعم</b> — الأثر المستدام الذي ينمو منه.</div></div>
+          </div>
+          <p style="font-size:14px;color:var(--muted);margin-bottom:0">القراءة تفسير مقترح لاستخدامه في العروض، وليست جزءًا مذكورًا في المرجع.</p>
+        </div>
+      </div>
+
+      <h3>النسخ المعتمدة</h3>
+      <div class="grid g2">
+        <figure><div class="tile t-white"><img src="assets/logo/en/hafez-en-horizontal-color.svg" alt="Hafez أفقي"></div><div class="lbl"><b>أفقي إنجليزي — النسخة الرئيسية</b><code>hafez-en-horizontal</code></div></figure>
+        <figure><div class="tile t-white"><img src="assets/logo/ar/hafez-ar-horizontal-color.svg" alt="حفيظ أفقي"></div><div class="lbl"><b>أفقي عربي</b><code>hafez-ar-horizontal</code></div></figure>
+        <figure><div class="tile t-white"><img src="assets/logo/en/hafez-en-compact-color.svg" alt="Hafez مدمج" style="max-height:80px"></div><div class="lbl"><b>مدمج إنجليزي (بلا شعار لفظي)</b><code>hafez-en-compact</code></div></figure>
+        <figure><div class="tile t-white"><img src="assets/logo/ar/hafez-ar-compact-color.svg" alt="حفيظ مدمج" style="max-height:80px"></div><div class="lbl"><b>مدمج عربي</b><code>hafez-ar-compact</code></div></figure>
+        <figure><div class="tile t-white tall"><img src="assets/logo/en/hafez-en-stacked-color.svg" alt="Hafez عمودي"></div><div class="lbl"><b>عمودي إنجليزي</b><code>hafez-en-stacked</code></div></figure>
+        <figure><div class="tile t-white tall"><img src="assets/logo/ar/hafez-ar-stacked-color.svg" alt="حفيظ عمودي"></div><div class="lbl"><b>عمودي عربي</b><code>hafez-ar-stacked</code></div></figure>
+        <figure><div class="tile t-white"><img src="assets/logo/bilingual/hafez-bi-horizontal-color.svg" alt="Hafez | حفيظ" style="max-height:64px"></div><div class="lbl"><b>ثنائي اللغة</b><code>hafez-bi-horizontal</code></div></figure>
+        <figure><div class="tile t-sand" style="gap:20px;grid-auto-flow:column">
+          <img src="assets/logo/app/hafez-app-icon.svg" alt="أيقونة التطبيق" style="width:96px">
+          <img src="assets/logo/app/hafez-avatar.svg" alt="الصورة الشخصية" style="width:96px">
+          <img src="assets/logo/app/hafez-app-icon-light.svg" alt="أيقونة فاتحة" style="width:96px">
+        </div><div class="lbl"><b>أيقونة التطبيق والصورة الشخصية</b><code>logo/app/</code></div></figure>
+      </div>
+
+      <h3>متى تُستخدم كل نسخة</h3>
+      <div class="tablewrap"><table>
+        <tr><th>النسخة</th><th>الاستخدام</th></tr>
+        <tr><td>الأفقي مع الشعار اللفظي</td><td>الأغلفة، الصفحة الرئيسية، العروض، المطبوعات الرسمية. الإنجليزي هو النسخة الأم؛ العربي للمواد الموجهة محليًا.</td></tr>
+        <tr><td>المدمج</td><td>رؤوس المواقع والتطبيقات، الزي، التوقيع البريدي، أي مساحة تقل فيها النسخة الأفقية عن 160px.</td></tr>
+        <tr><td>العمودي</td><td>المساحات المربعة: ظهر الزي، جانب الصناديق، الملصقات العمودية.</td></tr>
+        <tr><td>ثنائي اللغة</td><td>بطاقات التعريف، اللوحات الإرشادية في القاعات، المراسلات المشتركة مع الجهات.</td></tr>
+        <tr><td>الرمز وحده</td><td>أيقونة التطبيق، الصورة الشخصية في الحسابات، الأختام، الأنماط. يُستخدم وحده فقط حين يكون الاسم ظاهرًا في مكان قريب.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===================================================== 04 -->
+    <section id="variants">
+      <div class="eyebrow" lang="en">04 · Logo colour</div>
+      <h2>ألوان الشعار والخلفيات</h2>
+      <p class="lead">أربع نسخ لونية لكل صيغة. اختر النسخة حسب الخلفية، ولا تُعِد تلوين الشعار يدويًا.</p>
+      <div class="grid g4">
+        <figure><div class="tile t-paper"><img src="assets/logo/en/hafez-en-compact-color.svg" alt="ملوّن"></div><div class="lbl"><b>ملوّن</b><code>-color</code></div><figcaption>الأصل. على الورقي والأبيض والرملي.</figcaption></figure>
+        <figure><div class="tile t-forest"><img src="assets/logo/en/hafez-en-compact-reverse.svg" alt="معكوس"></div><div class="lbl"><b>معكوس</b><code>-reverse</code></div><figcaption>على الأخضر الغابي والصور الداكنة.</figcaption></figure>
+        <figure><div class="tile t-sprout"><img src="assets/logo/en/hafez-en-compact-mono-forest.svg" alt="أحادي داكن"></div><div class="lbl"><b>أحادي غابي</b><code>-mono-forest</code></div><figcaption>طباعة بلون واحد، الختم، الخلفيات الفاتحة الملوّنة.</figcaption></figure>
+        <figure><div class="tile t-green"><img src="assets/logo/en/hafez-en-compact-mono-white.svg" alt="أحادي أبيض"></div><div class="lbl"><b>أحادي أبيض</b><code>-mono-white</code></div><figcaption>التطريز، الحفر، الخلفيات الخضراء المتوسطة.</figcaption></figure>
+      </div>
+      <h3>الخلفيات المسموحة</h3>
+      <div class="tablewrap"><table>
+        <tr><th>الخلفية</th><th>النسخة</th></tr>
+        <tr><td><span class="cdot" style="background:#FAFAF7"></span>الورقي، <span class="cdot" style="background:#FFFFFF"></span>الأبيض، <span class="cdot" style="background:#F4EDE1"></span>الرملي</td><td>ملوّن</td></tr>
+        <tr><td><span class="cdot" style="background:#0E3524"></span>الأخضر الغابي، <span class="cdot" style="background:#1A4432"></span>الغابي 700</td><td>معكوس</td></tr>
+        <tr><td><span class="cdot" style="background:#2E7D5A"></span>أخضر الورقة</td><td>أحادي أبيض</td></tr>
+        <tr><td><span class="cdot" style="background:#A7BB68"></span>أخضر البرعم، <span class="cdot" style="background:#D1AE74"></span>الذهبي</td><td>أحادي غابي</td></tr>
+        <tr><td>صورة فوتوغرافية</td><td>معكوس على منطقة داكنة هادئة، أو داخل شريط غابي. لا يوضع على تفاصيل مزدحمة.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===================================================== 05 -->
+    <section id="clearspace">
+      <div class="eyebrow" lang="en">05 · Clear space &amp; size</div>
+      <h2>المساحة المحيطة والأحجام الدنيا</h2>
+      <p class="lead">وحدة القياس <b>X</b> هي ارتفاع البذرة في الرمز (نحو 30٪ من ارتفاع الرمز). يُترك حول الشعار مسافة لا تقل عن 1X من كل جهة، ولا يدخلها نص أو صورة أو حافة.</p>
+      <div class="grid g2">
+        <figure class="card" style="display:grid;place-items:center;padding:36px 16px;background:var(--hz-paper)">
+          <div style="position:relative;width:fit-content;max-width:100%;padding:33px;outline:1.5px dashed #C39E5D;outline-offset:0;background:repeating-linear-gradient(45deg,rgba(195,158,93,.08) 0 6px,transparent 6px 12px)">
+            <div style="background:var(--hz-paper)"><img src="assets/logo/en/hafez-en-horizontal-color.svg" alt="المساحة المحيطة" style="width:min(440px,60vw)"></div>
+            <span style="position:absolute;top:6px;inset-inline-start:50%;font:700 13px var(--font-en);color:#8a6a2e">X</span>
+            <span style="position:absolute;bottom:6px;inset-inline-start:50%;font:700 13px var(--font-en);color:#8a6a2e">X</span>
+            <span style="position:absolute;top:50%;left:10px;font:700 13px var(--font-en);color:#8a6a2e">X</span>
+            <span style="position:absolute;top:50%;right:10px;font:700 13px var(--font-en);color:#8a6a2e">X</span>
+          </div>
+          <figcaption style="color:#5D6B63">المنطقة المخططة هي المساحة المحمية (1X).</figcaption>
+        </figure>
+        <div class="card">
+          <h3 style="margin-top:0">نسب البناء</h3>
+          <ul class="rules">
+            <li>ارتفاع الرمز = 1.41 × ارتفاع الحرف الكبير H.</li>
+            <li>المسافة بين الرمز والاسم = 0.5 × ارتفاع H.</li>
+            <li>الشعار اللفظي الإنجليزي يمتد بعرض الاسم تمامًا، وخط قاعدته على مستوى أسفل الرمز.</li>
+            <li>في النسخة العربية يقع الرمز يمين الاسم، ويُحاذى الشعار اللفظي إلى اليمين تحت الاسم.</li>
+            <li>في العمودي: الرمز بتكبير 1.25 فوق الاسم، والمسافة بينهما 0.37 × ارتفاع H.</li>
+          </ul>
+        </div>
+      </div>
+      <h3>الأحجام الدنيا</h3>
+      <div class="tablewrap"><table>
+        <tr><th>النسخة</th><th>رقمي (عرض)</th><th>طباعة (عرض)</th></tr>
+        <tr><td>أفقي مع الشعار اللفظي</td><td class="num" dir="ltr" style="text-align:right">160px</td><td class="num" dir="ltr" style="text-align:right">40mm</td></tr>
+        <tr><td>مدمج / ثنائي اللغة</td><td class="num" dir="ltr" style="text-align:right">96px</td><td class="num" dir="ltr" style="text-align:right">24mm</td></tr>
+        <tr><td>عمودي</td><td class="num" dir="ltr" style="text-align:right">72px</td><td class="num" dir="ltr" style="text-align:right">18mm</td></tr>
+        <tr><td>الرمز</td><td class="num" dir="ltr" style="text-align:right">24px</td><td class="num" dir="ltr" style="text-align:right">6mm</td></tr>
+        <tr><td>الرمز المبسّط (بلا برعم) — <code>hafez-symbol-small</code></td><td class="num">16 إلى 23px</td><td class="num">أقل من 6mm</td></tr>
+      </table></div>
+      <div class="grid g4" style="margin-top:16px">
+        <div class="tile t-paper" style="min-height:120px;grid-auto-flow:column;gap:18px;align-items:end">
+          <img src="assets/logo/symbol/hafez-symbol-color.svg" alt="" style="width:64px">
+          <img src="assets/logo/symbol/hafez-symbol-color.svg" alt="" style="width:32px">
+          <img src="assets/logo/symbol/hafez-symbol-color.svg" alt="" style="width:24px">
+          <img src="assets/logo/symbol/hafez-symbol-small-color.svg" alt="" style="width:16px">
+        </div>
+        <div class="tile t-paper" style="min-height:120px;grid-auto-flow:column;gap:16px;align-items:end">
+          <img src="assets/logo/app/hafez-favicon.svg" alt="" style="width:48px">
+          <img src="assets/logo/app/hafez-favicon.svg" alt="" style="width:32px">
+          <img src="assets/logo/app/hafez-favicon.svg" alt="" style="width:16px">
+        </div>
+      </div>
+      <p style="font-size:14px;color:var(--muted)">تحت 24px يُستخدم الرمز المبسّط: يُحذف البرعم وتكبر البذرة قليلًا حتى لا تتلاشى التفاصيل.</p>
+    </section>
+
+    <!-- ===================================================== 06 -->
+    <section id="misuse">
+      <div class="eyebrow" lang="en">06 · Misuse</div>
+      <h2>الاستخدامات الخاطئة</h2>
+      <p class="lead">الأمثلة التالية ممنوعة. عند الحاجة لتعديل غير مذكور هنا، ارجع إلى فريق الهوية.</p>
+      <div class="grid g4 misuse">
+        <figure><div class="tile t-paper"><img src="assets/logo/en/hafez-en-compact-color.svg" alt="" style="transform:scale(1.3,.8)"></div><figcaption><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span> تمديد الشعار أو ضغطه.</figcaption></figure>
+        <figure><div class="tile t-paper"><img src="assets/logo/en/hafez-en-compact-color.svg" alt="" style="transform:rotate(-14deg)"></div><figcaption><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span> تدوير الشعار أو إمالته.</figcaption></figure>
+        <figure><div class="tile t-paper"><img src="assets/logo/en/hafez-en-compact-color.svg" alt="" style="filter:hue-rotate(150deg) saturate(1.6)"></div><figcaption><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span> تغيير ألوان الأوراق أو البذرة.</figcaption></figure>
+        <figure><div class="tile t-paper"><img src="assets/logo/en/hafez-en-compact-color.svg" alt="" style="filter:drop-shadow(4px 6px 3px rgba(0,0,0,.45))"></div><figcaption><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span> إضافة ظلال أو توهج أو تأثيرات.</figcaption></figure>
+        <figure><div class="tile t-forest"><img src="assets/logo/en/hafez-en-compact-color.svg" alt=""></div><figcaption><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span> النسخة الملونة على خلفية داكنة.</figcaption></figure>
+        <figure><div class="tile" style="background:url('assets/reference/ref-photo-hall.jpg') center/cover"><img src="assets/logo/en/hafez-en-compact-color.svg" alt=""></div><figcaption><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span> وضعه على صورة مزدحمة بلا تباين.</figcaption></figure>
+        <figure><div class="tile t-paper"><div style="display:flex;align-items:center;gap:10px"><img src="assets/logo/symbol/hafez-symbol-color.svg" alt="" style="height:52px"><span style="font:italic 700 40px Georgia,serif;color:#0E3524" lang="en">Hafez</span></div></div><figcaption><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span> إعادة كتابة الاسم بخط آخر.</figcaption></figure>
+        <figure><div class="tile t-paper" style="padding:8px"><div style="border:2px solid #0E3524;border-radius:6px;padding:2px 4px"><img src="assets/logo/en/hafez-en-compact-color.svg" alt="" style="width:170px;max-height:none;height:auto"></div></div><figcaption><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span> إطار مضاف أو تجاهل المساحة المحيطة.</figcaption></figure>
+      </div>
+      <h3>الاستخدام الصحيح</h3>
+      <div class="grid g3">
+        <figure><div class="tile t-paper" style="min-height:150px"><img src="assets/logo/en/hafez-en-horizontal-color.svg" alt="" style="max-height:70px"></div><figcaption><span class="verdict v-ok"><svg><use href="#ui-ok"/></svg>صحيح</span> ملوّن على الورقي مع مساحة كافية.</figcaption></figure>
+        <figure><div class="tile t-forest" style="min-height:150px"><img src="assets/logo/ar/hafez-ar-horizontal-reverse.svg" alt="" style="max-height:80px"></div><figcaption><span class="verdict v-ok"><svg><use href="#ui-ok"/></svg>صحيح</span> المعكوس على الأخضر الغابي.</figcaption></figure>
+        <figure><div class="tile" style="min-height:150px;background:linear-gradient(rgba(14,53,36,.78),rgba(14,53,36,.78)),url('assets/reference/ref-photo-hall.jpg') center/cover"><img src="assets/logo/en/hafez-en-compact-reverse.svg" alt="" style="max-height:56px"></div><figcaption><span class="verdict v-ok"><svg><use href="#ui-ok"/></svg>صحيح</span> فوق صورة بطبقة غابية 75٪ أو أكثر.</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ===================================================== 07 -->
+    <section id="color">
+      <div class="eyebrow" lang="en">07 · Colour</div>
+      <h2>لوحة الألوان</h2>
+      <p class="lead">خمسة ألوان أساسية من المرجع تحمل الهوية: أخضر غابي للثقة، أخضر الورقة للفعل، برعم فاتح للحيوية، ورملي وورقي للدفء والمساحة. اضغط على الكود لنسخه.</p>
+      <div class="grid g3" id="core">
+        <div class="swatch"><div class="chip" style="background:#0E3524;color:#FAFAF7">Primary</div><div class="info"><div class="name">الأخضر الغابي<span class="en">Forest</span></div><div class="codes"><button class="copy" data-hex="#0E3524">#0E3524</button><span class="mono">RGB 14 53 36</span></div><div class="role">الشعار، العناوين، الأسطح الداكنة، القوائم الجانبية.</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#2E7D5A;color:#FFFFFF">Secondary</div><div class="info"><div class="name">أخضر الورقة<span class="en">Leaf Green</span></div><div class="codes"><button class="copy" data-hex="#2E7D5A">#2E7D5A</button><span class="mono">RGB 46 125 90</span></div><div class="role">الأزرار، الروابط، الشعار اللفظي، الأيقونات النشطة.</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#A7BB68;color:#0E3524">Accent</div><div class="info"><div class="name">أخضر البرعم<span class="en">Sprout</span></div><div class="codes"><button class="copy" data-hex="#A7BB68">#A7BB68</button><span class="mono">RGB 167 187 104</span></div><div class="role">إبراز على الخلفيات الداكنة، الرسوم والأوراق. لا يُكتب به نص على خلفية فاتحة.</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#F4EDE1;color:#0E3524">Neutral</div><div class="info"><div class="name">الرملي<span class="en">Sand</span></div><div class="codes"><button class="copy" data-hex="#F4EDE1">#F4EDE1</button><span class="mono">RGB 244 237 225</span></div><div class="role">البطاقات، مربعات الأيقونات، التغليف، الأقسام البديلة.</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#FAFAF7;color:#0E3524;border-bottom:1px solid #E4DDD0">Background</div><div class="info"><div class="name">الورقي<span class="en">Paper</span></div><div class="codes"><button class="copy" data-hex="#FAFAF7">#FAFAF7</button><span class="mono">RGB 250 250 247</span></div><div class="role">الخلفية الافتراضية للصفحات والمطبوعات.</div></div></div>
+        <div class="swatch"><div class="chip" style="background:#D1AE74;color:#0E3524">Supporting</div><div class="info"><div class="name">ذهبي الحصاد<span class="en">Harvest Gold</span></div><div class="codes"><button class="copy" data-hex="#D1AE74">#D1AE74</button><span class="mono">RGB 209 174 116</span></div><div class="role">البذرة في الرمز، الخط القصير تحت العناوين، لمسات صغيرة على الداكن.</div></div></div>
+      </div>
+
+      <h3>نسب الاستخدام التقريبية</h3>
+      <div class="ratio" role="img" aria-label="الورقي 55٪، الغابي 20٪، الرملي 12٪، أخضر الورقة 8٪، البرعم 3٪، الذهبي 2٪">
+        <div style="flex:55;background:#FAFAF7;color:#5D6B63">Paper 55%</div>
+        <div style="flex:20;background:#0E3524;color:#FAFAF7">Forest 20%</div>
+        <div style="flex:12;background:#F4EDE1;color:#5D6B63">Sand 12%</div>
+        <div style="flex:8;background:#2E7D5A;color:#fff">8%</div>
+        <div style="flex:3;background:#A7BB68"></div>
+        <div style="flex:2;background:#D1AE74"></div>
+      </div>
+
+      <h3>الألوان الداعمة</h3>
+      <div class="grid g4">
+        <div class="mini-sw"><i style="background:#1A4432"></i><div><b>الغابي 700</b><br><code>#1A4432</code> سطح داكن مرتفع، حالة التمرير.</div></div>
+        <div class="mini-sw"><i style="background:#C39E5D"></i><div><b>الخط الذهبي</b><br><code>#C39E5D</code> فواصل زخرفية فقط.</div></div>
+        <div class="mini-sw"><i style="background:#5E793F"></i><div><b>الزيتي</b><br><code>#5E793F</code> البرعم في الرمز فقط.</div></div>
+        <div class="mini-sw"><i style="background:#1C2B24"></i><div><b>الحبر</b><br><code>#1C2B24</code> النص الأساسي.</div></div>
+        <div class="mini-sw"><i style="background:#5D6B63"></i><div><b>الرمادي المخضر</b><br><code>#5D6B63</code> النص الثانوي.</div></div>
+        <div class="mini-sw"><i style="background:#E4DDD0"></i><div><b>الخطوط</b><br><code>#E4DDD0</code> الحدود والفواصل.</div></div>
+        <div class="mini-sw"><i style="background:#E4EFE6"></i><div><b>النعناعي</b><br><code>#E4EFE6</code> العنصر المحدد، خلفية الأيقونة.</div></div>
+        <div class="mini-sw"><i style="background:#FFFFFF"></i><div><b>الأبيض</b><br><code>#FFFFFF</code> البطاقات فوق الورقي.</div></div>
+      </div>
+
+      <h3>ألوان الحالات (للواجهات)</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <span class="status-pill" style="background:#D9EFD5;color:#236446">تم تأكيد الاستلام</span>
+        <span class="status-pill" style="background:#FAE9C1;color:#8A5A0B">بانتظار الجمعية</span>
+        <span class="status-pill" style="background:#E8E7F0;color:#4A4E8C">مجدولة</span>
+        <span class="status-pill" style="background:#F6DEDA;color:#A33A2B">لا يوجد فائض</span>
+      </div>
+      <p style="font-size:14px;color:var(--muted)">ألوان الحالات للمعلومات فقط، ولا تُستخدم في التسويق أو بدل ألوان الهوية.</p>
+
+      <h3>التباين (WCAG 2.1)</h3>
+      <div class="tablewrap"><table>
+        <tr><th>النص / الخلفية</th><th>النسبة</th><th>النتيجة</th></tr>
+        <tr><td><span class="cdot" style="background:#0E3524"></span>غابي على <span class="cdot" style="background:#FAFAF7"></span>ورقي</td><td class="num" dir="ltr" style="text-align:right">12.9:1</td><td><span class="badge b-sure">AAA</span></td></tr>
+        <tr><td><span class="cdot" style="background:#1C2B24"></span>حبر على ورقي</td><td class="num" dir="ltr" style="text-align:right">14.1:1</td><td><span class="badge b-sure">AAA</span></td></tr>
+        <tr><td><span class="cdot" style="background:#2E7D5A"></span>أخضر الورقة على ورقي</td><td class="num" dir="ltr" style="text-align:right">4.8:1</td><td><span class="badge b-sure">AA</span></td></tr>
+        <tr><td><span class="cdot" style="background:#FFFFFF"></span>أبيض على <span class="cdot" style="background:#2E7D5A"></span>أخضر الورقة (الأزرار)</td><td class="num" dir="ltr" style="text-align:right">5.0:1</td><td><span class="badge b-sure">AA</span></td></tr>
+        <tr><td><span class="cdot" style="background:#5D6B63"></span>رمادي مخضر على ورقي</td><td class="num" dir="ltr" style="text-align:right">5.4:1</td><td><span class="badge b-sure">AA</span></td></tr>
+        <tr><td><span class="cdot" style="background:#A7BB68"></span>برعم على <span class="cdot" style="background:#0E3524"></span>غابي</td><td class="num" dir="ltr" style="text-align:right">6.4:1</td><td><span class="badge b-sure">AA</span></td></tr>
+        <tr><td><span class="cdot" style="background:#D1AE74"></span>ذهبي على غابي</td><td class="num" dir="ltr" style="text-align:right">6.5:1</td><td><span class="badge b-sure">AA</span></td></tr>
+        <tr><td><span class="cdot" style="background:#2E7D5A"></span>أخضر الورقة على <span class="cdot" style="background:#F4EDE1"></span>رملي</td><td class="num" dir="ltr" style="text-align:right">4.3:1</td><td><span class="badge b-infer">نص كبير فقط (18.5px عريض أو 24px)</span></td></tr>
+        <tr><td><span class="cdot" style="background:#A7BB68"></span>برعم على ورقي</td><td class="num" dir="ltr" style="text-align:right">2.0:1</td><td><span class="badge b-fix">ممنوع للنص</span></td></tr>
+        <tr><td><span class="cdot" style="background:#C39E5D"></span>الخط الذهبي على ورقي</td><td class="num" dir="ltr" style="text-align:right">2.4:1</td><td><span class="badge b-fix">زخرفة فقط</span></td></tr>
+      </table></div>
+    </section>
+
+    <!-- ===================================================== 08 -->
+    <section id="type">
+      <div class="eyebrow" lang="en">08 · Typography</div>
+      <h2>الخطوط</h2>
+      <p class="lead">خطان مفتوحا المصدر (رخصة OFL) كما في المرجع: تجوال للعربية و<span lang="en">Inter</span> للإنجليزية. كلاهما هندسي واضح، ويعمل جيدًا على الشاشات الصغيرة.</p>
+      <div class="grid g2">
+        <div class="spec">
+          <div class="eyebrow" lang="en">Arabic · Tajawal</div>
+          <div class="big" style="font-weight:800">تجوال</div>
+          <div class="glyphs">ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي<br>٠١٢٣٤٥٦٧٨٩ — 0123456789</div>
+          <div class="weights">
+            <div style="font-weight:400">نوزّع الفائض بأمان <small>Regular 400</small></div>
+            <div style="font-weight:500">نوزّع الفائض بأمان <small>Medium 500</small></div>
+            <div style="font-weight:700">نوزّع الفائض بأمان <small>Bold 700</small></div>
+            <div style="font-weight:800">نوزّع الفائض بأمان <small>ExtraBold 800</small></div>
+          </div>
+        </div>
+        <div class="spec" lang="en" dir="ltr" style="text-align:left">
+          <div class="eyebrow">Latin · Inter</div>
+          <div class="big" style="font-weight:700;letter-spacing:-.02em">Inter</div>
+          <div class="glyphs">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz<br>0123456789 · kg · %</div>
+          <div class="weights">
+            <div style="font-weight:400">Good food, greater impact <small>Regular 400</small></div>
+            <div style="font-weight:500">Good food, greater impact <small>Medium 500</small></div>
+            <div style="font-weight:600">Good food, greater impact <small>SemiBold 600</small></div>
+            <div style="font-weight:700">Good food, greater impact <small>Bold 700</small></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>السلّم الطباعي</h3>
+      <div class="tablewrap"><table class="scale">
+        <tr><th>المستوى</th><th>الحجم / السطر</th><th>الوزن</th><th>مثال</th></tr>
+        <tr><td>عنوان عرض</td><td class="num" dir="ltr" style="text-align:right">56 / 64</td><td>800 · 700</td><td style="font-size:clamp(32px,5vw,56px);line-height:1.15;font-weight:800">فائض اليوم</td></tr>
+        <tr><td>H1</td><td class="num" dir="ltr" style="text-align:right">40 / 50</td><td>800 · 700</td><td style="font-size:clamp(28px,4vw,40px);font-weight:800;line-height:1.25">أثر يمكن قياسه</td></tr>
+        <tr><td>H2</td><td class="num" dir="ltr" style="text-align:right">32 / 42</td><td>700</td><td style="font-size:clamp(24px,3.4vw,32px);font-weight:700;line-height:1.3">المناسبات القادمة</td></tr>
+        <tr><td>H3</td><td class="num" dir="ltr" style="text-align:right">24 / 34</td><td>700</td><td style="font-size:24px;font-weight:700">تفاصيل الاستلام</td></tr>
+        <tr><td>H4</td><td class="num" dir="ltr" style="text-align:right">20 / 30</td><td>700 · 600</td><td style="font-size:20px;font-weight:700">قاعة النخيل</td></tr>
+        <tr><td>نص كبير</td><td class="num" dir="ltr" style="text-align:right">18 / 30</td><td>400</td><td style="font-size:18px">نربط قاعات المناسبات بالجمعيات الخيرية.</td></tr>
+        <tr><td>نص أساسي</td><td class="num" dir="ltr" style="text-align:right">16 / 27</td><td>400</td><td style="font-size:16px">يُعبأ الطعام خلال ساعتين من انتهاء المناسبة.</td></tr>
+        <tr><td>صغير</td><td class="num" dir="ltr" style="text-align:right">14 / 22</td><td>400 · 500</td><td style="font-size:14px">آخر تحديث قبل 5 دقائق</td></tr>
+        <tr><td>تعليق</td><td class="num" dir="ltr" style="text-align:right">12 / 18</td><td>500</td><td style="font-size:12px;font-weight:500">بيانات توضيحية</td></tr>
+        <tr><td>علوي لاتيني</td><td class="num" dir="ltr" style="text-align:right">12 / 16 · +0.16em</td><td>600</td><td lang="en" style="font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase">From Occasions to Impact</td></tr>
+      </table></div>
+
+      <h3>قواعد الكتابة</h3>
+      <div class="grid g2">
+        <ul class="rules card">
+          <li>تباعد الأسطر العربية 1.6–1.8، والإنجليزية 1.5.</li>
+          <li>لا تُضاف مسافات بين الحروف العربية (letter-spacing) إطلاقًا، فهي تكسر الوصل.</li>
+          <li>الحروف الكبيرة المتباعدة للإنجليزية فقط، في العناوين العلوية والشعار اللفظي.</li>
+          <li>العناوين بالأخضر الغابي، والنص بالحبر، والثانوي بالرمادي المخضر.</li>
+        </ul>
+        <ul class="rules card">
+          <li>الأرقام: <bdi dir="ltr">0–9</bdi> (وليس <bdi dir="ltr">٠–٩</bdi>) في الواجهات والجداول لتوحيدها مع البيانات، مع <code>tabular-nums</code>.</li>
+          <li>الوحدات: «كجم» في النص العربي و<span lang="en">kg</span> داخل الأرقام في البطاقات المدمجة.</li>
+          <li>عند المزج بين اللغتين في سطر واحد يبقى اتجاه الفقرة RTL وتُعزل الكلمة الإنجليزية.</li>
+          <li>بدائل الويب: <code>IBM Plex Sans Arabic</code> ثم <code>Noto Sans Arabic</code> للعربية، و<code>system-ui</code> للإنجليزية.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================================================== 09 -->
+    <section id="tagline">
+      <div class="eyebrow" lang="en">09 · Tagline</div>
+      <h2>الشعار اللفظي</h2>
+      <p class="lead">لكل لغة صيغتها المعتمدة، ولا تُترجم إحداهما حرفيًا من الأخرى.</p>
+      <div class="grid g2">
+        <div class="tile t-forest" style="justify-items:start;text-align:start;gap:14px;padding:36px">
+          <div style="font-size:clamp(28px,4vw,40px);font-weight:800;color:#FAFAF7;line-height:1.3">من مناسباتنا<br>إلى أثر مستدام</div>
+          <div class="gold-rule"></div>
+          <div style="color:#A7BB68;font-size:15px">العربية: تجوال 800 للعناوين، أو 500 بلون البرعم تحت الشعار.</div>
+        </div>
+        <div class="tile t-paper" style="justify-items:start;text-align:left;gap:14px;padding:36px" dir="ltr" lang="en">
+          <div style="font-size:clamp(26px,3.6vw,38px);font-weight:700;color:#0E3524;letter-spacing:-.01em;line-height:1.2">From Occasions<br>to Impact</div>
+          <div style="font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#2E7D5A">From Occasions to Impact</div>
+          <div style="color:#5D6B63;font-size:14px">English: Inter 700 as a headline, or SemiBold caps +0.16em under the wordmark.</div>
+        </div>
+      </div>
+      <div class="grid g3" style="margin-top:16px">
+        <div class="card"><span class="verdict v-ok"><svg><use href="#ui-ok"/></svg>صحيح</span><p style="margin:10px 0 0">«من مناسباتنا إلى أثر مستدام» — الصيغة العربية الرسمية دون علامات إضافية.</p></div>
+        <div class="card"><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span><p style="margin:10px 0 0">«من مناسباتكم .. إلى أثر مستدام» — صيغة وردت في المرجع، وتُستبدل بالصيغة الرسمية.</p></div>
+        <div class="card"><span class="verdict v-no"><svg><use href="#ui-no"/></svg>خطأ</span><p style="margin:10px 0 0">«من المناسبات إلى التأثير» — ترجمة حرفية للإنجليزية.</p></div>
+      </div>
+      <h3>عبارات داعمة من المرجع</h3>
+      <div class="grid g3">
+        <div class="card"><b style="color:var(--heading)">طعام أقل هدرًا، ومجتمع أكثر عطاء</b><p style="margin:6px 0 0;font-size:14px;color:var(--muted)">للحملات والمنشورات.</p></div>
+        <div class="card"><b style="color:var(--heading)">فائض اليوم يدعم مجتمعنا غدًا</b><p style="margin:6px 0 0;font-size:14px;color:var(--muted)">للتطبيق والتنبيهات.</p></div>
+        <div class="card" lang="en" dir="ltr" style="text-align:left"><b style="color:var(--heading)">Good Food, Greater Impact</b><p style="margin:6px 0 0;font-size:14px;color:var(--muted)">English campaigns.</p></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== 10 -->
+    <section id="icons">
+      <div class="eyebrow" lang="en">10 · Icons</div>
+      <h2>الأيقونات</h2>
+      <p class="lead">مجموعة خطية مرسومة خصيصًا على شبكة 24px بسمك خط 1.75 وأطراف مستديرة، وفق أسلوب المرجع. تأتي كملفات SVG منفصلة وملف رموز (sprite) واحد، ولونها يتبع <code>currentColor</code>.</p>
+      <!--ICON_GRID:START--><div class="icons"><figure><svg aria-hidden="true"><use href="#hz-events"/></svg><figcaption>مناسبات<br><code>events</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-halls"/></svg><figcaption>قاعات<br><code>halls</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-charities"/></svg><figcaption>جمعيات<br><code>charities</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-pickup"/></svg><figcaption>استلام<br><code>pickup</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-food-surplus"/></svg><figcaption>فائض طعام<br><code>food-surplus</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-reports"/></svg><figcaption>تقارير<br><code>reports</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-reduce-waste"/></svg><figcaption>تقليل الهدر<br><code>reduce-waste</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-community"/></svg><figcaption>دعم المجتمع<br><code>community</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-partnership"/></svg><figcaption>شراكة<br><code>partnership</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-meals"/></svg><figcaption>وجبات<br><code>meals</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-location"/></svg><figcaption>موقع<br><code>location</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-time"/></svg><figcaption>موعد<br><code>time</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-weight"/></svg><figcaption>الوزن<br><code>weight</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-food-safety"/></svg><figcaption>سلامة الغذاء<br><code>food-safety</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-temperature"/></svg><figcaption>درجة الحرارة<br><code>temperature</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-route"/></svg><figcaption>مسار<br><code>route</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-notification"/></svg><figcaption>تنبيه<br><code>notification</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-phone"/></svg><figcaption>هاتف<br><code>phone</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-mail"/></svg><figcaption>بريد<br><code>mail</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-web"/></svg><figcaption>موقع إلكتروني<br><code>web</code></figcaption></figure><figure><svg aria-hidden="true"><use href="#hz-impact"/></svg><figcaption>أثر<br><code>impact</code></figcaption></figure></div><!--ICON_GRID:END-->
+      <h3>الحاويات والألوان</h3>
+      <div class="icon-tiles">
+        <div class="itile" style="background:#F4EDE1;color:#0E3524"><svg><use href="#hz-events"/></svg></div>
+        <div class="itile" style="background:#E4EFE6;color:#2E7D5A"><svg><use href="#hz-pickup"/></svg></div>
+        <div class="itile" style="background:#0E3524;color:#A7BB68"><svg><use href="#hz-reduce-waste"/></svg></div>
+        <div class="itile" style="background:#FAFAF7;color:#0E3524;border:1px solid #E4DDD0"><svg><use href="#hz-reports"/></svg></div>
+      </div>
+      <ul class="rules" style="margin-top:16px">
+        <li>الأحجام: 20، 24 (الافتراضي)، 32، 48px. لا يتغير سمك الخط عند التكبير إلا في الأحجام فوق 48px (1.5).</li>
+        <li>الحاوية: مربع 56px بزوايا 14px، بخلفية رملية أو نعناعية أو غابية.</li>
+        <li>اللون: غابي على الفاتح، برعم أو ورقي على الداكن. لا تُستخدم الرموز التعبيرية (Emoji) بدل الأيقونات.</li>
+        <li>أيقونة جديدة؟ ارسمها على الشبكة نفسها بخطوط وأقواس بسيطة، بلا تعبئة وبلا تفاصيل دقيقة.</li>
+      </ul>
+    </section>
+
+    <!-- ===================================================== 11 -->
+    <section id="graphics">
+      <div class="eyebrow" lang="en">11 · Graphic elements</div>
+      <h2>العناصر الرسومية والزخارف</h2>
+      <p class="lead">العناصر مشتقة من الرمز نفسه: شكل الورقة، البذرة، والخط الذهبي القصير. تُستخدم بهدوء لتدعم المحتوى لا لتنافسه.</p>
+      <div class="grid g3">
+        <figure><div class="tile t-paper"><img src="assets/patterns/hafez-leaf-cluster.svg" alt="عنقود الأوراق" style="max-height:170px"></div><figcaption><span class="cap-title">عنقود الأوراق</span> — رسم رئيسي للأغلفة والصفحة الأولى، يُقص بحافة الإطار أو بشكل دائري كما في المرجع.</figcaption></figure>
+        <figure><div class="tile t-forest" style="background:#0E3524 url('assets/patterns/hafez-corner-leaves.svg') no-repeat center/contain"></div><figcaption><span class="cap-title">أوراق الزاوية</span> — علامة مائية بشفافية 5–8٪ على الأسطح الغابية.</figcaption></figure>
+        <figure><div class="tile t-paper" style="gap:14px"><div class="gold-rule"></div><div style="font-weight:800;font-size:24px;color:#0E3524">عنوان القسم</div></div><figcaption><span class="cap-title">الخط الذهبي</span> — <bdi dir="ltr">48×3px</bdi> تحت العناوين أو فوقها، مرة واحدة في كل تكوين.</figcaption></figure>
+        <figure><div class="pattern" style="background-image:url('assets/patterns/hafez-pattern-sand.svg')"></div><figcaption><span class="cap-title">نمط رملي</span> — <code>hafez-pattern-sand.svg</code> للتغليف والخلفيات المطبوعة.</figcaption></figure>
+        <figure><div class="pattern" style="background-image:url('assets/patterns/hafez-pattern-forest.svg')"></div><figcaption><span class="cap-title">نمط غابي</span> — <code>hafez-pattern-forest.svg</code> لبطانات الصناديق والأكياس.</figcaption></figure>
+        <figure><div class="pattern" style="background-image:url('assets/patterns/hafez-pattern-paper.svg')"></div><figcaption><span class="cap-title">نمط ورقي</span> — <code>hafez-pattern-paper.svg</code> للخلفيات الرقمية الهادئة.</figcaption></figure>
+      </div>
+      <h3>الزوايا والمساحات</h3>
+      <div class="grid g4">
+        <div class="card"><b style="color:var(--heading)">الزوايا</b><p style="margin:6px 0 0;font-size:15px">10px للحقول، 14px للأزرار والأيقونات، 20px للبطاقات، 28px للأقسام الكبيرة، دائرية كاملة للشارات.</p></div>
+        <div class="card"><b style="color:var(--heading)">الشبكة</b><p style="margin:6px 0 0;font-size:15px">وحدة 4px، وأغلب المسافات من السلسلة 8، 16، 24، 32، 48، 64.</p></div>
+        <div class="card"><b style="color:var(--heading)">المحاذاة</b><p style="margin:6px 0 0;font-size:15px">المحاذاة إلى اليمين في العربية وإلى اليسار في الإنجليزية. التوسيط للعناوين القصيرة والشعار العمودي فقط.</p></div>
+        <div class="card"><b style="color:var(--heading)">الظلال</b><p style="margin:6px 0 0;font-size:15px">ناعمة جدًا بلون غابي شفاف. البطاقات الفاتحة تكتفي بحد رفيع غالبًا.</p></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== 12 -->
+    <section id="photo">
+      <div class="eyebrow" lang="en">12 · Photography</div>
+      <h2>التصوير والتكوين البصري</h2>
+      <p class="lead">صور دافئة وحقيقية من عمل حفيظ: الضيافة، الأيدي التي تسلّم الطعام، والمكان. الضوء ذهبي طبيعي والألوان تميل للرملي والأخضر.</p>
+      <div class="grid g3">
+        <figure><div class="photo"><img src="assets/reference/ref-photo-handover.jpg" alt="تسليم صندوق طعام"></div><figcaption><span class="cap-title">اللحظة الإنسانية</span> — يدان تتسلمان الطعام، مع ظهور الزي أو الصندوق بالهوية.</figcaption></figure>
+        <figure><div class="photo"><img src="assets/reference/ref-photo-hall.jpg" alt="قاعة مناسبات"></div><figcaption><span class="cap-title">المكان</span> — قاعات بإضاءة دافئة، طاولات مرتبة، دون وجوه ضيوف واضحة.</figcaption></figure>
+        <figure><div class="photo"><img src="assets/reference/ref-photo-landscape.jpg" alt="طبيعة محلية"></div><figcaption><span class="cap-title">الأرض والانتماء</span> — طبيعة محلية (الطائف، النخيل، الجبال) لمواد الأثر والاستدامة.</figcaption></figure>
+      </div>
+      <div class="note" style="margin-top:16px"><strong>تنبيه:</strong> الصور أعلاه مقتطعة من اللوحة المرجعية لتوضيح الأسلوب فقط. هي صور منخفضة الدقة وتبدو مولدة وتحتوي نصوصًا مشوّهة، فلا تُنشر. استبدلها بتصوير حقيقي لعمليات حفيظ.</div>
+      <div class="grid g2" style="margin-top:16px">
+        <div class="card"><span class="verdict v-ok"><svg><use href="#ui-ok"/></svg>افعل</span>
+          <ul class="rules" style="margin-top:10px">
+            <li>إضاءة طبيعية دافئة، عمق ميدان خفيف، ألوان غير مشبعة.</li>
+            <li>أظهر الطعام نظيفًا ومغلفًا ومحفوظًا بشكل آمن.</li>
+            <li>احصل على موافقة مكتوبة قبل تصوير أي شخص، وخاصة المستفيدين.</li>
+            <li>اترك مساحة هادئة لوضع العنوان أو الشعار (ثلث الإطار تقريبًا).</li>
+          </ul></div>
+        <div class="card"><span class="verdict v-no"><svg><use href="#ui-no"/></svg>تجنّب</span>
+          <ul class="rules" style="margin-top:10px">
+            <li>صور المستفيدين بشكل يمس كرامتهم أو يكشف هويتهم.</li>
+            <li>بقايا طعام مبعثرة أو أطباق متسخة أو حاويات قمامة.</li>
+            <li>فلاتر قوية، ألوان باردة أو زرقاء، صور مخزون عامة لا تعكس المكان.</li>
+            <li>صور مولدة بالذكاء الاصطناعي تُقدَّم على أنها توثيق حقيقي.</li>
+          </ul></div>
+      </div>
+      <h3>التكوين مع النص</h3>
+      <ul class="rules">
+        <li>النص فوق الصورة يحتاج طبقة غابية بشفافية 70–80٪ أو شريطًا غابيًا جانبيًا كما في بطاقة «فائض اليوم» في المرجع.</li>
+        <li>القص المفضل: 16:9 للبانرات، 4:5 للمنشورات، ودوائر أو أشكال أوراق مقصوصة للصفحة الرئيسية.</li>
+      </ul>
+    </section>
+
+    <!-- ===================================================== 13 -->
+    <section id="applications">
+      <div class="eyebrow" lang="en">13 · Applications</div>
+      <h2>أمثلة تطبيقية</h2>
+      <p class="lead">نماذج متجهية للتطبيق تتبع القواعد أعلاه. الأسماء وأرقام التواصل فيها توضيحية. الملفات في <code>assets/mockups/</code> ونسخ PNG في <code>assets/previews/</code>.</p>
+      <div class="grid g2 app">
+        <figure style="grid-column:1/-1"><img src="assets/mockups/hafez-business-card.svg" alt="بطاقة العمل"><figcaption><span class="cap-title">بطاقة العمل (85×55mm)</span> — الأمام غابي بالشعار المعكوس، والخلف ورقي ببيانات ثنائية اللغة وشريط سفلي من لوني الهوية.</figcaption></figure>
+        <figure><img src="assets/mockups/hafez-id-badge.svg" alt="بطاقة التعريف"><figcaption><span class="cap-title">بطاقة تعريف المتطوع (54×86mm)</span> — الشعار ثنائي اللغة، مكان الصورة، الدور في شارة خضراء، ورمز دخول.</figcaption></figure>
+        <figure><img src="assets/mockups/hafez-food-box.svg" alt="صندوق الطعام"><figcaption><span class="cap-title">صندوق حفظ ونقل الطعام</span> — جسم رملي، جانب غابي بالشعار العمودي، ملصق بيانات الشحنة (القاعة، وقت التعبئة، الصلاحية، الوزن، الحفظ)، وختم سلامة.</figcaption></figure>
+        <figure style="grid-column:1/-1"><img src="assets/mockups/hafez-field-uniform.svg" alt="الزي الميداني"><figcaption><span class="cap-title">الزي الميداني</span> — قميص بولو غابي، الشعار المدمج المعكوس على الصدر، أطراف الأكمام بلون البرعم، والشعار العمودي العربي على الظهر.</figcaption></figure>
+        <figure style="grid-column:1/-1"><img src="assets/mockups/hafez-digital-ui.svg" alt="الواجهة الرقمية"><figcaption><span class="cap-title">واجهة رقمية توضيحية</span> — لوحة متابعة عربية بقائمة جانبية غابية، بطاقات مؤشرات، جدول المناسبات بشارات الحالة، وتطبيق جوال للمتطوعين. للتوضيح فقط، وليست تصميم المنتج النهائي.</figcaption></figure>
+        <figure><img src="assets/mockups/hafez-social-post.svg" alt="منشور اجتماعي"><figcaption><span class="cap-title">منشور اجتماعي (1080×1080)</span> — استخدام الشعار اللفظي العربي مع عبارة داعمة وأيقونات الأثر.</figcaption></figure>
+        <figure><img src="assets/board/hafez-brand-board.svg" alt="لوحة الهوية"><figcaption><span class="cap-title">لوحة الهوية النهائية</span> — ملخص بصري في <code>assets/board/</code> بصيغتي SVG وPNG.</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ===================================================== 14 -->
+    <section id="dev">
+      <div class="eyebrow" lang="en">14 · Developers</div>
+      <h2>للمطورين</h2>
+      <p class="lead">كل القيم موجودة كمتغيرات CSS وملف JSON. استخدم ملفات SVG للشعار في الويب، وPNG فقط حيث لا تدعم المنصة SVG.</p>
+      <div class="grid g2">
+        <div style="min-width:0"><h3 style="margin-top:0">بنية المجلد</h3>
+<pre class="tree">brand/
+├─ brand-guidelines.html      ← this guide
+├─ BRAND-SYSTEM.md            ← colours, type, rules (text)
+└─ assets/
+   ├─ logo/                   ← SVG masters (text outlined)
+   │  ├─ symbol/   symbol + small-size symbol
+   │  ├─ en/  ar/  bilingual/   horizontal · compact · stacked
+   │  └─ app/      app icon · avatar · favicon
+   ├─ png/                    ← transparent PNG exports, favicon.ico
+   ├─ icons/                  ← 21 SVG icons + sprite + index
+   ├─ patterns/               ← leaf patterns & graphics
+   ├─ tokens/                 ← hafez-tokens.css / .json
+   ├─ fonts/                  ← Inter, Tajawal (OFL)
+   ├─ mockups/                ← application mockups (SVG)
+   ├─ previews/               ← mockup PNG previews
+   ├─ board/                  ← final brand board
+   └─ reference/              ← mood crops from the reference</pre>
+          <p style="font-size:14px;color:var(--muted)">تسمية الملفات: <code>hafez-{lang}-{layout}-{scheme}.svg</code> حيث scheme أحد <code>color</code>، <code>reverse</code>، <code>mono-forest</code>، <code>mono-white</code>.</p>
+        </div>
+        <div style="min-width:0"><h3 style="margin-top:0">الاستخدام</h3>
+<pre>&lt;link rel="stylesheet" href="brand/assets/tokens/hafez-tokens.css"&gt;
+
+body {
+  background: var(--hz-bg);
+  color: var(--hz-text);
+  font-family: var(--hz-font-ar);
+}
+.btn-primary {
+  background: var(--hz-action);
+  color: var(--hz-white);
+  border-radius: var(--hz-radius-md);
+}
+
+&lt;!-- logo --&gt;
+&lt;img src="brand/assets/logo/ar/hafez-ar-compact-color.svg"
+     alt="حفيظ" height="40"&gt;
+
+&lt;!-- icon from the sprite (colour = currentColor) --&gt;
+&lt;svg width="24" height="24"&gt;
+  &lt;use href="hafez-icons-sprite.svg#hz-pickup"/&gt;
+&lt;/svg&gt;
+
+&lt;link rel="icon" href="brand/assets/png/app/favicon.ico"&gt;
+&lt;link rel="apple-touch-icon"
+      href="brand/assets/png/app/apple-touch-icon-180.png"&gt;</pre>
+        </div>
+      </div>
+      <div class="note" style="margin-top:16px"><strong>نطاق هذا الإصدار:</strong> الهوية البصرية وأصولها فقط. الواجهة الرقمية في القسم 13 رسم توضيحي، ولم يُبنَ موقع أو تطبيق.</div>
+    </section>
+
+    <footer>
+      <img src="assets/logo/bilingual/hafez-bi-horizontal-color.svg" alt="Hafez | حفيظ">
+      <span>دليل الهوية البصرية · الإصدار 1.0 · أكتوبر 2026</span>
+      <span lang="en">Fonts: Inter &amp; Tajawal — SIL Open Font License 1.1</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+// copy colour codes
+document.querySelectorAll('.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var hex = b.dataset.hex, done = function () { b.classList.add('done'); b.textContent = 'نُسخ'; setTimeout(function () { b.classList.remove('done'); b.textContent = hex; }, 1400); };
+    try {
+      navigator.clipboard.writeText(hex).then(done, function () { selectText(b); });
+    } catch (e) { selectText(b); }
+  });
+});
+function selectText(el) { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+// highlight current chapter in the index
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting) links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); });
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
+})();
+</script>
+</body>
+</html>

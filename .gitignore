@@ -1,0 +1,28 @@
+# dependencies
+/node_modules
+
+# next.js / build
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# tests
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/coverage
+
+# env & logs
+.env*
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# local tooling
+.claude/settings.local.json

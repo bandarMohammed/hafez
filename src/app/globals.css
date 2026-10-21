@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+/*
+ * Hafez design tokens — mirrored from the Figma variables (collections: Primitives → Color, Dimension)
+ * and text/effect styles. Source of truth for brand values: brand/assets/tokens/hafez-tokens.json.
+ * Semantic names match the Figma `color/*` variables so design ↔ code stay traceable.
+ */
+:root {
+  /* palette (Figma: Primitives) */
+  --hz-forest: #0e3524;
+  --hz-forest-700: #1a4432;
+  --hz-green: #2e7d5a;
+  --hz-sprout: #a7bb68;
+  --hz-sand: #f4ede1;
+  --hz-paper: #fafaf7;
+  --hz-white: #ffffff;
+  --hz-gold: #d1ae74;
+  --hz-gold-line: #c39e5d;
+  --hz-ink: #1c2b24;
+  --hz-muted: #5d6b63;
+  --hz-line: #e4ddd0;
+  --hz-mint: #e4efe6;
+  --hz-success: #236446;
+  --hz-success-bg: #d9efd5;
+  --hz-warning: #8a5a0b;
+  --hz-warning-bg: #fae9c1;
+  --hz-info: #4a4e8c;
+  --hz-info-bg: #e8e7f0;
+  --hz-danger: #a33a2b;
+  --hz-danger-bg: #f6deda;
+  --hz-danger-700: #862e22;
+}
+
+/* Typography scale per language (Figma text styles AR/* and EN/*) */
+:root,
+:lang(ar) {
+  --hz-font: var(--font-tajawal), "IBM Plex Sans Arabic", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --lh-h2: 42px;
+  --lh-h3: 34px;
+  --lh-h4: 30px;
+  --lh-body: 27px;
+  --lh-small: 22px;
+  --lh-metric: 40px;
+  --fw-h4: 700;
+  --fw-button: 700;
+}
+:lang(en) {
+  --hz-font: var(--font-inter), system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --lh-h2: 48px;
+  --lh-h3: 36px;
+  --lh-h4: 30px;
+  --lh-body: 25px;
+  --lh-small: 21px;
+  --lh-metric: 48px;
+  --fw-h4: 600;
+  --fw-button: 600;
+}
+
+@theme inline {
+  /* semantic colours (Figma: Color collection) */
+  --color-page: var(--hz-paper);
+  --color-surface: var(--hz-white);
+  --color-surface-alt: var(--hz-sand);
+  --color-selected: var(--hz-mint);
+  --color-inverse: var(--hz-forest);
+  --color-inverse-raised: var(--hz-forest-700);
+  --color-ink: var(--hz-ink);
+  --color-heading: var(--hz-forest);
+  --color-muted: var(--hz-muted);
+  --color-action: var(--hz-green);
+  --color-action-hover: var(--hz-forest);
+  --color-on-action: var(--hz-white);
+  --color-on-inverse: var(--hz-paper);
+  --color-accent-on-inverse: var(--hz-sprout);
+  --color-gold-on-inverse: var(--hz-gold);
+  --color-line: var(--hz-line);
+  --color-line-strong: var(--hz-muted);
+  --color-disabled: var(--hz-line);
+  --color-gold-line: var(--hz-gold-line);
+  --color-sprout: var(--hz-sprout);
+  --color-success: var(--hz-success);
+  --color-success-bg: var(--hz-success-bg);
+  --color-warning: var(--hz-warning);
+  --color-warning-bg: var(--hz-warning-bg);
+  --color-info: var(--hz-info);
+  --color-info-bg: var(--hz-info-bg);
+  --color-danger: var(--hz-danger);
+  --color-danger-bg: var(--hz-danger-bg);
+  --color-danger-hover: var(--hz-danger-700);
+
+  /* radius (Figma: radius/*) */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* elevation (Figma effect styles) */
+  --shadow-card: 0 1px 2px rgba(14, 53, 36, 0.06), 0 8px 24px rgba(14, 53, 36, 0.06);
+  --shadow-raised: 0 12px 40px rgba(14, 53, 36, 0.12);
+  --shadow-focus: 0 0 0 4px rgba(46, 125, 90, 0.45);
+
+  --font-sans: var(--hz-font);
+
+  --breakpoint-lg: 64rem;
+}
+
+/* Text styles — one utility per Figma text style; size fixed, line-height/weight follow the language. */
+@utility text-h2 {
+  font-size: 32px;
+  line-height: var(--lh-h2);
+  font-weight: 700;
+}
+@utility text-h3 {
+  font-size: 24px;
+  line-height: var(--lh-h3);
+  font-weight: 700;
+}
+@utility text-h4 {
+  font-size: 20px;
+  line-height: var(--lh-h4);
+  font-weight: var(--fw-h4);
+}
+@utility text-body {
+  font-size: 16px;
+  line-height: var(--lh-body);
+  font-weight: 400;
+}
+@utility text-body-strong {
+  font-size: 16px;
+  line-height: var(--lh-body);
+  font-weight: 500;
+}
+@utility text-small {
+  font-size: 14px;
+  line-height: var(--lh-small);
+  font-weight: 400;
+}
+@utility text-small-strong {
+  font-size: 14px;
+  line-height: var(--lh-small);
+  font-weight: 500;
+}
+@utility text-caption {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+}
+@utility text-button {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: var(--fw-button);
+}
+@utility text-metric {
+  font-size: 32px;
+  line-height: var(--lh-metric);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+@layer base {
+  html {
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--hz-font);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    min-height: 100dvh;
+    background: var(--color-page);
+  }
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+  }
+  /* Arabic must never get letter-spacing (brand rule). */
+  :lang(ar) * {
+    letter-spacing: 0 !important;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
