@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { DEMO_CONFIG } from "@/config/demo";
 import { useCurrentUser, useDemoStore } from "@/data/store";
 import { computeForecast } from "@/domain/forecast";
-import { distributedKg, selectShield } from "@/domain/selectors/beneficiary";
+import { selectShield } from "@/domain/selectors/beneficiary";
 import { EVENT_STATUSES } from "@/domain/types";
-import type { DemoDataset, DemoUser } from "@/domain/types";
+import type { DemoDataset } from "@/domain/types";
 import { useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { cn } from "@/lib/cn";
@@ -17,8 +18,6 @@ import { Button, ButtonLink } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import type { IconKey } from "@/components/ui/Icon";
 import { Logo } from "@/components/ui/Logo";
-import { MetricCard } from "@/components/ui/MetricCard";
-import { Notice } from "@/components/ui/Notice";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { StateMessage } from "@/components/ui/StateMessage";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -27,12 +26,13 @@ import { EventStepper } from "@/features/common/EventStepper";
 import { useFormatters } from "@/features/common/useFormatters";
 import { TIP_ID } from "@/features/beneficiary/Shield";
 import { useUnits } from "@/features/charity/Listings";
-import { JOURNEY, JOURNEY_STEPS, canRunJourney, playJourney, remainingSteps, selectJourney } from "./scenario";
+import { ImpactDashboard } from "./ImpactDashboard";
+import { JOURNEY, JOURNEY_STEPS, playJourney, remainingSteps, selectJourney } from "./scenario";
 import type { JourneyState, JourneyStep } from "./scenario";
 
 /**
- * One page for the pitch: the whole Hafez journey (C → D → E → D → H) plus the platform view (B + F),
- * played live on the same records as the full role screens — which all stay available for questions.
+ * One page for the pitch, run by the platform manager: the whole Hafez journey (C → D → E → D → H),
+ * a live impact dashboard and platform tracking — on the same records as the full role screens.
  */
 const STEP_META: Record<JourneyStep, { account: string; screens: string; icon: IconKey }> = {
   hall: { account: JOURNEY.hall, screens: "C2 · C3", icon: "halls" },
@@ -43,8 +43,14 @@ const STEP_META: Record<JourneyStep, { account: string; screens: string; icon: I
   behavior: { account: JOURNEY.beneficiary, screens: "H5 · H6", icon: "shield" },
 };
 
+/** Buttons on the dark hero (the shared variants assume a light surface). */
+const HERO_BASE =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-5 text-button transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-on-inverse";
+const HERO_OUTLINE = `${HERO_BASE} border-[1.5px] border-on-inverse/50 text-on-inverse hover:bg-inverse-raised`;
+const HERO_GHOST = `${HERO_BASE} text-accent-on-inverse hover:bg-inverse-raised hover:text-on-inverse`;
+
+/** The page always acts as the platform manager (the only account allowed to play and reset the demo). */
 const MANAGER = "demo-admin";
-const JUDGES = "demo-judge";
 
 export function JourneyScreen() {
   const t = useTranslations();
@@ -54,7 +60,7 @@ export function JourneyScreen() {
   const resetDemoData = useDemoStore((s) => s.resetDemoData);
 
   return (
-    <main id="main" className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+    <main id="main" className="mx-auto flex w-full max-w-[1200px] flex-col gap-10 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <Logo locale={locale} width={120} priority />
@@ -77,10 +83,11 @@ export function JourneyScreen() {
       ) : status === "idle" || !data ? (
         <div role="status" aria-live="polite" className="flex flex-col gap-4">
           <span className="sr-only">{t("states.loading")}</span>
-          <Skeleton className="h-56 rounded-xl" />
+          <Skeleton className="h-48 rounded-xl" />
+          <Skeleton className="h-40 rounded-lg" />
           <div className="grid gap-4 md:grid-cols-4">
             {[0, 1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-28 rounded-lg" />
+              <Skeleton key={i} className="h-36 rounded-lg" />
             ))}
           </div>
         </div>
@@ -93,53 +100,49 @@ export function JourneyScreen() {
 
 function Journey({ data }: { data: DemoDataset }) {
   const t = useTranslations("journey");
-  const tc = useTranslations("common");
   const router = useRouter();
   const current = useCurrentUser();
   const selectUser = useDemoStore((s) => s.selectUser);
   const dispatch = useDemoStore((s) => s.dispatch);
   const resetDemoData = useDemoStore((s) => s.resetDemoData);
-  const f = useFormatters(data);
   const [confirmReset, setConfirmReset] = useState(false);
   const [failed, setFailed] = useState(false);
   const [announce, setAnnounce] = useState("");
+  const [selected, setSelected] = useState<JourneyStep | null>(null);
 
-  // The page is the platform view: the manager by default, or the judges' read-only account.
-  const manager = data.users.find((u) => u.id === MANAGER);
-  const viewer: DemoUser | undefined =
-    current && (current.role === "admin" || current.role === "judge_viewer") ? current : manager;
-  const readOnly = !canRunJourney(viewer);
   const state = selectJourney(data, TIP_ID);
   const doneCount = JOURNEY_STEPS.filter((s) => state.done[s]).length;
+  const lastDone = [...JOURNEY_STEPS].reverse().find((s) => state.done[s]);
+  const shown: JourneyStep = selected ?? state.next ?? lastDone ?? "hall";
 
   const play = (steps: JourneyStep[]) => {
-    if (!viewer || steps.length === 0) return;
-    if (current?.id !== viewer.id) selectUser(viewer.id);
+    if (steps.length === 0) return;
+    if (current?.id !== MANAGER) selectUser(MANAGER);
     const r = dispatch(playJourney(steps, TIP_ID), { flashOn: "/journey" });
     setFailed(!r.ok);
-    if (r.ok) setAnnounce(t("announce", { step: t(`steps.${steps[steps.length - 1]}.title`) }));
+    if (r.ok) {
+      const last = steps[steps.length - 1]!;
+      setSelected(last);
+      setAnnounce(t("announce", { step: t(`steps.${last}.title`) }));
+    }
   };
   const openAs = (accountId: string, path: string) => {
     selectUser(accountId);
     router.push(path);
   };
-
-  // Derived from the shared records — the same numbers the role dashboards compute.
-  const receivedKg = data.handovers
-    .filter((h) => {
-      const e = data.events.find((x) => x.id === h.eventId);
-      return e?.status === "collected" || e?.status === "closed";
-    })
-    .reduce((sum, h) => sum + h.actualQuantity, 0);
-  const shield = selectShield(data, JOURNEY.beneficiary);
-  // Once the journey starts, the log follows its own records (seed entries are dated later in the demo day).
-  const journeyIds = [state.event?.id, state.listing?.id, state.request?.id].filter((x): x is string => Boolean(x));
+  const reset = () => {
+    resetDemoData();
+    setConfirmReset(false);
+    setFailed(false);
+    setSelected(null);
+  };
 
   return (
     <>
+      {/* Hero: what the page shows + the presenter's controls. */}
       <section
         aria-labelledby="journey-title"
-        className="flex flex-col gap-5 rounded-xl bg-inverse p-6 text-on-inverse lg:flex-row lg:items-end lg:justify-between lg:p-8"
+        className="-mt-4 flex flex-col gap-6 rounded-xl bg-inverse p-6 text-on-inverse lg:flex-row lg:items-center lg:justify-between lg:p-8"
       >
         <div className="flex max-w-2xl flex-col gap-3">
           <p className="text-caption text-accent-on-inverse">{t("eyebrow")}</p>
@@ -147,34 +150,23 @@ function Journey({ data }: { data: DemoDataset }) {
             {t("title")}
           </h1>
           <p className="text-body text-on-inverse/85">{t("subtitle")}</p>
-          <div
-            role="group"
-            aria-label={t("viewerLabel")}
-            className="mt-2 inline-flex w-fit flex-wrap gap-1 rounded-full bg-inverse-raised p-1"
-          >
-            {[
-              { id: MANAGER, label: t("viewer.manager") },
-              { id: JUDGES, label: t("viewer.judges") },
-            ].map((v) => (
-              <button
-                key={v.id}
-                type="button"
-                aria-pressed={viewer?.id === v.id}
-                onClick={() => selectUser(v.id)}
-                className={cn(
-                  "min-h-10 rounded-full px-4 text-small-strong transition-colors",
-                  viewer?.id === v.id ? "bg-surface text-heading" : "text-on-inverse hover:bg-inverse",
-                )}
+          <nav aria-label={t("sectionsLabel")} className="mt-1 flex flex-wrap gap-2">
+            {(["journey", "impact", "platform"] as const).map((k, i) => (
+              <a
+                key={k}
+                href={`#${k}`}
+                className="rounded-full bg-inverse-raised px-3 py-1.5 text-small-strong text-on-inverse hover:bg-surface hover:text-heading"
               >
-                {v.label}
-              </button>
+                {i + 1}. {t(`sections.${k}`)}
+              </a>
             ))}
-          </div>
+          </nav>
         </div>
-        <div className="flex flex-col gap-3 lg:min-w-72">
-          <p className="text-small text-accent-on-inverse" aria-live="polite">
-            {t("progress", { done: doneCount, total: JOURNEY_STEPS.length })}
-          </p>
+        <div className="flex flex-col gap-3 lg:w-80">
+          <div className="flex items-center justify-between gap-2 text-small text-accent-on-inverse">
+            <span>{t("managerLabel")}</span>
+            <span aria-live="polite">{t("progress", { done: doneCount, total: JOURNEY_STEPS.length })}</span>
+          </div>
           <div
             className="h-2 w-full overflow-hidden rounded-full bg-inverse-raised"
             role="progressbar"
@@ -184,38 +176,26 @@ function Journey({ data }: { data: DemoDataset }) {
             aria-valuenow={doneCount}
           >
             <div
-              className="h-full rounded-full bg-gold-on-inverse"
+              className="h-full rounded-full bg-gold-on-inverse transition-[width] duration-500"
               style={{ width: `${(doneCount / JOURNEY_STEPS.length) * 100}%` }}
             />
           </div>
-          {!readOnly ? (
-            <div className="flex flex-col gap-2 sm:flex-row lg:flex-col">
-              {state.next ? (
-                <>
-                  <Button onClick={() => play([state.next!])}>
-                    {t("playNext", { step: t(`steps.${state.next}.title`) })}
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    className="border-on-inverse/40 bg-transparent text-on-inverse hover:bg-inverse-raised hover:text-on-inverse"
-                    onClick={() => play(remainingSteps(state))}
-                  >
-                    {t("playAll")}
-                  </Button>
-                </>
-              ) : (
-                <p className="rounded-md bg-inverse-raised px-4 py-3 text-small text-on-inverse">{t("complete")}</p>
-              )}
-              <Button
-                variant="ghost"
-                className="text-accent-on-inverse hover:bg-inverse-raised hover:text-on-inverse"
-                onClick={() => setConfirmReset(true)}
-              >
-                <Icon name="reset" size={18} />
-                {t("reset")}
+          {state.next ? (
+            <>
+              <Button onClick={() => play([state.next!])}>
+                {t("playNext", { step: t(`steps.${state.next}.short`) })}
               </Button>
-            </div>
-          ) : null}
+              <button type="button" onClick={() => play(remainingSteps(state))} className={HERO_OUTLINE}>
+                {t("playAll")}
+              </button>
+            </>
+          ) : (
+            <p className="rounded-md bg-inverse-raised px-4 py-3 text-small text-on-inverse">{t("complete")}</p>
+          )}
+          <button type="button" onClick={() => setConfirmReset(true)} className={HERO_GHOST}>
+            <Icon name="reset" size={18} />
+            {t("reset")}
+          </button>
         </div>
       </section>
 
@@ -223,17 +203,20 @@ function Journey({ data }: { data: DemoDataset }) {
         {announce}
       </p>
       {failed ? (
-        <p role="alert" className="flex items-start gap-2 rounded-md bg-danger-bg px-4 py-3 text-small text-danger">
+        <p
+          role="alert"
+          className="-mt-6 flex items-start gap-2 rounded-md bg-danger-bg px-4 py-3 text-small text-danger"
+        >
           <Icon name="alert" size={18} className="mt-0.5 shrink-0" />
           {t("failed")}
         </p>
       ) : null}
-      {confirmReset && !readOnly ? (
+      {confirmReset ? (
         <div
           role="alertdialog"
           aria-labelledby="reset-title"
           aria-describedby="reset-body"
-          className="flex flex-col gap-3 rounded-lg border border-line bg-surface p-5 shadow-raised"
+          className="-mt-6 flex flex-col gap-3 rounded-lg border border-line bg-surface p-5 shadow-raised"
         >
           <h2 id="reset-title" className="text-h4 text-heading">
             {t("resetTitle")}
@@ -242,14 +225,7 @@ function Journey({ data }: { data: DemoDataset }) {
             {t("resetBody")}
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              variant="danger"
-              onClick={() => {
-                resetDemoData();
-                setConfirmReset(false);
-                setFailed(false);
-              }}
-            >
+            <Button variant="danger" onClick={reset}>
               {t("resetConfirm")}
             </Button>
             <Button variant="ghost" onClick={() => setConfirmReset(false)}>
@@ -258,85 +234,23 @@ function Journey({ data }: { data: DemoDataset }) {
           </div>
         </div>
       ) : null}
-      {readOnly ? <Notice tone="info">{t("judgesNotice")}</Notice> : null}
 
-      <section aria-labelledby="impact-title" className="flex flex-col gap-3">
-        <h2 id="impact-title" className="text-h4 text-heading">
-          {t("impactTitle")}
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <MetricCard
-            icon="events"
-            value={f.n(data.events.length)}
-            label={t("metrics.events")}
-            source={tc("computedFromDemo")}
-          />
-          <MetricCard
-            icon="weight"
-            value={f.kg(receivedKg)}
-            label={t("metrics.received")}
-            source={tc("computedFromDemo")}
-          />
-          <MetricCard
-            icon="heart"
-            value={f.kg(distributedKg(data))}
-            label={t("metrics.distributed")}
-            source={tc("computedFromDemo")}
-          />
-          <MetricCard
-            icon="shield"
-            value={f.n(shield.balance)}
-            label={t("metrics.points")}
-            source={tc("computedFromDemo")}
-          />
-        </div>
-      </section>
+      <Section id="journey" number={1} title={t("sections.journey")} subtitle={t("journeySubtitle")}>
+        <Tracker state={state} shown={shown} onSelect={setSelected} />
+        <StepDetail data={data} state={state} step={shown} onPlay={() => play([shown])} onOpen={openAs} />
+      </Section>
 
-      <section aria-labelledby="steps-title" className="flex flex-col gap-3">
-        <h2 id="steps-title" className="text-h4 text-heading">
-          {t("stepsTitle")}
-        </h2>
-        <ol className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {JOURNEY_STEPS.map((step, i) => (
-            <li key={step}>
-              <StepCard
-                data={data}
-                state={state}
-                step={step}
-                index={i}
-                readOnly={readOnly}
-                onPlay={() => play([step])}
-                onOpen={openAs}
-              />
-            </li>
-          ))}
-        </ol>
-      </section>
+      <Section id="impact" number={2} title={t("sections.impact")} subtitle={t("impactSubtitle")}>
+        <ImpactDashboard data={data} />
+      </Section>
 
-      <section aria-labelledby="platform-title" className="flex flex-col gap-3">
-        <div className="flex flex-col gap-1">
-          <h2 id="platform-title" className="text-h4 text-heading">
-            {t("platformTitle")}
-          </h2>
-          <p className="text-small text-muted">{t("platformSubtitle")}</p>
-        </div>
+      <Section id="platform" number={3} title={t("sections.platform")} subtitle={t("platformSubtitle")}>
         {state.event ? <EventStepper status={state.event.status} /> : null}
         <div className="grid gap-4 lg:grid-cols-2">
           <StatusBreakdown data={data} />
-          <div className="flex flex-col gap-3 rounded-lg border border-line bg-surface p-6">
-            <h3 className="text-body-strong text-heading">
-              {journeyIds.length ? t("activityJourney") : readOnly ? t("activitySummary") : t("activityFull")}
-            </h3>
-            <ActivityList
-              data={data}
-              entries={[...data.activity]
-                .filter((a) => journeyIds.length === 0 || journeyIds.includes(a.entityId))
-                .sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp))
-                .slice(0, readOnly ? 4 : 6)}
-            />
-          </div>
+          <JourneyActivity data={data} state={state} />
         </div>
-      </section>
+      </Section>
 
       <footer className="flex flex-col items-start gap-3 rounded-lg bg-surface-alt p-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-small text-ink">{t("fullScreensHint")}</p>
@@ -348,20 +262,113 @@ function Journey({ data }: { data: DemoDataset }) {
   );
 }
 
-function StepCard({
+function Section({
+  id,
+  number,
+  title,
+  subtitle,
+  children,
+}: {
+  id: string;
+  number: number;
+  title: string;
+  subtitle: string;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} aria-labelledby={`${id}-title`} className="flex scroll-mt-6 flex-col gap-4">
+      <div className="flex items-start gap-3 border-b border-line pb-3">
+        <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-inverse text-small-strong text-on-inverse">
+          {number}
+        </span>
+        <div className="flex flex-col gap-1">
+          <h2 id={`${id}-title`} className="text-h3 text-heading">
+            {title}
+          </h2>
+          <p className="text-small text-muted">{subtitle}</p>
+        </div>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+/** Progress tracker: six steps in order; each one can be selected to see its details. */
+function Tracker({
+  state,
+  shown,
+  onSelect,
+}: {
+  state: JourneyState;
+  shown: JourneyStep;
+  onSelect: (s: JourneyStep) => void;
+}) {
+  const t = useTranslations("journey");
+  return (
+    <ol className="grid grid-cols-3 gap-y-4 sm:grid-cols-6" aria-label={t("trackerLabel")}>
+      {JOURNEY_STEPS.map((step, i) => {
+        const done = state.done[step];
+        const isNext = state.next === step;
+        const active = shown === step;
+        return (
+          <li key={step} className="relative flex flex-col items-center">
+            {i > 0 ? (
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute top-[1.375rem] hidden h-0.5 w-full sm:block ltr:right-1/2 rtl:left-1/2",
+                  done || isNext ? "bg-action" : "bg-line",
+                )}
+              />
+            ) : null}
+            <button
+              type="button"
+              aria-pressed={active}
+              aria-label={`${i + 1}. ${t(`steps.${step}.title`)} — ${
+                done ? t("stateDone") : isNext ? t("stateNext") : t("stateUpcoming")
+              }`}
+              onClick={() => onSelect(step)}
+              className="group relative z-10 flex flex-col items-center gap-2 rounded-md px-1 py-1 text-center"
+            >
+              <span
+                className={cn(
+                  "inline-flex size-10 items-center justify-center rounded-full border-2 text-small-strong transition-colors",
+                  done
+                    ? "border-action bg-action text-on-action"
+                    : isNext
+                      ? "border-action bg-surface text-action"
+                      : "border-line bg-surface text-muted",
+                  active && "ring-4 ring-selected",
+                )}
+              >
+                {done ? <Icon name="check" size={20} /> : i + 1}
+              </span>
+              <span
+                className={cn(
+                  "text-caption group-hover:text-heading",
+                  active ? "font-semibold text-heading" : done ? "text-ink" : "text-muted",
+                )}
+              >
+                {t(`steps.${step}.short`)}
+              </span>
+            </button>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function StepDetail({
   data,
   state,
   step,
-  index,
-  readOnly,
   onPlay,
   onOpen,
 }: {
   data: DemoDataset;
   state: JourneyState;
   step: JourneyStep;
-  index: number;
-  readOnly: boolean;
   onPlay: () => void;
   onOpen: (accountId: string, path: string) => void;
 }) {
@@ -374,9 +381,11 @@ function StepCard({
   const units = useUnits();
   const meta = STEP_META[step];
   const actor = data.users.find((u) => u.id === meta.account);
+  const roleName = actor ? tr(`${actor.role}.name`) : "—";
   const done = state.done[step];
   const isNext = state.next === step;
   const { event, assignment, handover, listing, request } = state;
+  const index = JOURNEY_STEPS.indexOf(step);
 
   const results: string[] = [];
   let openPath: string | null = null;
@@ -448,59 +457,70 @@ function StepCard({
 
   return (
     <article
+      aria-labelledby="step-title"
       className={cn(
-        "flex h-full flex-col gap-3 rounded-lg border bg-surface p-5 shadow-card",
-        done ? "border-success/40" : isNext ? "border-[1.5px] border-action" : "border-line",
+        "grid gap-5 rounded-lg border bg-surface p-5 shadow-card lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:p-6",
+        isNext ? "border-[1.5px] border-action" : "border-line",
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <span
-          className={cn(
-            "inline-flex size-9 shrink-0 items-center justify-center rounded-full text-small-strong",
-            done ? "bg-success-bg text-success" : isNext ? "bg-action text-on-action" : "bg-surface-alt text-muted",
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-caption text-muted">{t("stepOf", { n: index + 1, total: JOURNEY_STEPS.length })}</span>
+          <span className="rounded-full bg-surface-alt px-2.5 py-0.5 text-caption text-muted" dir="ltr">
+            {meta.screens}
+          </span>
+          <span
+            className={cn(
+              "rounded-full px-2.5 py-0.5 text-caption",
+              done ? "bg-success-bg text-success" : isNext ? "bg-selected text-heading" : "bg-surface-alt text-muted",
+            )}
+          >
+            {done ? t("stateDone") : isNext ? t("stateNext") : t("stateUpcoming")}
+          </span>
+        </div>
+        <h3 id="step-title" className="text-h4 text-heading">
+          {t(`steps.${step}.title`)}
+        </h3>
+        <div className="flex items-center gap-2">
+          <Avatar initials={actor?.initials[locale] ?? "?"} size={32} />
+          <span className="flex items-center gap-1.5 text-small-strong text-heading">
+            <Icon name={meta.icon} size={18} />
+            {roleName}
+          </span>
+        </div>
+        <p className="text-body text-ink">
+          {step === "hall"
+            ? t("steps.hall.body", {
+                guests: f.n(JOURNEY.guests),
+                planned: f.kg(JOURNEY.plannedKg),
+                recommended: f.kg(
+                  computeForecast({ guests: JOURNEY.guests, plannedKg: JOURNEY.plannedKg }).recommendedKg,
+                ),
+              })
+            : t(`steps.${step}.body`)}
+        </p>
+      </div>
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-1 flex-col gap-2 rounded-md bg-surface-alt p-4">
+          <h4 className="text-small-strong text-heading">{t("resultTitle")}</h4>
+          {results.length ? (
+            <ul className="flex flex-col gap-1.5">
+              {results.map((r) => (
+                <li key={r} className="flex items-start gap-2 text-small text-ink">
+                  <Icon name="check" size={16} className="mt-0.5 shrink-0 text-success" />
+                  <span>{r}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-small text-muted">{isNext ? t("resultPending") : t("resultLater")}</p>
           )}
-        >
-          {done ? <Icon name="check" size={18} /> : index + 1}
-          <span className="sr-only">{done ? t("stateDone") : isNext ? t("stateNext") : t("stateUpcoming")}</span>
-        </span>
-        <span className="rounded-full bg-surface-alt px-3 py-1 text-caption text-muted" dir="ltr">
-          {meta.screens}
-        </span>
-      </div>
-      <div className="flex items-center gap-2">
-        <Avatar initials={actor?.initials[locale] ?? "?"} size={32} />
-        <span className="flex items-center gap-1.5 text-small-strong text-heading">
-          <Icon name={meta.icon} size={18} />
-          {actor ? tr(`${actor.role}.name`) : "—"}
-        </span>
-      </div>
-      <h3 className="text-body-strong text-heading">{t(`steps.${step}.title`)}</h3>
-      <p className="text-small text-muted">
-        {step === "hall"
-          ? t("steps.hall.body", {
-              guests: f.n(JOURNEY.guests),
-              planned: f.kg(JOURNEY.plannedKg),
-              recommended: f.kg(
-                computeForecast({ guests: JOURNEY.guests, plannedKg: JOURNEY.plannedKg }).recommendedKg,
-              ),
-            })
-          : t(`steps.${step}.body`)}
-      </p>
-      {results.length ? (
-        <ul className="flex flex-col gap-1 rounded-md bg-selected px-3 py-2">
-          {results.map((r) => (
-            <li key={r} className="text-caption text-heading">
-              {r}
-            </li>
-          ))}
-        </ul>
-      ) : null}
-      {event && step === "hall" && done ? <StatusBadge status={event.status} className="w-fit" /> : null}
-      <div className="mt-auto flex flex-col gap-2 pt-1">
-        {isNext && !readOnly ? <Button onClick={onPlay}>{t("play")}</Button> : null}
+          {event && step === "hall" && done ? <StatusBadge status={event.status} className="w-fit" /> : null}
+        </div>
+        {isNext ? <Button onClick={onPlay}>{t("play")}</Button> : null}
         {done && openPath ? (
-          <Button variant="ghost" className="w-full justify-center" onClick={() => onOpen(meta.account, openPath!)}>
-            {t("open", { role: actor ? tr(`${actor.role}.name`) : "" })}
+          <Button variant="secondary" onClick={() => onOpen(meta.account, openPath!)}>
+            {t("open", { role: roleName })}
           </Button>
         ) : null}
       </div>
@@ -508,7 +528,7 @@ function StepCard({
   );
 }
 
-/** B4 / F1 — events by status across the platform, from the same records. */
+/** Events by status across the platform, from the same records. */
 function StatusBreakdown({ data }: { data: DemoDataset }) {
   const t = useTranslations("journey");
   const f = useFormatters(data);
@@ -518,7 +538,7 @@ function StatusBreakdown({ data }: { data: DemoDataset }) {
   })).filter((r) => r.count > 0);
   const max = Math.max(1, ...rows.map((r) => r.count));
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-line bg-surface p-6">
+    <div className="flex flex-col gap-3 rounded-lg border border-line bg-surface p-5">
       <h3 className="text-body-strong text-heading">{t("byStatus")}</h3>
       <ul className="flex flex-col gap-3">
         {rows.map((r) => (
@@ -531,6 +551,22 @@ function StatusBreakdown({ data }: { data: DemoDataset }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+/** The journey's own trail once it starts (seed entries are dated later in the demo day); latest entries before. */
+function JourneyActivity({ data, state }: { data: DemoDataset; state: JourneyState }) {
+  const t = useTranslations("journey");
+  const ids = [state.event?.id, state.listing?.id, state.request?.id].filter((x): x is string => Boolean(x));
+  const entries = [...data.activity]
+    .filter((a) => ids.length === 0 || ids.includes(a.entityId))
+    .sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp))
+    .slice(0, 6);
+  return (
+    <div className="flex flex-col gap-3 rounded-lg border border-line bg-surface p-5">
+      <h3 className="text-body-strong text-heading">{ids.length ? t("activityJourney") : t("activityFull")}</h3>
+      <ActivityList data={data} entries={entries} />
     </div>
   );
 }

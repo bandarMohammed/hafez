@@ -1659,19 +1659,21 @@
   },
   "journey": {
     "demoBadge": "Demo · fictional data",
-    "eyebrow": "Hafez journey",
+    "eyebrow": "Hafez · platform manager view",
     "title": "From event surplus to measurable impact",
-    "subtitle": "One record passes through every role: the hall forecasts the surplus, the charity coordinates, the representative inspects and hands over, and the beneficiary picks up and builds a lasting habit — every number is computed from the same records.",
-    "viewerLabel": "View as",
-    "viewer": {
-      "manager": "Platform manager",
-      "judges": "Judges view — read-only"
+    "subtitle": "One record passes through every role, and every number on this page is computed from the same records — play the journey and watch the impact move.",
+    "sectionsLabel": "Page sections",
+    "sections": {
+      "journey": "The journey",
+      "impact": "Impact dashboard",
+      "platform": "Platform tracking"
     },
-    "progress": "{done} of {total} steps complete",
+    "managerLabel": "Acting as platform manager",
+    "progress": "{done} of {total} steps",
     "progressLabel": "Journey progress",
-    "playNext": "Next: {step}",
+    "playNext": "Play next step: {step}",
     "playAll": "Play the whole journey",
-    "complete": "Journey complete — open any role screen to see the same record.",
+    "complete": "Journey complete — review the impact dashboard or open any role screen to see the same record.",
     "reset": "Reset demo",
     "resetTitle": "Reset the demo data?",
     "resetBody": "All demo data in this browser returns to its initial state, including changes made in the role screens. No file is deleted and nothing is sent.",
@@ -1679,46 +1681,51 @@
     "cancel": "Cancel",
     "failed": "The step couldn't run — no record changed. Reset the demo and try again.",
     "announce": "Step complete: {step}",
-    "judgesNotice": "Judges view is read-only: it can't create, edit or close any record, and no action buttons are shown. Switch to \"Platform manager\" to play the journey.",
-    "impactTitle": "Impact now",
-    "metrics": {
-      "events": "Registered events",
-      "received": "Actually received from halls",
-      "distributed": "Distributed to beneficiaries (confirmed)",
-      "points": "Beneficiary #17 points (verified events)"
-    },
-    "stepsTitle": "The journey step by step",
+    "journeySubtitle": "Six steps in order; each one runs the real system commands as the account of the role responsible.",
+    "impactSubtitle": "What was actually rescued and what reached beneficiaries, with the change since the demo started and the day-by-day trend.",
+    "platformSubtitle": "Event statuses on the platform, the journey event's path, and who did what, when.",
+    "trackerLabel": "Journey steps",
     "steps": {
       "hall": {
+        "short": "Hall",
         "title": "The hall registers the event and forecasts surplus",
         "body": "{guests} guests and {planned} planned; the forecast recommends {recommended} before publishing — reducing waste starts at preparation."
       },
       "charity": {
+        "short": "Charity",
         "title": "The charity takes it and assigns a rep",
         "body": "The event appears in the charity's opportunities; it expresses interest and assigns a rep from its team at the ready time."
       },
       "field": {
+        "short": "Representative",
         "title": "The rep inspects and records the handover",
         "body": "Check-in, an inspection with a safety checklist, then a provisional handover with the actual weight — safety is never assumed from a number."
       },
       "publish": {
+        "short": "Confirm & publish",
         "title": "The charity confirms receipt and publishes the food",
         "body": "The charity's confirmation completes \"Collected\"; only the documented quantity is packaged into a listing for beneficiaries, with a general area."
       },
       "beneficiary": {
+        "short": "Beneficiary",
         "title": "The beneficiary requests and confirms pickup",
         "body": "A request within the limit, accepted by the charity and confirmed by the beneficiary — only then does it count as distributed."
       },
       "behavior": {
+        "short": "Behavior",
         "title": "From awareness to behavior",
         "body": "Tip of the day and a weekly pledge, plus a shield and points from verified events only — no points for sending or reading."
       }
     },
-    "play": "Play this step",
-    "open": "Open in the {role} screen",
+    "stepOf": "Step {n} of {total}",
     "stateDone": "complete",
     "stateNext": "next step",
     "stateUpcoming": "upcoming",
+    "resultTitle": "Recorded in the system",
+    "resultPending": "Not run yet — press \"Play this step\".",
+    "resultLater": "Available after the previous steps.",
+    "play": "Play this step",
+    "open": "Open in the {role} screen",
     "results": {
       "hall": "{event} available for coordination · {planned} → {recommended} after the forecast",
       "hallSurplus": "Expected surplus before the event: {surplus} (estimate)",
@@ -1731,13 +1738,57 @@
       "points": "+{n} points counted once after confirmation",
       "behavior": "Weekly pledge recorded · {level} · {balance} points"
     },
-    "platformTitle": "Platform view",
-    "platformSubtitle": "The platform manager and the judges see the full picture from the same records; the judges view is read-only.",
     "byStatus": "Events by status",
+    "activityJourney": "This journey's activity — who did what, and when",
     "activityFull": "Activity log (latest)",
-    "activitySummary": "Activity summary",
     "fullScreensHint": "For deeper questions: the full role screens still work on the same data.",
     "fullScreens": "Browse the role screens",
-    "activityJourney": "This journey's activity — who did what, and when"
+    "impact": {
+      "kgUnit": "kg",
+      "kgValue": "{value} kg",
+      "estimate": "Estimate",
+      "delta": "{value} since the demo started",
+      "noChange": "No change since the demo started",
+      "hero": {
+        "label": "Food rescued (documented)",
+        "breakdown": "{halls} from halls · {reports} from household reports"
+      },
+      "avoided": {
+        "label": "Waste avoided before cooking",
+        "note": "Planned minus recommended when the hall used the forecast"
+      },
+      "distributed": {
+        "label": "Reached beneficiaries (confirmed)",
+        "note": "{pct}% of the documented quantity"
+      },
+      "behavior": {
+        "label": "Pickups confirmed by beneficiaries",
+        "note": "{pledges} weekly pledges — no points"
+      },
+      "trend": {
+        "title": "Impact day by day",
+        "subtitle": "Cumulative, in kilograms",
+        "legend": "Chart key",
+        "rescued": "Rescued (documented)",
+        "distributed": "Reached beneficiaries",
+        "empty": "No documented records yet.",
+        "aria": "Impact trend: documented rescue from {from} to {to}; reached beneficiaries {distributed}. Use the arrow keys to move between days.",
+        "table": "Show the data as a table",
+        "day": "Day"
+      },
+      "path": {
+        "title": "Quantity path",
+        "subtitle": "From the estimate before the event to what actually arrived",
+        "rows": {
+          "expected": "Expected surplus before events",
+          "rescued": "Rescued (documented)",
+          "listed": "Offered to beneficiaries",
+          "distributed": "Reached beneficiaries"
+        },
+        "estimateTag": "estimate",
+        "share": "{pct}% of documented"
+      },
+      "source": "Computed from the demo data — estimates are kept apart from documented quantities, and \"reached beneficiaries\" counts only after they confirm."
+    }
   }
 }
