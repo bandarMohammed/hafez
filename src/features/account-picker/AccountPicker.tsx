@@ -8,7 +8,7 @@ import { useRouter } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { DemoBar } from "@/components/layout/DemoBar";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
-import { Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { Notice } from "@/components/ui/Notice";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -61,6 +61,22 @@ export function AccountPicker() {
           <h1 className="text-h3 text-heading">{t("picker.title")}</h1>
           <p className="max-w-2xl text-small text-muted">{t("picker.subtitle")}</p>
         </div>
+
+        {/* Pitch entry: the whole journey on one page (added for the hackathon; the accounts below are unchanged). */}
+        <section
+          aria-labelledby="journey-entry"
+          className="mt-4 flex flex-col gap-3 rounded-lg bg-inverse p-5 text-on-inverse sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex flex-col gap-1">
+            <h2 id="journey-entry" className="text-body-strong text-on-inverse">
+              {t("picker.journeyTitle")}
+            </h2>
+            <p className="text-small text-accent-on-inverse">{t("picker.journeyBody")}</p>
+          </div>
+          <ButtonLink href="/journey" className="shrink-0">
+            {t("picker.journeyCta")}
+          </ButtonLink>
+        </section>
 
         {status === "error" ? (
           <StateMessage
