@@ -1789,6 +1789,10 @@
         "share": "{pct}% of documented"
       },
       "source": "Computed from the demo data — estimates are kept apart from documented quantities, and \"reached beneficiaries\" counts only after they confirm."
-    }
+    },
+    "backToJourney": "Back to the Hafez journey",
+    "manualHint": "Or do it yourself in the full screen, then come back with “Back to the Hafez journey” — it counts in the journey automatically.",
+    "openNext": "Next step in the {role} screen",
+    "openedFromJourney": "You opened this screen from the Hafez journey — what you do here counts in the journey."
   }
 }

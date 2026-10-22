@@ -4,10 +4,12 @@ import { createSeed } from "@/data/seed";
 import { distributedKg, selectShield } from "@/domain/selectors/beneficiary";
 import type { DemoDataset } from "@/domain/types";
 import type { CommandResult } from "@/domain/workflow/core";
+import { checkIn } from "@/domain/workflow/field";
 import {
   JOURNEY,
   JOURNEY_STEPS,
   canRunJourney,
+  manualStepLink,
   playJourney,
   remainingSteps,
   selectJourney,
@@ -85,5 +87,29 @@ describe("Hafez journey (pitch page scenario)", () => {
     if (!r.ok) throw new Error(r.error);
     expect(selectJourney(r.data, TIP).next).toBeNull();
     expect(play(r.data, "demo-admin", ["hall"]).ok).toBe(false);
+  });
+
+  it("a step started by hand in the role screen is resumed, not repeated", () => {
+    let data = createSeed();
+    for (const step of ["hall", "charity"] as const) {
+      const r = play(data, "demo-admin", [step]);
+      if (!r.ok) throw new Error(r.error);
+      data = r.data;
+    }
+    const s = selectJourney(data, TIP);
+    expect(manualStepLink(s)).toEqual({ account: JOURNEY.rep, path: `/field/tasks/${s.event!.id}` });
+    // The rep checks in from the field screen…
+    const rep = data.users.find((u) => u.id === JOURNEY.rep)!;
+    const arrived = checkIn({ data, user: rep, now: NOW }, s.event!.id);
+    if (!arrived.ok) throw new Error(arrived.error);
+    // …then "play" finishes the inspection and handover without a second check-in.
+    const r = play(arrived.data, "demo-admin", ["field"]);
+    if (!r.ok) throw new Error(r.error);
+    expect(selectJourney(r.data, TIP).done.field).toBe(true);
+    expect(r.data.inspections.filter((i) => i.eventId === s.event!.id)).toHaveLength(1);
+  });
+
+  it("the hall step has no manual link (a C2 event wouldn't carry the journey title)", () => {
+    expect(manualStepLink(selectJourney(createSeed(), TIP))).toBeNull();
   });
 });

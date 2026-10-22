@@ -65,4 +65,39 @@ test.describe("Hafez journey page (pitch)", () => {
     expect((await stored(page)).events.some((e: { id: string }) => e.id === "E-109")).toBe(false);
     await expect(impact(page).getByText("No change since the demo started").first()).toBeVisible();
   });
+
+  test("next step by hand in the role screen, then back to the journey without changing anything", async ({ page }) => {
+    await page.goto("/ar/journey");
+    await page.getByRole("button", { name: "نفّذ الخطوة التالية: القاعة" }).click();
+    await page.getByRole("button", { name: "نفّذ الخطوة التالية: الجمعية" }).click();
+    await expect(page.getByText("2 من 6 خطوات")).toBeVisible();
+
+    // From the step just completed, the next step (representative) opens in its full screen.
+    await page.getByRole("button", { name: "الخطوة التالية في واجهة الممثل الميداني" }).click();
+    await expect(page).toHaveURL(/\/ar\/field\/tasks\/E-109$/);
+    const back = page.getByRole("link", { name: "العودة إلى رحلة حفيظ" });
+    await expect(back).toBeVisible();
+
+    // Going back alone changes no record.
+    const before = JSON.stringify(await stored(page));
+    await back.click();
+    await expect(page).toHaveURL(/\/ar\/journey$/);
+    expect(JSON.stringify(await stored(page))).toBe(before);
+    await expect(page.getByText("2 من 6 خطوات")).toBeVisible();
+
+    // Do the check-in by hand (from the next step's own card), come back: the journey resumes from there.
+    await page.getByRole("button", { name: /^3\. الممثل يعاين/ }).click();
+    await page.getByRole("button", { name: "افتح في واجهة الممثل الميداني" }).click();
+    await page.getByRole("button", { name: "تسجيل الوصول الآن" }).click();
+    await page.getByRole("link", { name: "العودة إلى رحلة حفيظ" }).click();
+    await page.getByRole("button", { name: "نفّذ الخطوة التالية: الممثل" }).click();
+    await expect(page.getByText("3 من 6 خطوات")).toBeVisible();
+    const data = await stored(page);
+    expect(data.events.find((e: { id: string }) => e.id === "E-109").status).toBe("inspected");
+    expect(data.inspections.filter((i: { eventId: string }) => i.eventId === "E-109")).toHaveLength(1);
+
+    // The back button only appears when a screen was opened from the journey.
+    await page.goto("/ar/field");
+    await expect(page.getByRole("link", { name: "العودة إلى رحلة حفيظ" })).toHaveCount(0);
+  });
 });

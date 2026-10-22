@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { DEMO_CONFIG } from "@/config/demo";
@@ -27,7 +27,8 @@ import { useFormatters } from "@/features/common/useFormatters";
 import { TIP_ID } from "@/features/beneficiary/Shield";
 import { useUnits } from "@/features/charity/Listings";
 import { ImpactDashboard } from "./ImpactDashboard";
-import { JOURNEY, JOURNEY_STEPS, playJourney, remainingSteps, selectJourney } from "./scenario";
+import { JOURNEY, JOURNEY_STEPS, manualStepLink, playJourney, remainingSteps, selectJourney } from "./scenario";
+import { clearCameFromJourney, markCameFromJourney } from "./returnToJourney";
 import type { JourneyState, JourneyStep } from "./scenario";
 
 /**
@@ -109,6 +110,8 @@ function Journey({ data }: { data: DemoDataset }) {
   const [failed, setFailed] = useState(false);
   const [announce, setAnnounce] = useState("");
   const [selected, setSelected] = useState<JourneyStep | null>(null);
+  // Back on the journey: the role screens no longer need the "back" button.
+  useEffect(() => clearCameFromJourney(), []);
 
   const state = selectJourney(data, TIP_ID);
   const doneCount = JOURNEY_STEPS.filter((s) => state.done[s]).length;
@@ -127,6 +130,7 @@ function Journey({ data }: { data: DemoDataset }) {
     }
   };
   const openAs = (accountId: string, path: string) => {
+    markCameFromJourney();
     selectUser(accountId);
     router.push(path);
   };
@@ -386,6 +390,11 @@ function StepDetail({
   const isNext = state.next === step;
   const { event, assignment, handover, listing, request } = state;
   const index = JOURNEY_STEPS.indexOf(step);
+  const nextIndex = state.next ? JOURNEY_STEPS.indexOf(state.next) : -1;
+  const leadsToNext = done && nextIndex === index + 1;
+  const manual = isNext || leadsToNext ? manualStepLink(state) : null;
+  const manualActor = manual && data.users.find((u) => u.id === manual.account);
+  const manualRole = manualActor ? tr(`${manualActor.role}.name`) : roleName;
 
   const results: string[] = [];
   let openPath: string | null = null;
@@ -518,6 +527,17 @@ function StepDetail({
           {event && step === "hall" && done ? <StatusBadge status={event.status} className="w-fit" /> : null}
         </div>
         {isNext ? <Button onClick={onPlay}>{t("play")}</Button> : null}
+        {isNext && manual ? (
+          <>
+            <Button variant="secondary" onClick={() => onOpen(manual.account, manual.path)}>
+              {t("open", { role: manualRole })}
+            </Button>
+            <p className="text-caption text-muted">{t("manualHint")}</p>
+          </>
+        ) : null}
+        {leadsToNext && manual ? (
+          <Button onClick={() => onOpen(manual.account, manual.path)}>{t("openNext", { role: manualRole })}</Button>
+        ) : null}
         {done && openPath ? (
           <Button variant="secondary" onClick={() => onOpen(meta.account, openPath!)}>
             {t("open", { role: roleName })}

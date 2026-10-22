@@ -131,7 +131,11 @@ function runStep(data: DemoDataset, step: JourneyStep, now: Date, tipId: string)
       // D2 + D4 — the charity takes the opportunity and assigns representative 01 at the ready time.
       const ctx = as(JOURNEY.charity);
       if (!ctx || !s.event) return fail("invalid_state");
-      const interest = expressInterest(ctx, s.event.id);
+      // Resumes after a manual "express interest" in the charity screen.
+      const interested = data.coordination.some(
+        (c) => c.eventId === s.event!.id && c.charityId === ctx.user.organizationId && c.status === "interested",
+      );
+      const interest = interested ? ok(data) : expressInterest(ctx, s.event.id);
       if (!interest.ok) return interest;
       return assignRepresentative({ ...ctx, data: interest.data }, s.event.id, {
         representativeId: JOURNEY.rep,
@@ -143,23 +147,28 @@ function runStep(data: DemoDataset, step: JourneyStep, now: Date, tipId: string)
       // E2 → E3 → E4 — check-in, documented inspection, provisional handover with the actual weight.
       const ctx = as(JOURNEY.rep);
       if (!ctx || !s.event) return fail("invalid_state");
-      const arrived = checkIn(ctx, s.event.id);
+      // Resumes after a manual check-in / inspection in the representative screen.
+      const arrived = s.event.status === "assigned" ? checkIn(ctx, s.event.id) : ok(data);
       if (!arrived.ok) return arrived;
-      const inspected = saveInspection(
-        { ...ctx, data: arrived.data },
-        s.event.id,
-        {
-          outcome: "surplus_available",
-          estimatedQuantity: JOURNEY.inspectedKg,
-          unit: "kg",
-          foodCondition: "good",
-          packagingCondition: "sealed_clean",
-          safetyChecklist: [...SAFETY_ITEMS],
-          reason: null,
-          notes: null,
-        },
-        "final",
-      );
+      const afterArrival = arrived.data.events.find((e) => e.id === s.event!.id)!;
+      const inspected =
+        afterArrival.status === "inspected"
+          ? ok(arrived.data)
+          : saveInspection(
+              { ...ctx, data: arrived.data },
+              s.event.id,
+              {
+                outcome: "surplus_available",
+                estimatedQuantity: JOURNEY.inspectedKg,
+                unit: "kg",
+                foodCondition: "good",
+                packagingCondition: "sealed_clean",
+                safetyChecklist: [...SAFETY_ITEMS],
+                reason: null,
+                notes: null,
+              },
+              "final",
+            );
       if (!inspected.ok) return inspected;
       return recordHandover({ ...ctx, data: inspected.data }, s.event.id, {
         actualQuantity: JOURNEY.handoverKg,
@@ -174,7 +183,8 @@ function runStep(data: DemoDataset, step: JourneyStep, now: Date, tipId: string)
       // D5 + D6 — the charity confirms receipt ("Collected") and packages it into a listing for beneficiaries.
       const ctx = as(JOURNEY.charity);
       if (!ctx || !s.event || !s.handover) return fail("invalid_state");
-      const confirmed = confirmHandoverByCharity(ctx, s.handover.id);
+      // Resumes after a manual D5 confirmation in the charity screen.
+      const confirmed = s.event.status === "collected" ? ok(data) : confirmHandoverByCharity(ctx, s.handover.id);
       if (!confirmed.ok) return confirmed;
       const hall = data.organizations.find((o) => o.id === s.event!.hallId);
       const pickupDay = addDays(riyadhDate(now), 2);
@@ -251,4 +261,34 @@ export function playJourney(steps: JourneyStep[], tipId: string) {
 /** Steps left from the current position (for "play the whole journey"). */
 export function remainingSteps(state: JourneyState): JourneyStep[] {
   return state.next ? JOURNEY_STEPS.slice(JOURNEY_STEPS.indexOf(state.next)) : [];
+}
+
+/**
+ * Where the presenter can do the *next* step by hand in the full role screen (instead of "play").
+ * The journey reads its progress from the records, so a step done there is picked up here automatically.
+ * The hall step has no manual link: an event created in C2 would not carry the journey's title.
+ */
+export function manualStepLink(state: JourneyState): { account: string; path: string } | null {
+  const { event, handover, listing, request } = state;
+  switch (state.next) {
+    case "charity":
+      return event ? { account: JOURNEY.charity, path: `/charity/opportunities/${event.id}` } : null;
+    case "field":
+      return event ? { account: JOURNEY.rep, path: `/field/tasks/${event.id}` } : null;
+    case "publish":
+      if (!event || !handover) return null;
+      return event.status === "collected"
+        ? { account: JOURNEY.charity, path: "/charity/listings/new" }
+        : { account: JOURNEY.charity, path: `/charity/handovers/${handover.id}` };
+    case "beneficiary":
+      if (!listing) return null;
+      if (request?.status === "pending") return { account: JOURNEY.charity, path: `/charity/listings/${listing.id}` };
+      if (request && (request.status === "accepted" || request.status === "ready"))
+        return { account: JOURNEY.beneficiary, path: `/beneficiary/requests/${request.id}/confirm` };
+      return { account: JOURNEY.beneficiary, path: `/beneficiary/food/${listing.id}` };
+    case "behavior":
+      return { account: JOURNEY.beneficiary, path: "/beneficiary/tip" };
+    default:
+      return null;
+  }
 }
